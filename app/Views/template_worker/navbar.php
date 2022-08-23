@@ -187,39 +187,41 @@
                                 </span>
                             </a>
                         </li>
-                        <!-- Menu Master Administrator -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" />
-                                    </svg>
-                                </span>
-                                <span class="nav-link-title">
-                                    Master
-                                </span>
-                            </a>
-                            <div class="dropdown-menu">
-                                <div class="dropdown-menu-columns">
-                                    <div class="dropdown-menu-column">
-                                        <a class="dropdown-item" href="#">
-                                            KWH Meter
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            Level
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            Superior Role
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            Superior
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            Users
-                                        </a>
-                                    </div>
-                                    <!-- <div class="dropdown-menu-column">
+                        <?php if ($level == 99) {  ?>
+                            <!-- Menu Master Administrator -->
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" />
+                                        </svg>
+                                    </span>
+                                    <span class="nav-link-title">
+                                        Master
+                                    </span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-menu-columns">
+                                        <div class="dropdown-menu-column">
+                                            <a class="dropdown-item" href="#">
+                                                KWH Meter
+                                            </a>
+                                            <a class="dropdown-item" href="#">
+                                                Level
+                                            </a>
+                                            <a class="dropdown-item" href="#">
+                                                Superior Role
+                                            </a>
+                                            <a class="dropdown-item" href="#">
+                                                Superior
+                                            </a>
+                                            <a class="dropdown-item" href="#">
+                                                Users
+                                            </a>
+                                        </div>
+                                        <!-- <div class="dropdown-menu-column">
                                         <a class="dropdown-item" href="#">
                                             Menu 1
                                         </a>
@@ -240,11 +242,11 @@
                                             Menu 5
                                         </a>
                                     </div> -->
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                        <!-- End  Maseter ADministrator -->
-
+                            </li>
+                            <!-- End  Maseter ADministrator -->
+                        <?php } ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
