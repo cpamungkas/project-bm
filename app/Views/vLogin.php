@@ -26,6 +26,9 @@
 
     <!-- CSS file Login -->
     <link rel="stylesheet" href="<?= base_url('css/login.css'); ?>">
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
+
 </head>
 
 <body>
@@ -52,16 +55,22 @@
                     </span>
                 </div>
                 <div class="form-group">
-                    <?php echo $captcha ?>
+                    <span class="text-danger" style="font-size: 2em;"><?php echo $captcha ?></span>
                 </div>
                 <div class="form-group">
                     <i>*Masukan kode Captcha di atas</i>
                     <input type="text" id="captcha_real" name="captcha_real" required>
                     <input type="hidden" id="captcha" name="captcha" value="<?php echo $captcha ?>">
                 </div>
+                <!-- <div class="g-recaptcha-outer">
+                    <div class="g-recaptcha-inner"> -->
+                <!-- <div class="g-recaptcha captcha" data-sitekey="6LcGGbMhAAAAANxeauHodWOh8JnE6hLNH0qt-kgb"></div> -->
+                <!-- </div>
+                </div> -->
                 <!-- < ?php if (session()->getFlashdata('error')) : ?>
                     <p class="text-danger font-weight-bold"> < ?= session()->getFlashdata('error') ?></p>
                 < ?php endif; ?> -->
+                <br />
                 <button type="submit">Log In</button>
             </form>
             <script type="text/javascript">

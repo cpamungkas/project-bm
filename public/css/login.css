@@ -81,6 +81,53 @@ form .form-group i {
     transform: translateX(35px);
 }
 
+.g-recaptcha-outer {
+    text-align: center;
+    border-radius: 10px;
+    background: #75D363;
+    border-style: solid;
+    border-color: #239edb;
+    border-width: 0px;
+    border-bottom-width: 0px;
+}
+
+.g-recaptcha-inner {
+    width: 296px;
+    height: 75px;
+    overflow: hidden;
+    margin: 0 auto;
+    background-color: #23d400;
+    border-radius: 10px;
+}
+
+.g-recaptcha {
+    position: relative;
+    /* background: #75D363; */
+    /* overflow: hidden; */
+    left: -2px;
+    top: -1px;
+
+}
+
+/* .g-recaptcha::after {
+    display: block;
+    content: "";
+    position: absolute;
+    left: 150px;
+    right: 150px;
+    top: 0;
+    bottom: 0;
+    border-radius: 10px;
+    background-color: #b91818;
+    clear: both;
+} */
+
+/* .rc-anchor-light {
+    background: #75D363 !important;
+    color: #75D363 !important;
+    border-radius: 10px;
+} */
+
 .show-btn {
     position: absolute;
     top: 44%;

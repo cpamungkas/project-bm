@@ -8,6 +8,7 @@
 </head>
 
 <body>
+    <div id="cover-spin"></div>
     <div class="page">
         <!-- Header Navbar -->
         <?= $this->include('template_worker/navbar'); ?>
@@ -36,6 +37,8 @@
     <!-- Footer -->
     <?= $this->include('template_worker/footer'); ?>
     <!-- End of Footer -->
+
+    <?= $this->renderSection('scripts'); ?>
 
 </body>
 

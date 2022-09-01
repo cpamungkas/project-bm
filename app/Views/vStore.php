@@ -65,7 +65,7 @@
 <!-- </div> -->
 <!-- </div> -->
 <div class="page-body">
-    <div class="container-xxl">
+    <div class="container-xl">
         <div class="row row-deck row-cards">
             <?php
             if (session("error")) { ?>
@@ -281,8 +281,8 @@
                                         <td><?= $ts['idPLN2']; ?></td>
                                         <td class="text-end">
                                             <div class="row g-2 align-items-center mb-n3">
-                                                <div class="col-6 col-sm-4 col-md-2 col-xl-auto mb-3">
-                                                    <a href="#myModalView<?= $i; ?>" id="btnModalView<?= $ts['idStore']; ?>" class="btn btn-outline-primary w-100 btn-icon btn-view-store" data-idstore="<?= $ts['idStore']; ?>" data-storecode="<?= $ts['StoreCode']; ?>" data-storename="<?= $ts['StoreName']; ?>" data-kwhmeter1="<?= $ts['idKWHMeter1']; ?>" data-idpln1="<?= $ts['idPLN1']; ?>" data-kwhmeter2="<?= $ts['idKWHMeter2']; ?>" data-idpln2="<?= $ts['idPLN2']; ?>">
+                                                <div class="col-4 col-sm-4 col-md-2 col-lg-auto mb-1">
+                                                    <a href="#view" id="btnModalView<?= $ts['idStore']; ?>" class="btn-outline-primary btn-view-store" data-idstore="<?= $ts['idStore']; ?>" data-storecode="<?= $ts['StoreCode']; ?>" data-storename="<?= $ts['StoreName']; ?>" data-kwhmeter1="<?= $ts['KWHMeter1']; ?>" data-idpln1="<?= $ts['idPLN1']; ?>" data-kwhmeter2="<?= $ts['KWHMeter2']; ?>" data-idpln2="<?= $ts['idPLN2']; ?>" data-tooltips="tooltip" data-placement="top" title="View Data">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                             <circle cx="10" cy="10" r="7"></circle>
@@ -292,18 +292,18 @@
                                                         </svg>
                                                     </a>
                                                 </div>
-                                                <div class="col-6 col-sm-4 col-md-2 col-xl-auto mb-3">
-                                                    <button href="#myModalEdit<?= $i; ?>" id="btnModalEdit<?= $ts['idStore']; ?>" class="btn btn-outline-success w-100 btn-icon btn-edit-store" data-idstore="<?= $ts['idStore']; ?>" data-storecode="<?= $ts['StoreCode']; ?>" data-storename="<?= $ts['StoreName']; ?>" data-kwhmeter1="<?= $ts['idKWHMeter1']; ?>" data-idpln1="<?= $ts['idPLN1']; ?>" data-kwhmeter2="<?= $ts['idKWHMeter2']; ?>" data-idpln2="<?= $ts['idPLN2']; ?>">
+                                                <div class="col-4 col-sm-4 col-md-2 col-lg-auto mb-1">
+                                                    <a href="#edit" id="btnModalEdit<?= $ts['idStore']; ?>" class="btn-outline-success btn-edit-store" data-idstore="<?= $ts['idStore']; ?>" data-storecode="<?= $ts['StoreCode']; ?>" data-storename="<?= $ts['StoreName']; ?>" data-kwhmeter1="<?= $ts['idKWHMeter1']; ?>" data-idpln1="<?= $ts['idPLN1']; ?>" data-kwhmeter2="<?= $ts['idKWHMeter2']; ?>" data-idpln2="<?= $ts['idPLN2']; ?>" data-tooltips="tooltip" data-placement="top" title="Edit Data">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                             <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
                                                             <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
                                                             <path d="M16 5l3 3"></path>
                                                         </svg>
-                                                    </button>
+                                                    </a>
                                                 </div>
-                                                <div class="col-6 col-sm-4 col-md-2 col-xl-auto mb-3">
-                                                    <button href="#myModalDelete<?= $i; ?>" class="btn btn-outline-danger w-100 btn-icon" aria-label="DeleteData" data-bs-toggle="modal" data-bs-target="#modal-deletedata<?= $i; ?>">
+                                                <div class="col-4 col-sm-4 col-md-2 col-lg-auto mb-1">
+                                                    <a href="#delete" class="btn-outline-danger btn-delete-store" aria-label="DeleteData" data-idstore="<?= $ts['idStore']; ?>" data-storecode="<?= $ts['StoreCode']; ?>" data-storename="<?= $ts['StoreName']; ?>" data-kwhmeter1="<?= $ts['idKWHMeter1']; ?>" data-idpln1="<?= $ts['idPLN1']; ?>" data-kwhmeter2="<?= $ts['idKWHMeter2']; ?>" data-idpln2="<?= $ts['idPLN2']; ?>" data-bs-toggle="modal" data-bs-target="#modal-deletedata<?= $i; ?>" data-tooltips="tooltip" data-placement="top" title="Delete Data">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                             <line x1="4" y1="7" x2="20" y2="7"></line>
@@ -312,7 +312,7 @@
                                                             <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
                                                             <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
                                                         </svg>
-                                                    </button>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </td>
@@ -505,7 +505,7 @@
                                     </div> -->
 
                                     <!-- Modal delete data -->
-                                    <div class="modal modal-blur fade" id="modal-deletedata<?= $i; ?>" tabindex="-1" style="display: none;" aria-hidden="true">
+                                    <!-- <div class="modal modal-blur fade" id="modal-deletedata<?= $i; ?>" tabindex="-1" style="display: none;" aria-hidden="true">
                                         <form id="deletestoreForm" action="<?php echo base_url('store/deleteStore/' . $ts['idStore']); ?>" method="post" class="needs-validation" novalidate>
                                             <div class="modal-dialog modal-lg modal-dialog-centered" role="dialog">
                                                 <div class="modal-content">
@@ -529,7 +529,6 @@
                                                                     <select class="form-select" id="modaldeletekwhmeter1" name="modaldeletekwhmeter1" disabled>
                                                                         <option value="">Select KWH Meter 1</option>
                                                                         <?php foreach ($getKWHMeter1 as $kwh1) : ?>
-                                                                            <!-- < ?= '<option value="' . $kwh1['idkwhmeter1'] . '">' . $kwh1['kwhmeter1'] . ' KVA</option>' ?> -->
                                                                             <option value="<?= $kwh1['idkwhmeter1']; ?>" <?php if ($ts['idKWHMeter1'] == $kwh1['idkwhmeter1']) {
                                                                                                                                 echo 'selected = "selected"';
                                                                                                                             } ?>><?= $kwh1['kwhmeter1']; ?> KVA </option>
@@ -595,7 +594,7 @@
                                                 </div>
                                             </div>
                                         </form>
-                                    </div>
+                                    </div> -->
                                     <?php $i++; ?>
                                 <?php endforeach; ?>
                             </tbody>
@@ -702,7 +701,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal" id="btnModalCancelCreate" name="btnModalCancelCreate">
+                    <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal" id="btnModalCancelCreate" name="btnModalCancelCreate" onclick="javascript:window.location.reload()">
                         Cancel
                     </a>
                     <button type="submit" class="btn btn-primary ms-auto" id="btnModalSubmitCreate" name="btnModalSubmitCreate">
@@ -721,7 +720,7 @@
 </div>
 
 <!-- Modal view data -->
-<div class="modal modal-blur fade" id="modal-view-store" tabindex="-1" style="display: none;" aria-hidden="true" role="dialog">
+<!-- <div class="modal modal-blur fade" id="modal-view-store" tabindex="-1" style="display: none;" aria-hidden="true" role="dialog">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -735,16 +734,15 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Store name</label>
-                    <input type="text" class="form-control" name="storename" id="storename" placeholder="Store Name" value="<?= $ts['StoreName']; ?>" disabled>
+                    <input type="text" class="form-control" name="viewstorename" id="viewstorename" placeholder="Store Name" value="" disabled>
                 </div>
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="mb-3">
                             <label class="form-label">KWH Meter 1</label>
-                            <select class="form-select" id="kwhmeter1" name="kwhmeter1" disabled>
+                            <select class="form-select" id="viewkwhmeter1" name="viewkwhmeter1" disabled>
                                 <option value="">Select KWH Meter 1</option>
-                                <?php foreach ($getKWHMeter1 as $kwh1) : ?>
-                                    <!-- < ?= '<option value="' . $kwh1['idkwhmeter1'] . '">' . $kwh1['kwhmeter1'] . ' KVA</option>' ?> -->
+                                <?php foreach ($getKWHMeter1 as $kwh1) : ?>                                    
                                     <option value="<?= $kwh1['idkwhmeter1']; ?>" <?php if ($ts['idKWHMeter1'] == $kwh1['idkwhmeter1']) {
                                                                                         echo 'selected = "selected"';
                                                                                     } ?>><?= $kwh1['kwhmeter1']; ?> KVA </option>
@@ -755,7 +753,7 @@
                     <div class="col-lg-6">
                         <div class="mb-3">
                             <label class="form-label">ID PLN 1</label>
-                            <input type="number" class="form-control <?= ($validation->hasError('idpln1')) ? 'is-invalid' : ''; ?>" name="idpln1" id="idpln1" placeholder="ID PLN 1" maxlength="12" max="999999999999" value="<?= $ts['idPLN1']; ?>" disabled>
+                            <input type="number" class="form-control" name="viewidpln1" id="viewidpln1" placeholder="ID PLN 1" value="" disabled>
                         </div>
                     </div>
                 </div>
@@ -763,7 +761,7 @@
                     <div class="col-lg-6">
                         <div class="mb-3">
                             <label class="form-label">KWH Meter 2</label>
-                            <select class="form-select" id="kwhmeter2" name="kwhmeter2" disabled>
+                            <select class="form-select" id="viewkwhmeter2" name="viewkwhmeter2" disabled>
                                 <option value="0">Select KWH Meter 2</option>
                                 <?php foreach ($getKWHMeter2 as $kwh2) : ?>
                                     <?= '<option value="' . $kwh2['idkwhmeter2'] . '">' . $kwh2['kwhmeter2'] . ' KVA</option>' ?>
@@ -774,13 +772,13 @@
                     <div class="col-lg-6">
                         <div class="mb-3">
                             <label class="form-label">ID PLN 2</label>
-                            <input type="number" class="form-control" name="idpln2" id="idpln2" placeholder="ID PLN 2" maxlength="12" max="999999999999" value="<?= $ts['idPLN2']; ?>" disabled>
+                            <input type="number" class="form-control" name="viewidpln2" id="viewidpln2" placeholder="ID PLN 2" maxlength="12" max="999999999999" value="" disabled>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-outline-primary ms-auto" id="btnClose" name="btnClose" data-bs-dismiss="modal">
+                <button class="btn btn-outline-primary ms-auto" id="btnClose" name="btnClose" data-bs-dismiss="modal" onclick="javascript:window.location.reload()">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-door-exit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                         <path d="M13 12v.01"></path>
@@ -793,8 +791,101 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
+<!--Modal: modalView-->
+<div class="modal modal-blur fade show" id="modal-view-store" tabindex="-1" style="display: none; padding-right: 17px;" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <h5 class="modal-title">View Store</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-status bg-success"></div>
+            </div>
+            <!--Body-->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-3 text-center">
+                        <img id="imguser" src="<?= base_url('static/photos/'); ?>/store_2085.jpg" alt="" class="img-fluid z-depth-1-half rounded-circle">
+                        <div style="height: 10px"></div>
+                    </div>
 
+                    <div class="col-9">
+                        <h4 class="m-t-0 m-b-0 detail_storename"></h4>
+
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label class="form-label">ID PLN 1</label>
+                                    <input type="text" class="form-control" name="viewidpln1" id="viewidpln1" placeholder="ID PLN 1" value="">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label class="form-label">KWH Meter 1</label>
+                                    <input type="text" class="form-control" name="viewkwhmeter1" id="viewkwhmeter1" placeholder="KWH Meter 1" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label class="form-label">ID PLN 2</label>
+                                    <input type="text" class="form-control" name="viewidpln2" id="viewidpln2" placeholder="ID PLN 2" value="">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-3">
+                                    <label class="form-label">KWH Meter 2</label>
+                                    <input type="text" class="form-control" name="viewkwhmeter2" id="viewkwhmeter2" placeholder="KWH Meter 2" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div>
+                            <a class="btn btn-outline-primary btn-round waves-effect mailuser">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mail" width="36" height="36" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                                    <polyline points="3 7 12 13 21 7"></polyline>
+                                </svg>
+                                Mail
+                            </a>
+                            <button class="btn btn-outline-primary btn-round waves-effect">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-phone" width="36" height="36" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2"></path>
+                                </svg>
+                                Call
+                            </button>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <!--Footer-->
+            <div class="modal-footer">
+                <div class="row align-items-center">
+                    <div class="col"></div>
+                    <div class="col-auto">
+                        <a class="btn btn-outline-danger waves-effect ms-auto" id="btnCloseEmployee" name="btnCloseEmployee" data-bs-dismiss="modal" onclick="javascript:window.location.reload()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-door-exit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M13 12v.01"></path>
+                                <path d="M3 21h18"></path>
+                                <path d="M5 21v-16a2 2 0 0 1 2 -2h7.5m2.5 10.5v7.5"></path>
+                                <path d="M14 7h7m-3 -3l3 3l-3 3"></path>
+                            </svg>
+                            Close
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal: modalView-->
+
+<!-- Modal edit data -->
 <div class="modal modal-blur fade" id="modal-edit-store" tabindex="-1" style="display: none;" aria-hidden="true" role="dialog">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
@@ -844,7 +935,7 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label class="form-label">ID PLN 1</label>
-                                <input type="number" class="form-control <?= ($validation->hasError('editidpln1')) ? 'is-invalid' : ''; ?>" name="editidpln1" id="editidpln1" placeholder="ID PLN 1">
+                                <input type="number" class="form-control <?= ($validation->hasError('editidpln1')) ? 'is-invalid' : ''; ?>" name="editidpln1" id="editidpln1" placeholder="ID PLN 1" required>
                                 <?php if ($validation->hasError('editidpln1')) : ?>
                                     <div class="invalid-feedback">
                                         <?= $validation->getError('editidpln1'); ?>
@@ -857,8 +948,8 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label class="form-label">KWH Meter 2</label>
-                                <select class="form-select" id="editkwhmeter2" name="editkwhmeter2">
-                                    <option value="0">Select KWH Meter 2</option>
+                                <select class="form-select" id="editkwhmeter2" name="editkwhmeter2" placeholder="Select KWH Meter 2">
+                                    <option value="">Select KWH Meter 2</option>
                                     <?php foreach ($getKWHMeter2 as $kwh2) : ?>
                                         <option value="<?= $kwh2['idkwhmeter2']; ?>"><?= $kwh2['kwhmeter2']; ?> KVA </option>
                                     <?php endforeach; ?>
@@ -886,7 +977,7 @@
                                 </svg>
                                 Update
                             </button>
-                            <a class="btn btn-outline-secondary ms-auto" id="btnClose" name="btnClose" data-bs-dismiss="modal">
+                            <a class="btn btn-outline-secondary ms-auto" id="btnClose" name="btnClose" data-bs-dismiss="modal" onclick="javascript:window.location.reload()">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-door-exit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                     <path d="M13 12v.01"></path>
@@ -902,6 +993,99 @@
             </form>
         </div>
     </div>
+</div>
+
+<!-- Modal delete data -->
+<div class="modal modal-blur fade" id="modal-delete-store" tabindex="-1" style="display: none;" aria-hidden="true" role="dialog">
+    <form id="deletestoreForm" onsubmit="return setAction(this)" class="needs-validation" novalidate>
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete store</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Store code</label>
+                        <input type="text" class="form-control" style="display: none;" name="modaldeleteidstore" id="modaldeleteidstore" />
+                        <input type="text" class="form-control" name="modaldeletestorecode" id="modaldeletestorecode" placeholder="Store Code" size="10" value="" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Store name</label>
+                        <input type="text" class="form-control" name="modaldeletestorename" id="modaldeletestorename" placeholder="Store Name" value="" readonly>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">KWH Meter 1</label>
+                                <select class="form-select" id="modaldeletekwhmeter1" name="modaldeletekwhmeter1" disabled>
+                                    <option value="">Select KWH Meter 1</option>
+                                    <?php foreach ($getKWHMeter1 as $kwh1) : ?>
+                                        <option value="<?= $kwh1['idkwhmeter1']; ?>" <?php if ($ts['idKWHMeter1'] == $kwh1['idkwhmeter1']) {
+                                                                                            echo 'selected = "selected"';
+                                                                                        } ?>><?= $kwh1['kwhmeter1']; ?> KVA </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">ID PLN 1</label>
+                                <input type="number" class="form-control" name="modaldeleteidpln1" id="modaldeleteidpln1" placeholder="ID PLN 1" maxlength="12" max="999999999999" value="" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">KWH Meter 2</label>
+                                <select class="form-select" id="modaldeletekwhmeter2" name="modaldeletekwhmeter2" disabled>
+                                    <option value="0">Select KWH Meter 2</option>
+                                    <?php foreach ($getKWHMeter2 as $kwh2) : ?>
+                                        <?= '<option value="' . $kwh2['idkwhmeter2'] . '">' . $kwh2['kwhmeter2'] . ' KVA</option>' ?>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">ID PLN 2</label>
+                                <input type="number" class="form-control" name="modaldeleteidpln2" id="modaldeleteidpln2" placeholder="ID PLN 2" maxlength="12" max="999999999999" value="" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row align-items-center">
+                        <div class="col"></div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-outline-danger ms-auto" id="btnDeleteStore" name="btnDeleteStore" data-bs-dismiss="modal">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <line x1="4" y1="7" x2="20" y2="7"></line>
+                                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                </svg>
+                                Delete
+                            </button>
+                            <a class="btn btn-outline-secondary ms-auto" id="btnClose" name="btnClose" data-bs-dismiss="modal" onclick="javascript:window.location.reload()">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-door-exit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M13 12v.01"></path>
+                                    <path d="M3 21h18"></path>
+                                    <path d="M5 21v-16a2 2 0 0 1 2 -2h7.5m2.5 10.5v7.5"></path>
+                                    <path d="M14 7h7m-3 -3l3 3l-3 3"></path>
+                                </svg>
+                                Close
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
 
 

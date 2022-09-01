@@ -273,8 +273,8 @@
                                                             <line x1="21" y1="21" x2="15" y2="15"></line>
                                                         </svg>
                                                     </a>
-                                                </div>
-                                                <div class="col-6 col-sm-4 col-md-2 col-xl-auto mb-3">
+                                                    <!-- </div>
+                                                <div class="col-6 col-sm-4 col-md-2 col-xl-auto mb-3"> -->
                                                     <a href="#myModalEdit<?= $i; ?>" class="btn btn-outline-success w-100 btn-icon" aria-label="EditData" data-bs-toggle="modal" data-bs-target="#modal-editdata<?= $i; ?>">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -283,8 +283,8 @@
                                                             <path d="M16 5l3 3"></path>
                                                         </svg>
                                                     </a>
-                                                </div>
-                                                <div class="col-6 col-sm-4 col-md-2 col-xl-auto mb-3">
+                                                    <!-- </div>
+                                                <div class="col-6 col-sm-4 col-md-2 col-xl-auto mb-3"> -->
                                                     <a href="#myModalDelete<?= $i; ?>" class="btn btn-outline-danger w-100 btn-icon" aria-label="Delete" data-bs-toggle="modal" data-bs-target="#modal-deletedata<?= $i; ?>">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>

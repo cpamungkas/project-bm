@@ -218,6 +218,12 @@ class MUser extends Model
         return $query->getResultArray();
     }
 
+    public function getDataSuperiorNameFilter($id)
+    {
+        $query = $this->db->query("SELECT id, nik, name as SuperiorName, role_id as idSuperior FROM tb_user where role_id='$id'");
+        return $query->getResultArray();
+    }
+
     public function getDataLocation()
     {
         $query = $this->db->query("SELECT * FROM tb_store where status_deleted = 0");

@@ -65,7 +65,7 @@
 <!-- </div> -->
 <!-- </div> -->
 <div class="page-body">
-    <div class="container-xl">
+    <div class="container-xxl">
         <div class="row row-deck row-cards">
             <?php if (session("error")) { ?>
                 <div class="alert alert-warning alert-dismissible fade show text-danger" role="alert">
@@ -105,7 +105,7 @@
                 </div>
             <?php } ?>
 
-            <div class="col-xl">
+            <div class="col-xxl">
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Setup New Worker (Employee)</h3>
@@ -144,10 +144,10 @@
                                 <div class="col-lg-6">
                                     <div class="mb-3">
                                         <label class="form-label">Name</label>
-                                        <input type="text" class="form-control <?= ($validation->hasError('name')) ? 'is-invalid' : ''; ?>" name="name" id="name" placeholder="Name" value="<?= old('name'); ?>" required>
-                                        <?php if ($validation->hasError('name')) : ?>
+                                        <input type="text" class="form-control <?= ($validation->hasError('nameworker')) ? 'is-invalid' : ''; ?>" name="nameworker" id="nameworker" placeholder="Name Worker" value="<?= old('nameworker'); ?>" required>
+                                        <?php if ($validation->hasError('nameworker')) : ?>
                                             <div class="invalid-feedback">
-                                                <?= $validation->getError('name'); ?>
+                                                <?= $validation->getError('nameworker'); ?>
                                             </div>
                                         <?php endif; ?>
                                     </div>
@@ -220,6 +220,24 @@
                             <div class="row">
                                 <div class="col-lg-3">
                                     <div class="mb-3">
+                                        <label class="form-label">Employee Role</label>
+                                        <select class="form-select" id="employeerole" name="employeerole" value="<?= old('employeerole'); ?>" required>
+                                            <option value="">Select the role</option>
+                                            <?php foreach ($getDataRole as $role) : ?>
+                                                <option value="<?= $role['role_id']; ?>" <?php if (old('employeerole') == $role['role_id']) {
+                                                                                                echo 'selected';
+                                                                                            } ?>><?= $role['role']; ?> </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <?php if (session('errorrole')) { ?>
+                                            <div class="invalid-feedback">
+                                                <?= session("errorrole") ?>
+                                            </div>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="mb-3">
                                         <label class="form-label">Superior Role</label>
                                         <select class="form-select superiorrole" id="superiorrole" name="superiorrole" value="<?= old('superiorrole'); ?>" required>
                                             <option value="">Select Superior Role</option>
@@ -252,27 +270,6 @@
                                         <?php if (session('errorsuperiorname')) { ?>
                                             <div class="invalid-feedback">
                                                 <?= session("errorsuperiorname") ?>
-                                            </div>
-                                        <?php } ?>
-                                    </div>
-                                </div>
-                                <!-- </div>
-
-                            <div class="row"> -->
-                                <div class="col-lg-3">
-                                    <div class="mb-3">
-                                        <label class="form-label">Employee Role</label>
-                                        <select class="form-select" id="employeerole" name="employeerole" value="<?= old('employeerole'); ?>" required>
-                                            <option value="">Select the role</option>
-                                            <?php foreach ($getDataRole as $role) : ?>
-                                                <option value="<?= $role['role_id']; ?>" <?php if (old('employeerole') == $role['role_id']) {
-                                                                                                echo 'selected';
-                                                                                            } ?>><?= $role['role']; ?> </option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                        <?php if (session('errorrole')) { ?>
-                                            <div class="invalid-feedback">
-                                                <?= session("errorrole") ?>
                                             </div>
                                         <?php } ?>
                                     </div>
@@ -355,98 +352,102 @@
                 </div>
 
             </div>
-
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Employee Table</h3>
-                    </div>
-                    <div class="clearfix">
-                        <div class="pull-right tableTools-container"></div>
-                    </div>
-                    <div class="table-responsive">
-                        <table id="dynamic-table" class="table card-table table-vcenter text-nowrap datatable" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <!-- <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all invoices"></th> -->
-                                    <th class="w-1">No
-                                        <!-- <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-sm text-dark icon-thick" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <div class="col-xxl">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Employee Table</h3>
+                        </div>
+                        <div class="clearfix">
+                            <div class="pull-right tableTools-container" style="width:100%"></div>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="dynamic-table" class="table card-table table-vcenter text-nowrap datatable" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <!-- <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all invoices"></th> -->
+                                        <th class="w-1">No
+                                            <!-- <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-sm text-dark icon-thick" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                             <polyline points="6 15 12 9 18 15" />
                                         </svg> -->
-                                    </th>
-                                    <th>NIK</th>
-                                    <th>Username</th>
-                                    <th>Initial</th>
-                                    <th>Role</th>
-                                    <th>Superior Role</th>
-                                    <th>Superior Name</th>
-                                    <th>Level</th>
-                                    <th>Location</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php $i = 1; ?>
-                                <?php foreach ($getDataEmployee as $emp) : ?>
-                                    <tr>
-                                        <!-- <td><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select invoice"></td> -->
-                                        <td><?= $i; ?></td>
-                                        <td><?= $emp['nik']; ?></td>
-                                        <td><?= $emp['username']; ?></td>
-                                        <td><?= $emp['initial']; ?></td>
-                                        <td><?= $emp['roleuser']; ?></td>
-                                        <td><?= $emp['rolesuperior']; ?></td>
-                                        <td><?= $emp['SuperiorName']; ?></td>
-                                        <td><?= $emp['levelname']; ?></td>
-                                        <td><?= $emp['storename']; ?></td>
-                                        <td class="text-end">
-                                            <div class="row g-2 align-items-center mb-n3">
-                                                <div class="col-4 col-sm-4 col-md-2 col-lg-auto mb-3">
-                                                    <button href="#myModalView<?= $i; ?>" id="btnModalViewEmployee<?= $emp['id']; ?>" name="btnModalViewEmployee<?= $emp['id']; ?>" class="btn btn-outline-primary w-100 btn-icon btn-view-employee" data-id="<?= $emp['id']; ?>" data-nik="<?= $emp['nik']; ?>" data-name="<?= $emp['name']; ?>" data-username="<?= $emp['username']; ?>" data-initial="<?= $emp['initial']; ?>" data-email="<?= $emp['email']; ?>" data-roleuser="<?= $emp['roleuser']; ?>" data-rolesuperior="<?= $emp['rolesuperior']; ?>" data-superiorname="<?= $emp['SuperiorName']; ?>" data-level="<?= $emp['levelname']; ?>" data-location="<?= $emp['storename']; ?>" data-imguser="<?= $emp['image']; ?>">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-in" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                            <circle cx="10" cy="10" r="7"></circle>
-                                                            <line x1="7" y1="10" x2="13" y2="10"></line>
-                                                            <line x1="10" y1="7" x2="10" y2="13"></line>
-                                                            <line x1="21" y1="21" x2="15" y2="15"></line>
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                                <div class="col-4 col-sm-4 col-md-2 col-lg-auto mb-3">
-                                                    <button href="#myModalEdit<?= $i; ?>" id="btnModalEditEmployee<?= $emp['id']; ?>" name="btnModalEditEmployee<?= $emp['id']; ?>" class="btn btn-outline-success w-100 btn-icon btn-edit-employee" data-id="<?= $emp['id']; ?>" data-nik="<?= $emp['nik']; ?>" data-name="<?= $emp['name']; ?>" data-username="<?= $emp['username']; ?>" data-initial="<?= $emp['initial']; ?>" data-email="<?= $emp['email']; ?>" data-roleuser="<?= $emp['role_id']; ?>" data-rolesuperior="<?= $emp['superior_role_id']; ?>" data-superiorname="<?= $emp['superior_name_id']; ?>" data-level="<?= $emp['level']; ?>" data-location="<?= $emp['location']; ?>">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
-                                                            <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
-                                                            <path d="M16 5l3 3"></path>
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                                <div class="col-4 col-sm-4 col-md-2 col-lg-auto mb-3">
-                                                    <button href="#myModalDelete<?= $i; ?>" id="btnModalDeleteEmployee<?= $emp['id']; ?>" name="btnModalDeleteEmployee<?= $emp['id']; ?>" class="btn btn-outline-danger w-100 btn-icon btn-delete-employee" data-id="<?= $emp['id']; ?>" data-nik="<?= $emp['nik']; ?>" data-name="<?= $emp['name']; ?>">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                            <line x1="4" y1="7" x2="20" y2="7"></line>
-                                                            <line x1="10" y1="11" x2="10" y2="17"></line>
-                                                            <line x1="14" y1="11" x2="14" y2="17"></line>
-                                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
-                                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </td>
+                                        </th>
+                                        <th>NIK</th>
+                                        <th>Username</th>
+                                        <th>Initial</th>
+                                        <th>Role</th>
+                                        <th>Superior Role</th>
+                                        <th>Superior Name</th>
+                                        <th>Level</th>
+                                        <th>Location</th>
+                                        <th>Action</th>
                                     </tr>
-                                    <?php $i++; ?>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    <?php $i = 1; ?>
+                                    <?php foreach ($getDataEmployee as $emp) : ?>
+                                        <tr>
+                                            <!-- <td><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select invoice"></td> -->
+                                            <td><?= $i; ?></td>
+                                            <td><?= $emp['nik']; ?></td>
+                                            <td><?= $emp['username']; ?></td>
+                                            <td><?= $emp['initial']; ?></td>
+                                            <td><?= $emp['roleuser']; ?></td>
+                                            <td><?= $emp['rolesuperior']; ?></td>
+                                            <td><?= $emp['SuperiorName']; ?></td>
+                                            <td><?= $emp['levelname']; ?></td>
+                                            <td><?= $emp['storename']; ?></td>
+                                            <td>
+                                                <!-- <div class="row g-2 align-items-center mb-n3"> -->
+                                                <!-- <div class="col-4 col-sm-4 col-md-2 col-lg-auto mb-1"> -->
+                                                <a href="#view" id="btnModalViewEmployee<?= $emp['id']; ?>" name="btnModalViewEmployee<?= $emp['id']; ?>" class="btn-outline-primary btn-view-employee" data-id="<?= $emp['id']; ?>" data-nik="<?= $emp['nik']; ?>" data-name="<?= $emp['name']; ?>" data-username="<?= $emp['username']; ?>" data-initial="<?= $emp['initial']; ?>" data-email="<?= $emp['email']; ?>" data-roleuser="<?= $emp['roleuser']; ?>" data-rolesuperior="<?= $emp['rolesuperior']; ?>" data-superiorname="<?= $emp['SuperiorName']; ?>" data-level="<?= $emp['levelname']; ?>" data-location="<?= $emp['storename']; ?>" data-imguser="<?= $emp['image']; ?>">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-in" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <circle cx="10" cy="10" r="7"></circle>
+                                                        <line x1="7" y1="10" x2="13" y2="10"></line>
+                                                        <line x1="10" y1="7" x2="10" y2="13"></line>
+                                                        <line x1="21" y1="21" x2="15" y2="15"></line>
+                                                    </svg>
+                                                </a>
+                                                <!-- </div>
+                                                <div class="col-4 col-sm-4 col-md-2 col-lg-auto mb-1"> -->
+                                                <a href="#edit" id="btnModalEditEmployee<?= $emp['id']; ?>" name="btnModalEditEmployee<?= $emp['id']; ?>" class="btn-outline-success btn-edit-employee" data-id="<?= $emp['id']; ?>" data-nik="<?= $emp['nik']; ?>" data-name="<?= $emp['name']; ?>" data-username="<?= $emp['username']; ?>" data-initial="<?= $emp['initial']; ?>" data-email="<?= $emp['email']; ?>" data-roleuser="<?= $emp['role_id']; ?>" data-rolesuperior="<?= $emp['superior_role_id']; ?>" data-superiorname="<?= $emp['superior_name_id']; ?>" data-level="<?= $emp['level']; ?>" data-location="<?= $emp['location']; ?>">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
+                                                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
+                                                        <path d="M16 5l3 3"></path>
+                                                    </svg>
+                                                </a>
+                                                <!-- </div>
+                                                <div class="col-4 col-sm-4 col-md-2 col-lg-auto mb-1"> -->
+                                                <a href="#delete" id="btnModalDeleteEmployee<?= $emp['id']; ?>" name="btnModalDeleteEmployee<?= $emp['id']; ?>" class="btn-outline-danger btn-delete-employee" data-id="<?= $emp['id']; ?>" data-nik="<?= $emp['nik']; ?>" data-name="<?= $emp['name']; ?>">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <line x1="4" y1="7" x2="20" y2="7"></line>
+                                                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                                                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                                    </svg>
+                                                </a>
+                                                <!-- </div> -->
+                                                <!-- </div> -->
+
+
+                        </div>
+                        </td>
+                        </tr>
+                        <?php $i++; ?>
+                    <?php endforeach; ?>
+                    </tbody>
+                    </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 
@@ -1039,7 +1040,7 @@
                                 </svg>
                                 Update
                             </button>
-                            <a class="btn btn-outline-secondary ms-auto" id="btnCloseEmployee" name="btnCloseEmployee" data-bs-dismiss="modal">
+                            <a class="btn btn-outline-secondary ms-auto" id="btnCloseEmployee" name="btnCloseEmployee" data-bs-dismiss="modal" onclick="javascript:window.location.reload()">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-door-exit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                     <path d="M13 12v.01"></path>

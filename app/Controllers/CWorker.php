@@ -113,10 +113,11 @@ class CWorker extends BaseController
                     ],
                     'label' => 'NIK'
                 ],
-                'name' => [
-                    'rules' => 'required',
+                'nameworker' => [
+                    'rules' => 'required|min_length[3]',
                     'errors' => [
-                        'required' => '{field} cannot be empty'
+                        'required' => '{field} cannot be empty',
+                        'min_length' => '{field} too short. Min {param} characters'
 
                     ],
                     'label' => 'Name'
@@ -127,7 +128,7 @@ class CWorker extends BaseController
                         'required' => '{field} cannot be empty'
 
                     ],
-                    'label' => 'Name'
+                    'label' => 'Initial'
                 ],
                 'email' => [
                     'rules' => 'required|valid_email|is_unique[tb_user.email]',
@@ -211,7 +212,7 @@ class CWorker extends BaseController
                 'username' => $this->request->getPost('username'),
                 'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT), // $this->request->getPost('password'),
                 'nik' => $this->request->getPost('nik'),
-                'name' => $this->request->getPost('name'),
+                'name' => $this->request->getPost('nameworker'),
                 'initial' => $this->request->getPost('initial'),
                 'email' => $this->request->getPost('email'),
                 'image' => 'default.jpg',
@@ -249,12 +250,26 @@ class CWorker extends BaseController
             return view('vLogin', $data);
         } else {
             //validation           
+            $editId = $this->request->getPost('editid');
+            $editNIK = $this->request->getPost('editnik');
+            $editName = $this->request->getPost('editName');
+            $editInitial = $this->request->getPost('editinitial');
+            $editEmail = $this->request->getPost('editemail');
+            $editUsername = $this->request->getPost('editusername');
+            $editPassword = $this->request->getPost('editpassword');
+            $editSuperiorRole = $this->request->getPost('editsuperiorrole');
+            $editsuperiorname = $this->request->getPost('editsuperiorname');
+            $editemployeerole = $this->request->getPost('editemployeerole');
+            $editlevel = $this->request->getPost('editlevel');
+            $editlocation = $this->request->getPost('editlocation');
+
+            // dd($editsuperiorname);
 
             $employeeModel = new MUser();
             if ($this->request->getPost('editsuperiorrole') == 13) {
                 $superiornameid = 99;
             } else {
-                $superiornameid = $this->request->getPost('editsuperiorrole');
+                $superiornameid = $this->request->getPost('editsuperiorname');
             }
             $nik = $this->request->getPost('editnik');
             $password = $this->request->getPost('editpassword');
@@ -330,6 +345,15 @@ class CWorker extends BaseController
         $data = (new MUser())->getDataSuperiorName2($id);
         echo json_encode($data);
     }
+
+    function getDataSuperiorNameFilter()
+    {
+        $id = $this->request->getPost('id');
+        $data = (new MUser())->getDataSuperiorNameFilter($id);
+        dd($data);
+        echo json_encode($data);
+    }
+
     function getDataemployeeById()
     {
         $id = $this->request->getPost('id');

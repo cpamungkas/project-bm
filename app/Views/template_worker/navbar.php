@@ -208,16 +208,16 @@
                                             <a class="dropdown-item" href="#">
                                                 KWH Meter
                                             </a>
-                                            <a class="dropdown-item" href="#">
+                                            <a class="dropdown-item" href="level">
                                                 Level
                                             </a>
-                                            <a class="dropdown-item" href="#">
-                                                Superior Role
+                                            <a class="dropdown-item" href="role">
+                                                Role
                                             </a>
-                                            <a class="dropdown-item" href="#">
+                                            <a class="dropdown-item" href="superior">
                                                 Superior
                                             </a>
-                                            <a class="dropdown-item" href="#">
+                                            <a class="dropdown-item" href="user">
                                                 Users
                                             </a>
                                         </div>
@@ -354,7 +354,7 @@
                                                                     AC AHU
                                                                 </a>
                                                                 <a href="./card-actions.html" class="dropdown-item">
-                                                                    AC Splitwall, Duck, Cassette, VRV
+                                                                    AC Splitwall, Duct, Cassette, VRV
                                                                 </a>
                                                             </div>
                                                         </div>
