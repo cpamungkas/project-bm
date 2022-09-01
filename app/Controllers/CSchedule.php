@@ -49,6 +49,7 @@ class CSchedule extends BaseController
 
     public function techshift()
     {
+        //test
 
         // echo '<pre>';
         // // var_dump($this->mSchedule->checkFreeShiftSchedule('2022-08-26', 2));
