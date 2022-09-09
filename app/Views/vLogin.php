@@ -26,7 +26,8 @@
 
     <!-- CSS file Login -->
     <link rel="stylesheet" href="<?= base_url('css/login.css'); ?>">
-    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <!-- <script src='https://www.google.com/recaptcha/api.js'></script> -->
+    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
 
 
 </head>
@@ -55,7 +56,10 @@
                     </span>
                 </div>
                 <div class="form-group">
-                    <span class="text-danger" style="font-size: 2em;"><?php echo $captcha ?></span>
+                    <span class="text-danger" style="font-size: 2em;">
+                        <!-- <img src=""> -->
+                        <?php echo $captcha ?>
+                    </span>
                 </div>
                 <div class="form-group">
                     <i>*Masukan kode Captcha di atas</i>
@@ -67,9 +71,9 @@
                 <!-- <div class="g-recaptcha captcha" data-sitekey="6LcGGbMhAAAAANxeauHodWOh8JnE6hLNH0qt-kgb"></div> -->
                 <!-- </div>
                 </div> -->
-                <!-- < ?php if (session()->getFlashdata('error')) : ?>
-                    <p class="text-danger font-weight-bold"> < ?= session()->getFlashdata('error') ?></p>
-                < ?php endif; ?> -->
+                <!-- hcaptcha start -->
+                <!-- <div class="h-captcha" data-sitekey="30000000-ffff-ffff-ffff-000000000003"></div> -->
+                <!-- hcaptcha end -->
                 <br />
                 <button type="submit">Log In</button>
             </form>

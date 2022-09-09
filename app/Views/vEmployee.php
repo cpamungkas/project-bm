@@ -1,71 +1,7 @@
 <?= $this->extend('template_worker/index'); ?>
 <?= $this->section('page-content'); ?>
-
-<!-- <div class="container-xl"> -->
-<!-- Page title -->
-<!-- <div class="page-header d-print-none"> -->
-<!-- <div class="row g-2 align-items-center">
-            <div class="col"> -->
-<!-- <h2 class="page-title">
-                    Empty page
-                </h2> -->
-<!-- </div>
-        </div> -->
-<!-- <div class="row g-2 align-items-center"> -->
-<!-- <div class="col"> -->
-<!-- Page pre-title -->
-<!-- <div class="page-pretitle">
-                    Dashboard
-                </div>
-                <h2 class="page-title">
-                    <?= $roleuser; ?>
-                </h2> -->
-<!-- </div> -->
-<!-- Page title actions -->
-<!-- <div class="col-12 col-md-auto ms-auto d-print-none"> -->
-<!-- <div class="btn-list"> -->
-<!-- <span class="d-none d-sm-inline"> -->
-<!-- <a href="#" class="btn btn-white">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-viewfinder" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <circle cx="12" cy="12" r="9"></circle>
-                                <line x1="12" y1="3" x2="12" y2="7"></line>
-                                <line x1="12" y1="21" x2="12" y2="18"></line>
-                                <line x1="3" y1="12" x2="7" y2="12"></line>
-                                <line x1="21" y1="12" x2="18" y2="12"></line>
-                                <line x1="12" y1="12" x2="12" y2="12.01"></line>
-                            </svg>
-                            New view
-                        </a> -->
-<!-- <a href="#" class="btn" data-bs-toggle="modal" data-bs-target="#modal-report">
-                            Modal with form
-                        </a> -->
-<!-- </span> -->
-<!-- <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-create-store">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-building-store" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <line x1="3" y1="21" x2="21" y2="21"></line>
-                            <path d="M3 7v1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1h-18l2 -4h14l2 4"></path>
-                            <line x1="5" y1="21" x2="5" y2="10.85"></line>
-                            <line x1="19" y1="21" x2="19" y2="10.85"></line>
-                            <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4"></path>
-                        </svg>
-                        Create new store
-                    </a> -->
-<!-- <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <line x1="12" y1="5" x2="12" y2="19" />
-                            <line x1="5" y1="12" x2="19" y2="12" />
-                        </svg>
-                    </a> -->
-<!-- </div> -->
-<!-- </div> -->
-<!-- </div> -->
-<!-- </div> -->
-<!-- </div> -->
 <div class="page-body">
-    <div class="container-xxl">
+    <div class="container-xl">
         <div class="row row-deck row-cards">
             <?php if (session("error")) { ?>
                 <div class="alert alert-warning alert-dismissible fade show text-danger" role="alert">
@@ -105,7 +41,7 @@
                 </div>
             <?php } ?>
 
-            <div class="col-xxl">
+            <div class="col-xl">
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Setup New Worker (Employee)</h3>
@@ -239,12 +175,12 @@
                                 <div class="col-lg-3">
                                     <div class="mb-3">
                                         <label class="form-label">Superior Role</label>
-                                        <select class="form-select superiorrole" id="superiorrole" name="superiorrole" value="<?= old('superiorrole'); ?>" required>
+                                        <select class="form-select superiorrole" id="superiorrole" name="superiorrole" value="<?= old('superiorrole'); ?>" disabled required>
                                             <option value="">Select Superior Role</option>
-                                            <?php foreach ($getDataRole as $pic) : ?>
-                                                <option value="<?= $pic['role_id']; ?>" <?php if (old('superiorrole') == $pic['role_id']) {
-                                                                                            echo 'selected';
-                                                                                        } ?>><?= $pic['role']; ?> </option>
+                                            <?php foreach ($getDataSuperiorRole as $pic) : ?>
+                                                <option value="<?= $pic['idSuperiorRole']; ?>" <?php if (old('superiorrole') == $pic['idSuperiorRole']) {
+                                                                                                    echo 'selected';
+                                                                                                } ?>><?= $pic['SuperiorName']; ?> </option>
                                             <?php endforeach; ?>
                                         </select>
                                         <?php if (session('errorsuperiorrole')) { ?>
@@ -257,7 +193,7 @@
                                 <div class="col-lg-3">
                                     <div class="mb-3">
                                         <label class="form-label">Superior Name</label>
-                                        <select class="form-select superiorname" id="superiorname" name="superiorname" value="<?= old('superiorname'); ?>" required>
+                                        <select class="form-select superiorname" id="superiorname" name="superiorname" value="<?= old('superiorname'); ?>" disabled required>
                                             <option value="">Select Superior Name</option>
                                             <?php if (old('superiorrole') != '') { ?>
                                                 <?php foreach ($getDataSuperiorName as $name) : ?>
@@ -1093,3 +1029,109 @@
 <!--Modal: modalConfirmDelete-->
 
 <?= $this->endSection(); ?>
+
+<?= $this->section("scripts") ?>
+<script>
+    $(document).ready(function() {
+
+        //todo load superior role when employee role change
+        $('#employeerole').change(function() {
+            var idEmployeeRole = $(this).val();
+            // alert($(this).val());
+            let isiFormSuperiorRole = new FormData();
+            isiFormSuperiorRole.append("idSuperiorRole", $(this).val());
+            $.ajax({
+                url: "<?= base_url('employee/checkFilterSuperiorRoleByEmployeeRole'); ?>",
+                method: "POST",
+                data: isiFormSuperiorRole,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                processData: false,
+                contentType: false,
+                // async: false,
+                dataType: 'json',
+                success: function(data) {
+                    var html = '';
+                    var y;
+
+                    if (idEmployeeRole != 3) {
+                        // html += '<option value="" selected>Select Superior Role</option>';
+                        if (data.length > 0) {
+                            for (y = 0; y < data.length; y++) {
+                                html += '<option value="' + data[y].idSuperiorRole + '">' + data[y].SuperiorName + '</option>';
+                            }
+                        } else {
+                            html += '<option value="0">None</option>';
+                        }
+                    } else {
+                        html += '<option value="0">None</option>';
+                    }
+
+                    $('#superiorrole').html(html);
+                    $('#superiorrole').attr('disabled', false);
+                    $('#superiorrole').trigger("change");
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error adding / update data');
+                }
+            });
+        });
+
+        $('#superiorrole').change(function() {
+            var idSuperiorRole = $(this).val();
+            var idEmployeeRole = $('#employeerole').val();
+            // alert(idSuperiorRole);
+            let isiFormSuperiorName = new FormData();
+            isiFormSuperiorName.append("idSuperiorName", $(this).val());
+
+            $.ajax({
+                url: "<?= base_url('employee/checkSuperiorNameAjax'); ?>", //checkFilterSuperiorRoleByEmployeeRole
+                method: "POST",
+                data: isiFormSuperiorName,
+                // data: {
+                //     id: id
+                // },
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                processData: false,
+                contentType: false,
+                // async: false,
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data);
+                    var html = '';
+                    var i;
+                    // if (idEmployeeRole != idSuperiorRole) {
+                    if (data.length > 0) {
+                        for (i = 0; i < data.length; i++) {
+                            html += '<option value="' + data[i].idSuperiorRole + '">' + data[i].SuperiorName + '</option>';
+                        }
+                    } else {
+                        html += '<option value="0">None</option>';
+                    }
+
+                    // } else {
+                    //     html += '<option value="0">None</option>';
+                    // }
+                    $('#superiorname').html(html);
+                    $('#superiorname').attr('disabled', false);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error adding / update data');
+                }
+            });
+        });
+
+        // $('#superiorrole').change(function() {
+        //     var idSuperiorRole = $(this).val();
+        //     var idEmployeeRole = $('#employeerole').val();
+        //     if (idSuperiorRole == idEmployeeRole) {
+        //         alert('Tidak Boleh sama');
+        //     }
+
+        // });
+    })
+</script>
+<?= $this->endSection() ?>

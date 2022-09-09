@@ -202,7 +202,7 @@ class MUser extends Model
 
     public function getDataRoleAdmin()
     {
-        $query = $this->db->query("SELECT * FROM tb_user_role");
+        $query = $this->db->query("SELECT * FROM tb_user_role where status_deleted = 0 and role_id NOT IN (99,1,2)");
         return $query->getResultArray();
     }
 
@@ -291,6 +291,7 @@ class MUser extends Model
             JOIN tb_user_role AS r ON a.`superior_role_id` = r.`role_id`
             INNER JOIN tb_store AS s ON a.`location` = s.`idStore`
             INNER JOIN tb_level AS l ON a.`level`= l.`idLevel`
+            WHERE a.`status_deleted` = 0 AND a.role_id NOT IN (99,1,2)
             ORDER BY a.id ASC");
         } else {
             $hasil = $this->db->query("SELECT a.id, a.username, a.password, a.nik, a.name, a.email, a.initial, a.image, a.is_active, a.role_id, b.role AS 'roleuser', 
@@ -308,7 +309,7 @@ class MUser extends Model
             INNER JOIN tb_superior_name AS t ON a.`superior_name_id` = t.idSuperior
             INNER JOIN tb_store AS s ON a.`location` = s.`idStore`
             INNER JOIN tb_level AS l ON a.`level`= l.`idLevel`
-            WHERE a.`status_deleted` =0 AND a.role_id NOT IN (99,1,2)
+            WHERE a.`status_deleted` = 0 AND a.role_id NOT IN (99,1,2)
             ORDER BY a.id ASC");
         }
         // $hasil = $this->db->query("SELECT * FROM tb_user where status_deleted = 0");
@@ -317,9 +318,7 @@ class MUser extends Model
 
     public function getDataRoleUser($roleId)
     {
-        // return $this->where('nik', $nik)->first();
-        return $this->db->query("SELECT role FROM tb_user_role WHERE role_id='$roleId' and status_deleted = 0")->getFirstRow();
-        // return $query->getResultArray();
+        return $this->db->query("SELECT role FROM tb_user_role WHERE role_id ='$roleId' and status_deleted = 0")->getFirstRow();
     }
 
     public function getLocationByUser($idLoc)
@@ -327,6 +326,34 @@ class MUser extends Model
         return $this->db->query("SELECT StoreName as location FROM tb_store WHERE idStore = '$idLoc' AND status_deleted = 0")->getFirstRow();
     }
 
+
+    public function getSuperiorRole($idRole = null)
+    {
+        if ($idRole !== null) {
+            $query = $this->db->query("SELECT * FROM tb_role WHERE idEmployeeRole = '$idRole'");
+        }
+        return $query->getResultArray();
+    }
+
+    public function getSuperiorName($idSuperiorName)
+    {
+        // if ($idSuperiorRole !== null) {
+        $query = $this->db->query("SELECT superior_role_id as 'idSuperiorRole', name as 'SuperiorName' FROM tb_user WHERE superior_role_id = '$idSuperiorName' and status_deleted = 0 and role_id NOT IN (99,1,2)");
+        // }
+        return $query->getResultArray();
+    }
+
+    public function getFilterSuperiorRoleByEmployeeRole($idFilterSuperiorRole = null)
+    {
+        $query = $this->db->query("SELECT * FROM tb_superior_role WHERE idSuperiorRole <> '$idFilterSuperiorRole' and status_deleted = 0 and idSuperiorRole NOT IN (99,1,2)");
+        return $query->getResultArray();
+    }
+
+    public function getDataSuperiorRole()
+    {
+        $query = $this->db->query("SELECT * FROM tb_superior_role where status_deleted = 0 and idSuperiorRole NOT IN (99,1,2)");
+        return $query->getResultArray();
+    }
     //------------------------------------------------------//
 
 

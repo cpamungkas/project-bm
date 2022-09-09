@@ -79,8 +79,10 @@ class CWorker extends BaseController
 
             if ($data['level'] == 99) {
                 $data['getDataRole'] = (new mUser())->getDataRoleAdmin();
+                $data['getDataSuperiorRole'] = (new mUser())->getDataSuperiorRole();
             } else {
                 $data['getDataRole'] = (new mUser())->getDataRole();
+                $data['getDataSuperiorRole'] = (new mUser())->getDataSuperiorRole();
             }
             $data['getDataEmployee'] = (new mUser())->getDataEmployee();
             $data['getDataSuperiorName'] = (new mUser())->getDataSuperiorName();
@@ -173,35 +175,6 @@ class CWorker extends BaseController
                 $validation = \Config\Services::validation();
                 return redirect()->to('/employee')->withInput()->with('validation', $validation);
             }
-
-            // if ($this->request->getPost('SuperiorRole') == '') {
-            //     session()->setFlashdata("errorsuperiorrole", "Please select your Superior Role");
-            //     return redirect()->to('/employee');
-            // }
-
-            // if ($this->request->getPost('SuperiorName') == '') {
-            //     session()->setFlashdata("errorsuperiorname", "Please select your Superior Name");
-            //     return redirect()->to('/employee');
-            // }
-
-            // if ($this->request->getPost('role') == '') {
-            //     session()->setFlashdata("errorrole", "Please select your Role");
-            //     return redirect()->to('/employee');
-
-            // }
-
-            // if ($this->request->getPost('level') == '') {
-            //     session()->setFlashdata("errorlevel", "Please select your Level");
-            //     return redirect()->to('/employee');
-
-            // }
-
-            // if ($this->request->getPost('location') == '') {
-            //     session()->setFlashdata("errorlocation", "Please select your Location");
-            //     return redirect()->to('/employee');
-            // }
-
-
             $employeeModel = new MUser();
             if ($this->request->getPost('superiorrole') == 13) {
                 $superiornameid = 99;
@@ -350,7 +323,7 @@ class CWorker extends BaseController
     {
         $id = $this->request->getPost('id');
         $data = (new MUser())->getDataSuperiorNameFilter($id);
-        dd($data);
+        // dd($data);
         echo json_encode($data);
     }
 
@@ -358,6 +331,27 @@ class CWorker extends BaseController
     {
         $id = $this->request->getPost('id');
         $data = (new MUser())->getDataemployeeById($id);
+        echo json_encode($data);
+    }
+
+    public function checkSuperiorRoleAjax()
+    {
+        $idRole = $this->request->getPost('employeerole');
+        $data = (new MUser())->getSuperiorRole($idRole);
+        echo json_encode($data);
+    }
+
+    public function checkSuperiorNameAjax()
+    {
+        $idSuperiorRole = $this->request->getPost('idSuperiorName');
+        $data = (new MUser())->getSuperiorName($idSuperiorRole);
+        echo json_encode($data);
+    }
+
+    public function checkFilterSuperiorRoleByEmployeeRole()
+    {
+        $idFilterSuperiorRole = $this->request->getPost('idSuperiorRole');
+        $data = (new MUser())->getFilterSuperiorRoleByEmployeeRole($idFilterSuperiorRole);
         echo json_encode($data);
     }
 }

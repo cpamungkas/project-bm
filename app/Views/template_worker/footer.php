@@ -10,7 +10,7 @@
     <script src="./js/tabler.min.js" defer></script>
     <!-- <script src="./js/demo.min.js" defer></script> -->
 
-    <?php if ($url == 'store' or $url == 'employee' or $url == 'techshift'  or $url == 'techjobout' or $url == 'techjobin' or $url == 'level') { ?>
+    <?php if ($url == 'store' or $url == 'employee' or $url == 'techshift'  or $url == 'techjobout' or $url == 'techjobin' or $url == 'level' or $url == 'troubleshift' or $url == 'troublejobout' or $url == 'troublejobin' or $url == 'role') { ?>
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
         <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.12.1/js/dataTables.jqueryui.min.js"></script>
@@ -45,7 +45,7 @@
             hideLoading();
         });
 
-        <?php if ($url == 'store' or $url == 'employee' or $url == 'techshift'  or $url == 'techjobout' or $url == 'techjobin' or $url == 'level') { ?>
+        <?php if ($url == 'store' or $url == 'employee' or $url == 'techshift'  or $url == 'techjobout' or $url == 'techjobin' or $url == 'level' or $url == 'troubleshift' or $url == 'troublejobout' or $url == 'troublejobin' or $url == 'role') { ?>
             $(document).ready(function() {
                 var myTable = $('#dynamic-table')
                 var table = $('#dynamic-table').DataTable({
@@ -518,33 +518,32 @@
                 });
                 //Button Action Employee End
 
-                $('.superiorrole').change(function() {
-                    var id = $(this).val();
-                    alert(id);
-                    $.ajax({
-                        // url: "< ?= base_url('employee/getDataSuperiorName2'); ?>",
-                        url: "<?= base_url('employee/getDataSuperiorNameFilter'); ?>",
-                        method: "POST",
-                        data: {
-                            id: id
-                        },
-                        async: false,
-                        dataType: 'json',
-                        success: function(data) {
-                            var html = '';
-                            var i;
-                            if (data.length > 0) {
-                                for (i = 0; i < data.length; i++) {
-                                    // html += '<option value="' + data[i].idSuperior + '">' + data[i].SuperiorName + '</option>';
-                                    html += '<option value="' + data[i].idSuperior + '">' + data[i].SuperiorName + '</option>';
-                                }
-                            } else {
-                                html += '<option value="0">None</option>';
-                            }
-                            $('.superiorname').html(html);
-                        }
-                    });
-                });
+                // $('.superiorrole').change(function() {
+                //     var id = $(this).val();
+                //     alert(id);
+                //     $.ajax({
+                //         // url: "< ?= base_url('employee/getDataSuperiorName2'); ?>",
+                //         url: "<?= base_url('employee/getDataSuperiorNameFilter'); ?>",
+                //         method: "POST",
+                //         data: {
+                //             id: id
+                //         },
+                //         async: false,
+                //         dataType: 'json',
+                //         success: function(data) {
+                //             var html = '';
+                //             var i;
+                //             if (data.length > 0) {
+                //                 for (i = 0; i < data.length; i++) {                                    
+                //                     html += '<option value="' + data[i].idSuperior + '">' + data[i].SuperiorName + '</option>';
+                //                 }
+                //             } else {
+                //                 html += '<option value="0">None</option>';
+                //             }
+                //             $('.superiorname').html(html);
+                //         }
+                //     });
+                // });
             });
         <?php } ?>
 

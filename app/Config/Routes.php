@@ -85,10 +85,19 @@ $routes->post('employee/deleteEmployee/(:num)', 'CWorker::deleteEmployee/$1');
 
 //get data employee from selectbox
 $routes->get('employee/getDataSuperiorName2', 'CWorker::getDataSuperiorName2');
-// $routes->post('employee/getDataSuperiorName2', 'CWorker::getDataSuperiorName2');
+$routes->post('employee/getDataSuperiorName2', 'CWorker::getDataSuperiorName2');
 //get data employee from selectbox
 $routes->get('employee/getDataSuperiorNameFilter', 'CWorker::getDataSuperiorNameFilter');
 $routes->post('employee/getDataSuperiorNameFilter', 'CWorker::getDataSuperiorNameFilter');
+
+$routes->get('employee/checkSuperiorRoleAjax', 'CWorker::checkSuperiorRoleAjax');
+$routes->post('employee/checkSuperiorRoleAjax', 'CWorker::checkSuperiorRoleAjax');
+
+$routes->get('employee/checkFilterSuperiorRoleByEmployeeRole', 'CWorker::checkFilterSuperiorRoleByEmployeeRole');
+$routes->post('employee/checkFilterSuperiorRoleByEmployeeRole', 'CWorker::checkFilterSuperiorRoleByEmployeeRole');
+
+$routes->get('employee/checkSuperiorNameAjax', 'CWorker::checkSuperiorNameAjax');
+$routes->post('employee/checkSuperiorNameAjax', 'CWorker::checkSuperiorNameAjax');
 
 //Schedule :: Operational Technical
 $routes->get('schedule', 'CSchedule::index');

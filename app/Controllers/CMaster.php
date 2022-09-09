@@ -221,7 +221,14 @@ class CMaster extends BaseController
                 $data['totaloperational'] = 0; //$this->mStore->getTotalOperational();
                 $data['totalcomplaint'] = 0; //$this->mStore->getTotalComplaint();
                 $data['totalreport'] = 0; //$this->mStore->getTotalReport();
-                return view('vRole', $data);
+                $data['getDataLevel'] = (new mMaster())->getDataLevel();
+                if ($data['level'] == 99) {
+                    $data['getDataRole'] = (new mUser())->getDataRoleAdmin();
+                } else {
+                    $data['getDataRole'] = (new mUser())->getDataRole();
+                }
+                $data['validation'] = \Config\Services::validation();
+                return view('admin/vRole', $data);
             } else {
                 return view('404');
             }
