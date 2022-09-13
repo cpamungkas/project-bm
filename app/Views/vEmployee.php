@@ -157,7 +157,7 @@
                                 <div class="col-lg-3">
                                     <div class="mb-3">
                                         <label class="form-label">Employee Role</label>
-                                        <select class="form-select" id="employeerole" name="employeerole" value="<?= old('employeerole'); ?>" required>
+                                        <select class="form-select employeerole" id="employeerole" name="employeerole" value="<?= old('employeerole'); ?>" required>
                                             <option value="">Select the role</option>
                                             <?php foreach ($getDataRole as $role) : ?>
                                                 <option value="<?= $role['role_id']; ?>" <?php if (old('employeerole') == $role['role_id']) {
@@ -175,7 +175,7 @@
                                 <div class="col-lg-3">
                                     <div class="mb-3">
                                         <label class="form-label">Superior Role</label>
-                                        <select class="form-select superiorrole" id="superiorrole" name="superiorrole" value="<?= old('superiorrole'); ?>" disabled required>
+                                        <select class="form-select superiorrole <?= ($validation->hasError('superiorrole')) ? 'is-invalid' : ''; ?>" id="superiorrole" name="superiorrole" value="<?= old('superiorrole'); ?>" disabled required>
                                             <option value="">Select Superior Role</option>
                                             <?php foreach ($getDataSuperiorRole as $pic) : ?>
                                                 <option value="<?= $pic['idSuperiorRole']; ?>" <?php if (old('superiorrole') == $pic['idSuperiorRole']) {
@@ -183,11 +183,11 @@
                                                                                                 } ?>><?= $pic['SuperiorName']; ?> </option>
                                             <?php endforeach; ?>
                                         </select>
-                                        <?php if (session('errorsuperiorrole')) { ?>
+                                        <?php if ($validation->hasError('superiorrole')) : ?>
                                             <div class="invalid-feedback">
-                                                <?= session("errorsuperiorrole") ?>
+                                                <?= $validation->getError('superiorrole'); ?>
                                             </div>
-                                        <?php } ?>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
@@ -195,13 +195,13 @@
                                         <label class="form-label">Superior Name</label>
                                         <select class="form-select superiorname" id="superiorname" name="superiorname" value="<?= old('superiorname'); ?>" disabled required>
                                             <option value="">Select Superior Name</option>
-                                            <?php if (old('superiorrole') != '') { ?>
-                                                <?php foreach ($getDataSuperiorName as $name) : ?>
-                                                    <option value="<?= $name['idSuperior']; ?>" <?php if (old('superiorname') == $name['idSuperior']) {
-                                                                                                    echo 'selected';
-                                                                                                } ?>><?= $name['SuperiorName']; ?> </option>
-                                                <?php endforeach; ?>
-                                            <?php } ?>
+                                            <!-- <?php if (old('superiorrole') != '') { ?> -->
+                                            <?php foreach ($getDataSuperiorName as $name) : ?>
+                                                <option value="<?= $name['nik']; ?>" <?php if (old('superiorname') == $name['nik']) {
+                                                                                            echo 'selected';
+                                                                                        } ?>><?= $name['SuperiorName']; ?> </option>
+                                            <?php endforeach; ?>
+                                            <!-- <?php } ?> -->
                                         </select>
                                         <?php if (session('errorsuperiorname')) { ?>
                                             <div class="invalid-feedback">
@@ -237,9 +237,9 @@
                                         <select class="form-select" id="location" name="location" value="<?= old('location'); ?>" required>
                                             <option value="">Select the location</option>
                                             <?php foreach ($getDataLocation as $loc) : ?>
-                                                <option value="<?= $loc['idStore']; ?>" <?php if (old('location') == $loc['idStore']) {
-                                                                                            echo 'selected';
-                                                                                        } ?>><?= $loc['StoreCode'] . ' - ' . $loc['StoreName']; ?> </option>
+                                                <option value="<?= $loc['StoreCode']; ?>" <?php if (old('location') == $loc['StoreCode']) {
+                                                                                                echo 'selected';
+                                                                                            } ?>><?= $loc['StoreCode'] . ' - ' . $loc['StoreName']; ?> </option>
                                             <?php endforeach; ?>
                                         </select>
                                         <?php if (session('errorlocation')) { ?>
@@ -309,6 +309,7 @@
                                         </svg> -->
                                         </th>
                                         <th>NIK</th>
+                                        <th>Name</th>
                                         <th>Username</th>
                                         <th>Initial</th>
                                         <th>Role</th>
@@ -325,18 +326,19 @@
                                         <tr>
                                             <!-- <td><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select invoice"></td> -->
                                             <td><?= $i; ?></td>
-                                            <td><?= $emp['nik']; ?></td>
-                                            <td><?= $emp['username']; ?></td>
-                                            <td><?= $emp['initial']; ?></td>
-                                            <td><?= $emp['roleuser']; ?></td>
-                                            <td><?= $emp['rolesuperior']; ?></td>
+                                            <td><?= $emp['NIK']; ?></td>
+                                            <td><?= $emp['EmployeeName']; ?></td>
+                                            <td><?= $emp['Username']; ?></td>
+                                            <td><?= $emp['Initial']; ?></td>
+                                            <td><?= $emp['EmployeeRole']; ?></td>
+                                            <td><?= $emp['NameRoleSuperior']; ?></td>
                                             <td><?= $emp['SuperiorName']; ?></td>
-                                            <td><?= $emp['levelname']; ?></td>
-                                            <td><?= $emp['storename']; ?></td>
+                                            <td><?= $emp['LevelName']; ?></td>
+                                            <td><?= $emp['StoreName']; ?></td>
                                             <td>
                                                 <!-- <div class="row g-2 align-items-center mb-n3"> -->
                                                 <!-- <div class="col-4 col-sm-4 col-md-2 col-lg-auto mb-1"> -->
-                                                <a href="#view" id="btnModalViewEmployee<?= $emp['id']; ?>" name="btnModalViewEmployee<?= $emp['id']; ?>" class="btn-outline-primary btn-view-employee" data-id="<?= $emp['id']; ?>" data-nik="<?= $emp['nik']; ?>" data-name="<?= $emp['name']; ?>" data-username="<?= $emp['username']; ?>" data-initial="<?= $emp['initial']; ?>" data-email="<?= $emp['email']; ?>" data-roleuser="<?= $emp['roleuser']; ?>" data-rolesuperior="<?= $emp['rolesuperior']; ?>" data-superiorname="<?= $emp['SuperiorName']; ?>" data-level="<?= $emp['levelname']; ?>" data-location="<?= $emp['storename']; ?>" data-imguser="<?= $emp['image']; ?>">
+                                                <a href="#view" id="btnModalViewEmployee<?= $emp['IdEmployee']; ?>" name="btnModalViewEmployee<?= $emp['IdEmployee']; ?>" class="btn-outline-primary btn-view-employee" data-id="<?= $emp['IdEmployee']; ?>" data-nik="<?= $emp['NIK']; ?>" data-name="<?= $emp['EmployeeName']; ?>" data-username="<?= $emp['Username']; ?>" data-initial="<?= $emp['Initial']; ?>" data-email="<?= $emp['Email']; ?>" data-roleuser="<?= $emp['EmployeeRole']; ?>" data-rolesuperior="<?= $emp['NameRoleSuperior']; ?>" data-superiorname="<?= $emp['SuperiorName']; ?>" data-level="<?= $emp['IdLevel']; ?>" data-location="<?= $emp['Location']; ?>" data-imguser="<?= $emp['Image']; ?>">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-in" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                         <circle cx="10" cy="10" r="7"></circle>
@@ -347,7 +349,7 @@
                                                 </a>
                                                 <!-- </div>
                                                 <div class="col-4 col-sm-4 col-md-2 col-lg-auto mb-1"> -->
-                                                <a href="#edit" id="btnModalEditEmployee<?= $emp['id']; ?>" name="btnModalEditEmployee<?= $emp['id']; ?>" class="btn-outline-success btn-edit-employee" data-id="<?= $emp['id']; ?>" data-nik="<?= $emp['nik']; ?>" data-name="<?= $emp['name']; ?>" data-username="<?= $emp['username']; ?>" data-initial="<?= $emp['initial']; ?>" data-email="<?= $emp['email']; ?>" data-roleuser="<?= $emp['role_id']; ?>" data-rolesuperior="<?= $emp['superior_role_id']; ?>" data-superiorname="<?= $emp['superior_name_id']; ?>" data-level="<?= $emp['level']; ?>" data-location="<?= $emp['location']; ?>">
+                                                <a href="#edit" id="btnModalEditEmployee<?= $emp['IdEmployee']; ?>" name="btnModalEditEmployee<?= $emp['IdEmployee']; ?>" class="btn-outline-success btn-edit-employee" data-id="<?= $emp['IdEmployee']; ?>" data-nik="<?= $emp['NIK']; ?>" data-name="<?= $emp['EmployeeName']; ?>" data-username="<?= $emp['Username']; ?>" data-initial="<?= $emp['Initial']; ?>" data-email="<?= $emp['Email']; ?>" data-roleuser="<?= $emp['IdRoleEmployee']; ?>" data-rolesuperior="<?= $emp['IdRoleSuperior']; ?>" data-superiorname="<?= $emp['NikSuperiorName']; ?>" data-level="<?= $emp['IdLevel']; ?>" data-location="<?= $emp['Location']; ?>">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                         <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
@@ -357,7 +359,7 @@
                                                 </a>
                                                 <!-- </div>
                                                 <div class="col-4 col-sm-4 col-md-2 col-lg-auto mb-1"> -->
-                                                <a href="#delete" id="btnModalDeleteEmployee<?= $emp['id']; ?>" name="btnModalDeleteEmployee<?= $emp['id']; ?>" class="btn-outline-danger btn-delete-employee" data-id="<?= $emp['id']; ?>" data-nik="<?= $emp['nik']; ?>" data-name="<?= $emp['name']; ?>">
+                                                <a href="#delete" id="btnModalDeleteEmployee<?= $emp['IdEmployee']; ?>" name="btnModalDeleteEmployee<?= $emp['IdEmployee']; ?>" class="btn-outline-danger btn-delete-employee" data-id="<?= $emp['IdEmployee']; ?>" data-nik="<?= $emp['NIK']; ?>" data-name="<?= $emp['EmployeeName']; ?>">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                         <line x1="4" y1="7" x2="20" y2="7"></line>
@@ -853,62 +855,12 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="col-lg-4">
-                            <div class="mb-3">
-                                <label class="form-label">Confirm Password</label>
-                                <input type="password" class="form-control <?= ($validation->hasError('editconfirmpassword')) ? 'is-invalid' : ''; ?>" name="editconfirmpassword" id="editconfirmpassword" placeholder="Confirm Password" value="<?= old('editconfirmpassword'); ?>" required>
-                                <?php if ($validation->hasError('editconfirmpassword')) : ?>
-                                    <div class="invalid-feedback">
-                                        <?= $validation->getError('editconfirmpassword'); ?>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
-                        </div> -->
                     </div>
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="mb-3">
-                                <label class="form-label">Superior Role</label>
-                                <select class="form-select superiorrole" id="editsuperiorrole" name="editsuperiorrole" required>
-                                    <option value="">Select Superior Role</option>
-                                    <?php foreach ($getDataRole as $pic) : ?>
-                                        <option value="<?= $pic['role_id']; ?>" <?php if (old('editsuperiorrole') == $pic['role_id']) {
-                                                                                    echo 'selected';
-                                                                                } ?>><?= $pic['role']; ?> </option>
-                                    <?php endforeach; ?>
-                                </select>
-                                <?php if (session('erroreditsuperiorrole')) { ?>
-                                    <div class="invalid-feedback">
-                                        <?= session("erroreditsuperiorrole") ?>
-                                    </div>
-                                <?php } ?>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="mb-3">
-                                <label class="form-label">Superior Name</label>
-                                <select class="form-select superiorname" id="editsuperiorname" name="editsuperiorname" required>
-                                    <option value="">Select Superior Name</option>
-                                    <?php if (old('superiorrole') != '') { ?>
-                                        <?php foreach ($getDataSuperiorName as $name) : ?>
-                                            <option value="<?= $name['idSuperior']; ?>" <?php if (old('editsuperiorname') == $name['idSuperior']) {
-                                                                                            echo 'selected';
-                                                                                        } ?>><?= $name['SuperiorName']; ?> </option>
-                                        <?php endforeach; ?>
-                                    <?php } ?>
-                                </select>
-                                <?php if (session('erroreditsuperiorname')) { ?>
-                                    <div class="invalid-feedback">
-                                        <?= session("erroreditsuperiorname") ?>
-                                    </div>
-                                <?php } ?>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3">
-                            <div class="mb-3">
                                 <label class="form-label">Employee Role</label>
-                                <select class="form-select" id="editemployeerole" name="editemployeerole" required>
+                                <select class="form-select employeerole" id="editemployeerole" name="editemployeerole" required>
                                     <option value="">Select the role</option>
                                     <?php foreach ($getDataRole as $role) : ?>
                                         <option value="<?= $role['role_id']; ?>" <?php if (old('editemployeerole') == $role['role_id']) {
@@ -923,6 +875,39 @@
                                 <?php } ?>
                             </div>
                         </div>
+                        <div class="col-lg-3">
+                            <div class="mb-3">
+                                <label class="form-label">Superior Role</label>
+                                <select class="form-select superiorrole" id="editsuperiorrole" name="editsuperiorrole" value="<?= old('editsuperiorrole'); ?>" required>
+                                    <option value="">Select Superior Role</option>
+                                    <?php foreach ($getDataRole as $pic) : ?>
+                                        <option value="<?= $pic['role_id']; ?>"><?= $pic['role']; ?> </option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <?php if (session('erroreditsuperiorrole')) { ?>
+                                    <div class="invalid-feedback">
+                                        <?= session("erroreditsuperiorrole") ?>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="mb-3">
+                                <label class="form-label">Superior Name</label>
+                                <select class="form-select superiorname" id="editsuperiorname" name="editsuperiorname" value='<?= old('editsuperiorname'); ?>' required>
+                                    <option value="">Select Superior Name</option>
+                                    <?php foreach ($getDataSuperiorName as $name) : ?>
+                                        <option value="<?= $name['nik']; ?>"><?= $name['SuperiorName']; ?> </option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <?php if (session('erroreditsuperiorname')) { ?>
+                                    <div class="invalid-feedback">
+                                        <?= session("erroreditsuperiorname") ?>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                        </div>
+
                         <div class="col-lg-3">
                             <div class="mb-3">
                                 <label class="form-label">Level</label>
@@ -950,9 +935,9 @@
                                 <select class="form-select" id="editlocation" name="editlocation" required>
                                     <option value="">Select the location</option>
                                     <?php foreach ($getDataLocation as $loc) : ?>
-                                        <option value="<?= $loc['idStore']; ?>" <?php if (old('editlocation') == $loc['idStore']) {
-                                                                                    echo 'selected';
-                                                                                } ?>><?= $loc['StoreCode'] . ' - ' . $loc['StoreName']; ?> </option>
+                                        <option value="<?= $loc['StoreCode']; ?>" <?php if (old('editlocation') == $loc['StoreCode']) {
+                                                                                        echo 'selected';
+                                                                                    } ?>><?= $loc['StoreCode'] . ' - ' . $loc['StoreName']; ?> </option>
                                     <?php endforeach; ?>
                                 </select>
                                 <?php if (session('erroreditlocation')) { ?>
@@ -1035,7 +1020,8 @@
     $(document).ready(function() {
 
         //todo load superior role when employee role change
-        $('#employeerole').change(function() {
+        // $('#employeerole').change(function() {
+        $('.employeerole').change(function() {
             var idEmployeeRole = $(this).val();
             // alert($(this).val());
             let isiFormSuperiorRole = new FormData();
@@ -1059,7 +1045,12 @@
                         // html += '<option value="" selected>Select Superior Role</option>';
                         if (data.length > 0) {
                             for (y = 0; y < data.length; y++) {
-                                html += '<option value="' + data[y].idSuperiorRole + '">' + data[y].SuperiorName + '</option>';
+                                if (idEmployeeRole == data[y].idSuperiorRole) {
+                                    html += '<option selected value="' + data[y].idSuperiorRole + '">' + data[y].SuperiorName + '</option>';
+                                } else {
+                                    html += '<option value="' + data[y].idSuperiorRole + '">' + data[y].SuperiorName + '</option>';
+                                }
+
                             }
                         } else {
                             html += '<option value="0">None</option>';
@@ -1081,6 +1072,7 @@
         $('#superiorrole').change(function() {
             var idSuperiorRole = $(this).val();
             var idEmployeeRole = $('#employeerole').val();
+            var old_superiorname = "<?= old('superiorname') ?>";
             // alert(idSuperiorRole);
             let isiFormSuperiorName = new FormData();
             isiFormSuperiorName.append("idSuperiorName", $(this).val());
@@ -1106,7 +1098,13 @@
                     // if (idEmployeeRole != idSuperiorRole) {
                     if (data.length > 0) {
                         for (i = 0; i < data.length; i++) {
-                            html += '<option value="' + data[i].idSuperiorRole + '">' + data[i].SuperiorName + '</option>';
+                            if (data[i].nik == old_superiorname) {
+                                html += '<option selected value="' + data[i].nik + '">' + data[i].SuperiorName + '</option>';
+
+                            } else {
+                                html += '<option value="' + data[i].nik + '">' + data[i].SuperiorName + '</option>';
+                            }
+
                         }
                     } else {
                         html += '<option value="0">None</option>';
@@ -1124,14 +1122,117 @@
             });
         });
 
-        // $('#superiorrole').change(function() {
-        //     var idSuperiorRole = $(this).val();
-        //     var idEmployeeRole = $('#employeerole').val();
-        //     if (idSuperiorRole == idEmployeeRole) {
-        //         alert('Tidak Boleh sama');
-        //     }
+        //Button Action Employee Start
+        $('#dynamic-table').on('click', '.btn-view-employee', function(e) {
+            const modalviewid = $(this).data('id');
+            const modalviewnik = $(this).data('nik');
+            const modalviewname = $(this).data('name');
+            const modalviewinitial = $(this).data('initial');
+            const modalviewemail = $(this).data('email');
+            const modalviewusername = $(this).data('username');
+            const modalviewrolesuperior = $(this).data('rolesuperior');
+            const modalviewsuperiorname = $(this).data('superiorname');
+            const modalviewroleuser = $(this).data('roleuser');
+            const modalviewlevel = $(this).data('level');
+            const modalviewlocation = $(this).data('location');
+            const modalviewimageuser = $(this).data('imguser');
+            var detail_nikname = '';
+            var job_post = '';
+            var location = '';
+            var superior = '';
+            var image = '';
+            var email = '';
 
-        // });
+            detail_nikname += '<strong>' + modalviewnik + ' - ' + modalviewname + '</strong>';
+            job_post += 'Position : ' + modalviewroleuser;
+            location += 'Location : ' + modalviewlocation;
+            superior += 'Superior Name : ' + modalviewsuperiorname + ' <br/> Superior Role : ' + modalviewrolesuperior;
+            image += modalviewimageuser;
+            email += modalviewemail
+
+            $('.detail_nikname').html(detail_nikname);
+            $('.job_post').html(job_post);
+            $('.location').html(location);
+            $('.superiorrole').html(superior);
+            $('#imguser').attr('src', '<?= base_url('static/avatars/'); ?>' + '/' + image);
+            $('.mailuser').attr('href', 'mailto:' + email)
+
+            $('.modal-title').text('View data ');
+            $('#modal-view-employee').modal('show');
+
+        });
+        $('#dynamic-table').on('click', '.btn-edit-employee', function(e) {
+            const modaleditid = $(this).data('id');
+            const modaleditnik = $(this).data('nik');
+            const modaleditname = $(this).data('name');
+            const modaleditemail = $(this).data('email');
+            const modaleditusername = $(this).data('username');
+            const modaleditinitial = $(this).data('initial');
+            const modaleditroleuser = $(this).data('roleuser');
+            const modaleditrolesuperior = $(this).data('rolesuperior');
+            const modaleditsuperiorname = $(this).data('superiorname');
+            const modaleditlevel = $(this).data('level');
+            const modaleditlocation = $(this).data('location');
+
+            // Set data to Form Edit
+            $('#editid').val(modaleditid);
+            $('#editnik').val(modaleditnik);
+            $('#editname').val(modaleditname);
+            $('#editinitial').val(modaleditinitial);
+            $('#editemail').val(modaleditemail);
+            $('#editusername').val(modaleditusername);
+            $('#editsuperiorrole').val(modaleditrolesuperior).trigger('change');
+            $('#editsuperiorname').val(modaleditsuperiorname).trigger('change');;
+            $('#editemployeerole').val(modaleditroleuser).trigger('change');
+            $('#editlevel').val(modaleditlevel).trigger('change');
+            $('#editlocation').val(modaleditlocation).trigger('change');
+
+            $('.modal-title').text('Edit data nik employee ' + modaleditnik);
+            $('#modal-edit-employee').modal('show');
+        });
+        $('#dynamic-table').on('click', '.btn-delete-employee', function(e) {
+            const modaldelid = $(this).data('id');
+            const modaldelnik = $(this).data('nik');
+            const modaldelname = $(this).data('name');
+
+            $('#modaldelid').val(modaldelid);
+            $('#modaldelnik').val(modaldelnik);
+            $('#modaldelname').val(modaldelname);
+
+            // $('.modal-title').text('View data nik employee ');
+            $('#modalConfirmDelete').modal('show');
+        });
+        $('#btnUpdateEmployee').on('click', function() {
+            var url;
+            //get Edit Employee
+            const modaleditid = $('#editid').val();
+            const modaleditnik = $('#editnik').val();
+            const modaleditname = $('#editname').val();
+            const modaleditemail = $('#editname').val();
+            const modaleditusername = $('#editusername').val();
+            const modaleditinitial = $('#editinitial').val();
+            const modaleditroleuser = $('#editemployeerole').val();
+            const modaleditrolesuperior = $('#editsuperiorrole').val();
+            const modaleditsuperiorname = $('#editsuperiorname').val();
+            const modaleditlevel = $('#editlevel').val();
+            const modaleditlocation = $('#editlocation').val();
+
+            url = "<?= base_url(); ?>/employee/updateEmployee/" + modaleditid;
+            $('#editemployeemodalForm').attr('action', url);
+            $('#editemployeemodalForm').attr('method', 'POST');
+        });
+        $('#btnDeleteYes').on('click', function() {
+            const modaldelid = $('#modaldelid').val();;
+            const modaldelnik = $('#modaldelnik').val();
+            const modaldelname = $('#modaldelname').val();
+
+
+            url = "<?= base_url(); ?>/employee/deleteEmployee/" + modaldelid;
+            $('#deleteemployeemodalForm').attr('action', url);
+            $('#deleteemployeemodalForm').attr('method', 'POST');
+        });
+
+
     })
 </script>
 <?= $this->endSection() ?>

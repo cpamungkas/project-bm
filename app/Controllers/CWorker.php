@@ -170,11 +170,41 @@ class CWorker extends BaseController
                     ],
                     'label' => 'Confirm Password'
                 ],
+                'employeerole' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} cannot be empty',
+                    ],
+                    'label' => 'Employee Role'
+                ],
+                'superiorrole' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} cannot be empty',
+                    ],
+                    'label' => 'Superior Role'
+                ],
+                'superiorname' => [
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} cannot be empty',
+                    ],
+                    'label' => 'Superior Name'
+                ]
+
+
 
             ])) {
                 $validation = \Config\Services::validation();
                 return redirect()->to('/employee')->withInput()->with('validation', $validation);
             }
+
+            // $superiorroleid = $this->request->getPost('superiorrole');
+            // if ($superiorroleid == '') {
+            //     session()->setFlashdata('warning', 'Superior role id is empty!');
+            //     return redirect()->to('/employee');
+            // }
+
             $employeeModel = new MUser();
             if ($this->request->getPost('superiorrole') == 13) {
                 $superiornameid = 99;
@@ -182,10 +212,10 @@ class CWorker extends BaseController
                 $superiornameid = $this->request->getPost('superiorname');
             }
             $data = [
-                'username' => $this->request->getPost('username'),
+                'username' =>  $this->request->getPost('username'),
                 'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT), // $this->request->getPost('password'),
                 'nik' => $this->request->getPost('nik'),
-                'name' => $this->request->getPost('nameworker'),
+                'name' => ucwords($this->request->getPost('nameworker')),
                 'initial' => $this->request->getPost('initial'),
                 'email' => $this->request->getPost('email'),
                 'image' => 'default.jpg',
@@ -201,9 +231,11 @@ class CWorker extends BaseController
                 'status_deleted' => 0
             ];
 
+            // dd($data);
+
             if ($employeeModel->insert($data)) {
                 //$session->setFlashdata("success", "Success. " . "NIK : " . $this->request->getPost('nik') . " has be saved.");
-                session()->setFlashdata('success', 'Employee : ' . ucwords($this->request->getPost('name')) . ' has been added');
+                session()->setFlashdata('success', 'Employee : ' . ucwords($this->request->getPost('nameworker')) . ' has been added');
                 return redirect()->to('/employee');
             } else {
                 session()->setFlashdata('warning', 'Data not saved!');
@@ -343,8 +375,8 @@ class CWorker extends BaseController
 
     public function checkSuperiorNameAjax()
     {
-        $idSuperiorRole = $this->request->getPost('idSuperiorName');
-        $data = (new MUser())->getSuperiorName($idSuperiorRole);
+        $idSuperiorName = $this->request->getPost('idSuperiorName');
+        $data = (new MUser())->getSuperiorName($idSuperiorName);
         echo json_encode($data);
     }
 
