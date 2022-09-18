@@ -386,19 +386,19 @@
                                                         </a>
                                                     </div>
                                                     <div class="dropdown-menu-column">
-                                                        <a class="dropdown-item " href="./empty.html">
+                                                    <a class="dropdown-item " href="<?= base_url('ups')?>">
                                                             UPS
                                                         </a>
-                                                        <a class="dropdown-item " href="./empty.html">
+                                                        <a class="dropdown-item " href="<?= base_url('gasstation')?>">
                                                             Gas Station
                                                         </a>
-                                                        <a class="dropdown-item " href="./empty.html">
+                                                        <a class="dropdown-item " href="<?= base_url('stp')?>">
                                                             STP
                                                         </a>
-                                                        <a class="dropdown-item " href="./empty.html">
+                                                        <a class="dropdown-item " href="<?= base_url('cctv')?>">
                                                             CCTV
                                                         </a>
-                                                        <a class="dropdown-item " href="./empty.html">
+                                                        <a class="dropdown-item " href="<?= base_url('plumbing')?>">
                                                             Plumbing
                                                         </a>
                                                         <a class="dropdown-item " href="./empty.html">

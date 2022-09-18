@@ -170,6 +170,72 @@ $routes->get('acahu', 'CEquipment::acahu');
 $routes->get('acsplitwallduckcassettevrv', 'CEquipment::acsplitwallduckcassettevrv');
 
 
+//? Store Equipment
+$routes->get('storeEquipment', 'CEquipment::index');
+$routes->post('storeEquipment', 'CEquipment::index');
+$routes->get('storeEquipment/saveStoreEquipment', 'CEquipment::saveStoreEquipment');
+$routes->post('storeEquipment/saveStoreEquipment', 'CEquipment::saveStoreEquipment');
+$routes->get('storeEquipment/editStoreEquipment', 'CEquipment::editStoreEquipment');
+$routes->post('storeEquipment/editStoreEquipment', 'CEquipment::editStoreEquipment');
+$routes->get('storeEquipment/deleteStoreEquipment', 'CEquipment::deleteStoreEquipment');
+$routes->post('storeEquipment/deleteStoreEquipment', 'CEquipment::deleteStoreEquipment');
+$routes->get('storeEquipment/ajaxDataStoreEquipment', 'CEquipment::ajaxDataStoreEquipment');
+$routes->post('storeEquipment/ajaxDataStoreEquipment', 'CEquipment::ajaxDataStoreEquipment');
+
+//? Equipment UPS
+$routes->get('ups', 'CEquipment::ups');
+$routes->get('ups/saveups', 'CEquipment::saveUps');
+$routes->post('ups/saveups', 'CEquipment::saveUps');
+$routes->get('ups/updateups/(:num)', 'CEquipment::updateUps/$1');
+$routes->post('ups/updateups/(:num)', 'CEquipment::updateUps/$1');
+$routes->get('ups/deleteups', 'CEquipment::deleteUps');
+$routes->post('ups/deleteups', 'CEquipment::deleteUps');
+$routes->get('ups/ajaxDataUps', 'CEquipment::ajaxDataUps');
+$routes->post('ups/ajaxDataUps', 'CEquipment::ajaxDataUps');
+
+//? Equipment Gas Station
+$routes->get('gasstation', 'CEquipment::gasStation');
+$routes->get('gasstation/savegasstation', 'CEquipment::saveGasStation');
+$routes->post('gasstation/savegasstation', 'CEquipment::saveGasStation');
+$routes->get('gasstation/updategasstation/(:num)', 'CEquipment::updateGasStation/$1');
+$routes->post('gasstation/updategasstation/(:num)', 'CEquipment::updateGasStation/$1');
+$routes->get('gasstation/deletegasstation', 'CEquipment::deleteGasStation');
+$routes->post('gasstation/deletegasstation', 'CEquipment::deleteGasStation');
+$routes->get('gasstation/ajaxDatagasstation', 'CEquipment::ajaxDataGasStation');
+$routes->post('gasstation/ajaxDatagasstation', 'CEquipment::ajaxDataGasStation');
+
+//? Equipment STP
+$routes->get('stp', 'CEquipment::stp');
+$routes->get('stp/saveStp', 'CEquipment::saveStp');
+$routes->post('stp/saveStp', 'CEquipment::saveStp');
+$routes->get('stp/updateStp/(:num)', 'CEquipment::updateStp/$1');
+$routes->post('stp/updateStp/(:num)', 'CEquipment::updateStp/$1');
+$routes->get('stp/deleteStp', 'CEquipment::deleteStp');
+$routes->post('stp/deleteStp', 'CEquipment::deleteStp');
+$routes->get('stp/ajaxDataStp', 'CEquipment::ajaxDataStp');
+$routes->post('stp/ajaxDataStp', 'CEquipment::ajaxDataStp');
+
+//? Equipment CCTV
+$routes->get('cctv', 'CEquipment::cctv');
+$routes->get('cctv/saveCctv', 'CEquipment::saveCctv');
+$routes->post('cctv/saveCctv', 'CEquipment::saveCctv');
+$routes->get('cctv/updateCctv/(:num)', 'CEquipment::updateCctv/$1');
+$routes->post('cctv/updateCctv/(:num)', 'CEquipment::updateCctv/$1');
+$routes->get('cctv/deleteCctv', 'CEquipment::deleteCctv');
+$routes->post('cctv/deleteCctv', 'CEquipment::deleteCctv');
+$routes->get('cctv/ajaxDataCctv', 'CEquipment::ajaxDataCctv');
+$routes->post('cctv/ajaxDataCctv', 'CEquipment::ajaxDataCctv');
+
+//? Equipment Plumbing
+$routes->get('plumbing', 'CEquipment::plumbing');
+$routes->get('plumbing/savePlumbing', 'CEquipment::savePlumbing');
+$routes->post('plumbing/savePlumbing', 'CEquipment::saveplumbing');
+$routes->get('plumbing/updatePlumbing/(:num)', 'CEquipment::updatePlumbing/$1');
+$routes->post('plumbing/updatePlumbing/(:num)', 'CEquipment::updatePlumbing/$1');
+$routes->get('plumbing/deletePlumbing', 'CEquipment::deletePlumbing');
+$routes->post('plumbing/deletePlumbing', 'CEquipment::deletePlumbing');
+$routes->get('plumbing/ajaxDataPlumbing', 'CEquipment::ajaxDataPlumbing');
+$routes->post('plumbing/ajaxDataPlumbing', 'CEquipment::ajaxDataPlumbing');
 
 
 
