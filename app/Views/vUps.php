@@ -602,7 +602,7 @@
                                 <label class="form-label col-3 col-form-label pt-0">Checklist</label>
                                 <div class="col">
                                     <div class="form-floating">
-                                        <select id="equipment_checklist" name="equipment_checklist" class="form-select <?= ($validation->hasError('equipment_checklist')) ? 'is-invalid' : ''; ?>" required>
+                                        <select disabled id="equipment_checklist" name="equipment_checklist" class="form-select <?= ($validation->hasError('equipment_checklist')) ? 'is-invalid' : ''; ?>" required>
                                             <option <?= old('equipment_checklist') != null && old('equipment_checklist') == 'DAILY' ? 'selected' : ''; ?> value="DAILY">DAILY</option>
                                             <option <?= old('equipment_checklist') != null && old('equipment_checklist') == 'WEEKLY' ? 'selected' : ''; ?> value="WEEKLY">WEEKLY</option>
                                             <option <?= old('equipment_checklist') != null && old('equipment_checklist') == 'MONTHLY' ? 'selected' : ''; ?> value="MONTHLY">MONTHLY</option>

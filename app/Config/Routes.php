@@ -237,6 +237,17 @@ $routes->post('plumbing/deletePlumbing', 'CEquipment::deletePlumbing');
 $routes->get('plumbing/ajaxDataPlumbing', 'CEquipment::ajaxDataPlumbing');
 $routes->post('plumbing/ajaxDataPlumbing', 'CEquipment::ajaxDataPlumbing');
 
+//? Equipment Meter Sumber dan Air Olahan
+$routes->get('metersumber', 'CEquipment::metersumber');
+$routes->get('metersumber/saveMeterSumber', 'CEquipment::saveMeterSumber');
+$routes->post('metersumber/saveMeterSumber', 'CEquipment::saveMeterSumber');
+$routes->get('metersumber/updateMeterSumber/(:num)', 'CEquipment::updateMeterSumber/$1');
+$routes->post('metersumber/updateMeterSumber/(:num)', 'CEquipment::updateMeterSumber/$1');
+$routes->get('metersumber/deleteMeterSumber', 'CEquipment::deleteMeterSumber');
+$routes->post('metersumber/deleteMeterSumber', 'CEquipment::deleteMeterSumber');
+$routes->get('metersumber/ajaxDataMeterSumber', 'CEquipment::ajaxDataMeterSumber');
+$routes->post('metersumber/ajaxDataMeterSumber', 'CEquipment::ajaxDataMeterSumber');
+
 
 
 

@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\MCctv;
 use App\Models\MEquipment;
 use App\Models\MGasStation;
+use App\Models\MMeterSumber;
 use App\Models\MPlumbing;
 use App\Models\MStore;
 use App\Models\MStp;
@@ -24,6 +25,7 @@ class CEquipment extends BaseController
         $this->mStp = new MStp();
         $this->mCctv = new MCctv();
         $this->mPlumbing = new MPlumbing();
+        $this->mMeterSumber = new MMeterSumber();
         helper(['form', 'url', 'functionHelper']);
     }
 
@@ -1569,6 +1571,208 @@ class CEquipment extends BaseController
     public function ajaxDataPlumbing()
     {
         $data = $this->mPlumbing->ajaxDataPlumbing($this->request->getPost('id'));
+        if ($data) {
+            $response = [
+                'success' => true,
+                'data' => $data,
+            ];
+        } else {
+            $response = [
+                'success' => false,
+            ];
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function metersumber()
+    {
+        $data['url'] = $this->request->uri->getSegment(1);
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $data['title'] = 'Meter Sumber & Air Olahan | B.M Apps &copy; Gramedia ' . date('Y');
+            $data['isLoggedIn'] = session()->get('isLoggedIn');
+            $data['id'] = session()->get('id');
+            $data['username'] = session()->get('username');
+            $data['name'] = session()->get('name');
+            $data['email'] = session()->get('email');
+            $data['image'] = session()->get('image');
+            $data['is_active'] = session()->get('is_active');
+            $data['role_id'] = session()->get('role_id');
+            $data['roleuser'] = session()->get('roleuser');
+            $data['superior_role_id'] = session()->get('superior_role_id');
+            $data['location'] = session()->get('location');
+            $data['level'] = session()->get('level');
+            $data['status_deleted'] = session()->get('status_deleted');
+            $data['validation'] = \Config\Services::validation();
+
+            $data['getDataTableMeterSumber'] = $this->mMeterSumber->getDataTableMeterSumber();
+            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_metersumber");
+            $data['checkInspection'] = $this->mEquip->checkInspection('tb_meter_sumber_dan_air_olahan', $checklist['checklist']);
+            $data['defaultChecklist'] = $checklist;
+            
+            return view('vMeterSumber', $data);
+        }
+    }
+
+    public function saveMeterSumber()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'time' => [
+                    'rules' => 'required|in_list[08:00:00,13:00:00,19:00:00]',
+                    'label' => 'Jam Pengecekan',
+                ],
+                'equipment_checklist' => [
+                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
+                    'label' => 'Checklist',
+                ],
+                'meter_pdam_floating_valve' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Meter PDAM - Floating Valve',
+                ],
+                'meter_pdam_m3' => [
+                    'rules' => 'required|max_length[10]|regex_match[^\d+(\.\d{1,2})?$]',
+                    'errors' => [
+                        'regex_match' => '{field} must be a decimal number with at most 2 decimal places'
+                    ],
+                    'label' => 'Meter PDAM - M&sup3;',
+                ],
+                'meter_deep_well_m3' => [
+                    'rules' => 'required|max_length[10]|regex_match[^\d+(\.\d{1,2})?$]',
+                    'errors' => [
+                        'regex_match' => '{field} must be a decimal number with at most 2 decimal places'
+                    ],
+                    'label' => 'Meter Deep Well - M&sup3;',
+                ],
+                'meter_air_effluent_m3' => [
+                    'rules' => 'required|max_length[10]|regex_match[^\d+(\.\d{1,2})?$]',
+                    'errors' => [
+                        'regex_match' => '{field} must be a decimal number with at most 2 decimal places'
+                    ],
+                    'label' => 'Meter Air Effluent - M&sup3;',
+                ],
+                'keterangan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Keterangan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/metersumber')->withInput()->with('validation', $validation);
+            }
+
+            $dataInput = [
+                'location' => session()->get('idstore'),
+                'time' => $this->request->getPost('time'),
+                'date' => date('Y-m-d'),
+                'worker' => session()->get('id'),
+                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
+                'meter_pdam_floating_valve' => $this->request->getPost('meter_pdam_floating_valve'),
+                'meter_pdam_m3' => $this->request->getPost('meter_pdam_m3'),
+                'meter_deep_well_m3' => $this->request->getPost('meter_deep_well_m3'),
+                'meter_air_effluent_m3' => $this->request->getPost('meter_air_effluent_m3'),
+                'keterangan' => $this->request->getPost('keterangan'),
+            ];
+
+            $input = $this->mMeterSumber->save($dataInput);
+
+            if ($input) {
+                session()->setFlashdata('success', 'Meter Sumber & Air Olahan Data has been added');
+                return redirect()->to('/metersumber', 201);
+            }
+
+            session()->setFlashdata('error', 'Meter Sumber & Air Olahan Data has not been added');
+            return redirect()->to('/metersumber', 500);
+        }
+    }
+
+    public function updateMeterSumber($id)
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'meter_pdam_floating_valve' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Meter PDAM - Floating Valve',
+                ],
+                'meter_pdam_m3' => [
+                    'rules' => 'required|max_length[10]|regex_match[^\d+(\.\d{1,2})?$]',
+                    'errors' => [
+                        'regex_match' => '{field} must be a decimal number with at most 2 decimal places'
+                    ],
+                    'label' => 'Meter PDAM - M&sup3;',
+                ],
+                'meter_deep_well_m3' => [
+                    'rules' => 'required|max_length[10]|regex_match[^\d+(\.\d{1,2})?$]',
+                    'errors' => [
+                        'regex_match' => '{field} must be a decimal number with at most 2 decimal places'
+                    ],
+                    'label' => 'Meter Deep Well - M&sup3;',
+                ],
+                'meter_air_effluent_m3' => [
+                    'rules' => 'required|max_length[10]|regex_match[^\d+(\.\d{1,2})?$]',
+                    'errors' => [
+                        'regex_match' => '{field} must be a decimal number with at most 2 decimal places'
+                    ],
+                    'label' => 'Meter Air Effluent - M&sup3;',
+                ],
+                'keterangan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Keterangan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/metersumber')->withInput()->with('validation', $validation);
+            }
+
+            $dataUpdate = [
+                'id' => $id,
+                'meter_pdam_floating_valve' => $this->request->getPost('meter_pdam_floating_valve'),
+                'meter_pdam_m3' => $this->request->getPost('meter_pdam_m3'),
+                'meter_deep_well_m3' => $this->request->getPost('meter_deep_well_m3'),
+                'meter_air_effluent_m3' => $this->request->getPost('meter_air_effluent_m3'),
+                'keterangan' => $this->request->getPost('keterangan'),
+            ];
+
+            $update = $this->mMeterSumber->save($dataUpdate);
+
+            if ($update) {
+                session()->setFlashdata('success', 'Meter Sumber & Air Olahan Data has been edited');
+                return redirect()->to('/metersumber', 200);
+            }
+
+            session()->setFlashdata('error', 'Meter Sumber & Air Olahan Data has not been edited');
+            return redirect()->to('/metersumber', 500);
+        }
+    }
+
+    public function deleteMeterSumber()
+    {
+        $delete = $this->mMeterSumber->delete($this->request->getPost('id'));
+        if ($delete) {
+            $response = [
+                'success' => true,
+            ];
+            session()->setFlashdata('success', 'Meter Sumber & Air Olahan Data has been deleted');
+        } else {
+            $response = [
+                'success' => false,
+            ];
+            session()->setFlashdata('error', 'Meter Sumber & Air Olahan Data has not been deleted');
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function ajaxDataMeterSumber()
+    {
+        $data = $this->mMeterSumber->ajaxDataMeterSumber($this->request->getPost('id'));
         if ($data) {
             $response = [
                 'success' => true,
