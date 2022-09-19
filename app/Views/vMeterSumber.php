@@ -694,7 +694,6 @@
             $("#modal-editData").modal('show');
             $("#formEditData").attr('action', urlUpdate + oldData.post.idFormEdit);
 
-            // TODO impementasiin revisi show modal otomatis menghapus location dll
             $("#formInputData").find("input:text, textarea").not("#location,#date,#worker").val("");
             $("#formInputData").find("input:checkbox").prop('checked', false);
             $("#formInputData").find(".is-invalid").removeClass("is-invalid");

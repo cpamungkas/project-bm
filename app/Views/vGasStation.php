@@ -655,7 +655,7 @@
             $("#modal-editData").modal('show');
             $("#formEditData").attr('action', site_url + "/gasstation/updategasstation/" + oldData.post.idFormEdit);
 
-            $("#formInputData").find("input:text").val("");
+            $("#formInputData").find("input:text, textarea").not("#location,#date,#worker").val("");
             $("#formInputData").find("input:checkbox").prop('checked', false);
             $("#formInputData").find(".is-invalid").removeClass("is-invalid");
             $("#formInputData").find(".invalid-feedback,.hasil-validasi").hide();

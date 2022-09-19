@@ -1181,7 +1181,7 @@
 <script>
     var site_url = `<?= base_url() ?>`;
     $(document).ready(function() {
-        
+
         let validateChecklist = `<?= $defaultChecklist['checklist'] ?>`;
         let dataChecklist = `<?= isset($checkInspection['data']) ? json_encode($checkInspection['data']) : '' ?>`;
 
@@ -1203,7 +1203,7 @@
             $("#modal-editData").modal('show');
             $("#formEditData").attr('action', site_url + "/plumbing/updatePlumbing/" + oldData.post.idFormEdit);
 
-            $("#formInputData").find("input:text").val("");
+            $("#formInputData").find("input:text, textarea").not("#location,#date,#worker").val("");
             $("#formInputData").find("input:checkbox").prop('checked', false);
             $("#formInputData").find(".is-invalid").removeClass("is-invalid");
             $("#formInputData").find(".invalid-feedback,.hasil-validasi").hide();
