@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\MCctv;
+use App\Models\MDindingPartisi;
 use App\Models\MEquipment;
 use App\Models\MGasStation;
 use App\Models\MMeterSumber;
@@ -26,6 +27,7 @@ class CEquipment extends BaseController
         $this->mCctv = new MCctv();
         $this->mPlumbing = new MPlumbing();
         $this->mMeterSumber = new MMeterSumber();
+        $this->mDinding = new MDindingPartisi();
         helper(['form', 'url', 'functionHelper']);
     }
 
@@ -1761,6 +1763,216 @@ class CEquipment extends BaseController
     public function ajaxDataMeterSumber()
     {
         $data = $this->mMeterSumber->ajaxDataMeterSumber($this->request->getPost('id'));
+        if ($data) {
+            $response = [
+                'success' => true,
+                'data' => $data,
+            ];
+        } else {
+            $response = [
+                'success' => false,
+            ];
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function dindingpartisi()
+    {
+        $data['url'] = $this->request->uri->getSegment(1);
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $data['title'] = 'Dinding Partisi | B.M Apps &copy; Gramedia ' . date('Y');
+            $data['isLoggedIn'] = session()->get('isLoggedIn');
+            $data['id'] = session()->get('id');
+            $data['username'] = session()->get('username');
+            $data['name'] = session()->get('name');
+            $data['email'] = session()->get('email');
+            $data['image'] = session()->get('image');
+            $data['is_active'] = session()->get('is_active');
+            $data['role_id'] = session()->get('role_id');
+            $data['roleuser'] = session()->get('roleuser');
+            $data['superior_role_id'] = session()->get('superior_role_id');
+            $data['location'] = session()->get('location');
+            $data['level'] = session()->get('level');
+            $data['status_deleted'] = session()->get('status_deleted');
+            $data['validation'] = \Config\Services::validation();
+
+            $data['getDataTableDindingPartisi'] = $this->mDinding->getDataTableDindingPartisi();
+            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_dindingpartisi");
+            $data['checkInspection'] = $this->mEquip->checkInspection('tb_dinding_partisi', $checklist['checklist']);
+            $data['defaultChecklist'] = $checklist;
+            
+            return view('vDindingPartisi', $data);
+        }
+    }
+
+    public function saveDindingPartisi()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'equipment_checklist' => [
+                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
+                    'label' => 'Checklist',
+                ],
+                'ruang' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Ruang',
+                ],
+                'lantai' => [
+                    'rules' => 'required|max_length[2]',
+                    'label' => 'Lantai',
+                ],
+                'cat' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Cat',
+                ],
+                'kaca' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kaca',
+                ],
+                'kusen' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kusen',
+                ],
+                'wallpaper' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Wallpaper',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/dindingpartisi')->withInput()->with('validation', $validation);
+            }
+
+            $dataInput = [
+                'location' => session()->get('idstore'),
+                'time' => $this->request->getPost('time'),
+                'date' => date('Y-m-d'),
+                'worker' => session()->get('id'),
+                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
+                'ruang' => $this->request->getPost('ruang'),
+                'lantai' => $this->request->getPost('lantai'),
+                'cat' => $this->request->getPost('cat'),
+                'kaca' => $this->request->getPost('kaca'),
+                'kusen' => $this->request->getPost('kusen'),
+                'wallpaper' => $this->request->getPost('wallpaper'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $input = $this->mDinding->save($dataInput);
+
+            if ($input) {
+                session()->setFlashdata('success', 'Dinding Partisi Data has been added');
+                return redirect()->to('/dindingpartisi', 201);
+            }
+
+            session()->setFlashdata('error', 'Dinding Partisi Data has not been added');
+            return redirect()->to('/dindingpartisi', 500);
+        }
+    }
+
+    public function updateDindingPartisi($id)
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'ruang' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Ruang',
+                ],
+                'lantai' => [
+                    'rules' => 'required|max_length[2]',
+                    'label' => 'Lantai',
+                ],
+                'cat' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Cat',
+                ],
+                'kaca' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kaca',
+                ],
+                'kusen' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kusen',
+                ],
+                'wallpaper' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Wallpaper',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/dindingpartisi')->withInput()->with('validation', $validation);
+            }
+
+            $dataUpdate = [
+                'id' => $id,
+                'ruang' => $this->request->getPost('ruang'),
+                'lantai' => $this->request->getPost('lantai'),
+                'cat' => $this->request->getPost('cat'),
+                'kaca' => $this->request->getPost('kaca'),
+                'kusen' => $this->request->getPost('kusen'),
+                'wallpaper' => $this->request->getPost('wallpaper'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $update = $this->mDinding->save($dataUpdate);
+
+            if ($update) {
+                session()->setFlashdata('success', 'Dinding Partisi Data has been edited');
+                return redirect()->to('/dindingpartisi', 200);
+            }
+
+            session()->setFlashdata('error', 'Dinding Partisi Data has not been edited');
+            return redirect()->to('/dindingpartisi', 500);
+        }
+    }
+
+    public function deleteDindingPartisi()
+    {
+        $delete = $this->mDinding->delete($this->request->getPost('id'));
+        if ($delete) {
+            $response = [
+                'success' => true,
+            ];
+            session()->setFlashdata('success', 'Dinding Partisi Data has been deleted');
+        } else {
+            $response = [
+                'success' => false,
+            ];
+            session()->setFlashdata('error', 'Dinding Partisi Data has not been deleted');
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function ajaxDataDindingPartisi()
+    {
+        $data = $this->mDinding->ajaxDataDindingPartisi($this->request->getPost('id'));
         if ($data) {
             $response = [
                 'success' => true,

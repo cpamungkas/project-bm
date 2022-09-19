@@ -404,7 +404,7 @@
                                                         <a class="dropdown-item " href="<?= base_url('metersumber')?>">
                                                             Meter Sumber &amp; Air Olahan
                                                         </a>
-                                                        <a class="dropdown-item " href="./empty.html">
+                                                        <a class="dropdown-item " href="<?= base_url('dindingpartisi')?>">
                                                             Dinding Partisi
                                                         </a>
                                                         <a class="dropdown-item " href="./empty.html">

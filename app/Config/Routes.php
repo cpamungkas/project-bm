@@ -248,6 +248,17 @@ $routes->post('metersumber/deleteMeterSumber', 'CEquipment::deleteMeterSumber');
 $routes->get('metersumber/ajaxDataMeterSumber', 'CEquipment::ajaxDataMeterSumber');
 $routes->post('metersumber/ajaxDataMeterSumber', 'CEquipment::ajaxDataMeterSumber');
 
+//? Equipment Dinding Partisi
+$routes->get('dindingpartisi', 'CEquipment::dindingpartisi');
+$routes->get('dindingpartisi/saveDindingPartisi', 'CEquipment::saveDindingPartisi');
+$routes->post('dindingpartisi/saveDindingPartisi', 'CEquipment::saveDindingPartisi');
+$routes->get('dindingpartisi/updateDindingPartisi/(:num)', 'CEquipment::updateDindingPartisi/$1');
+$routes->post('dindingpartisi/updateDindingPartisi/(:num)', 'CEquipment::updateDindingPartisi/$1');
+$routes->get('dindingpartisi/deleteDindingPartisi', 'CEquipment::deleteDindingPartisi');
+$routes->post('dindingpartisi/deleteDindingPartisi', 'CEquipment::deleteDindingPartisi');
+$routes->get('dindingpartisi/ajaxDataDindingPartisi', 'CEquipment::ajaxDataDindingPartisi');
+$routes->post('dindingpartisi/ajaxDataDindingPartisi', 'CEquipment::ajaxDataDindingPartisi');
+
 
 
 

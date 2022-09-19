@@ -31,11 +31,11 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Meter Sumber & Air Olahan</h3>
+                        <h3 class="card-title">Dinding Partisi</h3>
                     </div>
 
                     <div class="card-body">
-                        <form id="formInputData" action="<?php echo base_url('metersumber/saveMeterSumber'); ?>" method="post">
+                        <form id="formInputData" action="<?php echo base_url('dindingpartisi/saveDindingPartisi'); ?>" method="post">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group mb-3 row">
@@ -45,44 +45,6 @@
                                                 <input id="location" class="form-control" value="<?= $location ?>" disabled>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group mb-3 row">
-                                        <label class="form-label col-3 col-form-label">Jam Pengecekan</label>
-                                        <div class="col">
-                                            <div class="form-check">
-                                                <input <?= timeCheck("08:00:00", $checkInspection) ?> <?php if (old('time') == "08:00:00") {
-                                                                                                            echo ("checked");
-                                                                                                        } ?> value="08:00:00" id="time" name="time" class="jamCheck form-check-input  <?= ($validation->hasError('time')) ? 'is-invalid' : ''; ?>" type="checkbox" onclick="jamCheck(this.value)">
-                                                <span class="form-check-label">08:00</span>
-                                            </div>
-                                            <div class="form-check">
-                                                <input <?= timeCheck("13:00:00", $checkInspection) ?> <?php if (old('time') == "13:00:00") {
-                                                                                                            echo ("checked");
-                                                                                                        } ?> value="13:00:00" id="time" name="time" class="jamCheck form-check-input  <?= ($validation->hasError('time')) ? 'is-invalid' : ''; ?>" type="checkbox" onclick="jamCheck(this.value)">
-                                                <span class="form-check-label">13:00</span>
-                                            </div>
-                                            <div class="form-check">
-                                                <input <?= timeCheck("19:00:00", $checkInspection) ?> <?php if (old('time') == "19:00:00") {
-                                                                                                            echo ("checked");
-                                                                                                        } ?> value="19:00:00" id="time" name="time" class="jamCheck form-check-input  <?= ($validation->hasError('time')) ? 'is-invalid' : ''; ?>" type="checkbox" onclick="jamCheck(this.value)">
-                                                <span class="form-check-label">19:00</span>
-                                            </div>
-                                            <?php if ($validation->hasError('time')) : ?>
-                                                <div style="font-size: 85.71428571%; color: #d63939;">
-                                                    <?= $validation->getError('time'); ?>
-                                                </div>
-                                            <?php endif; ?>
-                                        </div>
-                                        <script>
-                                            function jamCheck(b) {
-                                                var x = document.getElementsByClassName('jamCheck');
-                                                var i;
-
-                                                for (i = 0; i < x.length; i++) {
-                                                    if (x[i].value != b) x[i].checked = false;
-                                                }
-                                            }
-                                        </script>
                                     </div>
                                     <div class="form-group mb-3 row">
                                         <label class="form-label col-3 col-form-label">Date</label>
@@ -127,6 +89,36 @@
 
                             <div style="width: 100%; border-top: 1px solid lightgrey; height: 0; margin-top: 20px; margin-bottom: 20px;"></div>
 
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">Lantai</label>
+                                        <div class="col">
+                                            <input type="text" class="form-control <?= ($validation->hasError('lantai')) ? 'is-invalid' : ''; ?>" id="lantai" name="lantai" placeholder="Lantai" value="<?= old('lantai'); ?>">
+                                            <?php if ($validation->hasError('lantai')) : ?>
+                                                <div class="invalid-feedback">
+                                                    <?= $validation->getError('lantai'); ?>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">Ruang</label>
+                                        <div class="col">
+                                            <input type="text" class="form-control <?= ($validation->hasError('ruang')) ? 'is-invalid' : ''; ?>" id="ruang" name="ruang" placeholder="Ruang" value="<?= old('ruang'); ?>">
+                                            <?php if ($validation->hasError('ruang')) : ?>
+                                                <div class="invalid-feedback">
+                                                    <?= $validation->getError('ruang'); ?>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="table-responsive">
                                 <table class="table table-bordered card-table table-vcenter text-nowrap datatable" style="width:100%">
                                     <tbody>
@@ -136,30 +128,30 @@
                                             <td style="border: 0;"></td>
                                         </tr>
                                         <tr>
-                                            <td class="col-3" rowspan="2">Meter PDAM</td>
-                                            <td class="col-4" style="padding-left: 8px;">Floating Valve</td>
+                                            <td class="col-3" rowspan="4">Inspeksi Dinding dan Partisi</td>
+                                            <td class="col-4" style="padding-left: 8px;">Cat</td>
                                             <td>
                                                 <div style="padding-top: 10px; padding-bottom: 5px;">
-                                                    <input <?php if (old('meter_pdam_floating_valve') == "1") {
+                                                    <input <?php if (old('cat') == "1") {
                                                                 echo ("checked");
-                                                            } ?> id="meter_pdam_floating_valve" name="meter_pdam_floating_valve" type="checkbox" class="checkmeter_pdam_floating_valve <?= ($validation->hasError('meter_pdam_floating_valve')) ? 'is-invalid' : ''; ?>" onclick="checkmeter_pdam_floating_valve(this.value);" value="1">
+                                                            } ?> id="cat" name="cat" type="checkbox" class="checkcat <?= ($validation->hasError('cat')) ? 'is-invalid' : ''; ?>" onclick="checkcat(this.value);" value="1">
                                                     Baik<br>
                                                 </div>
                                                 <div style="padding-top: 5px; padding-bottom: 10px;">
-                                                    <input <?php if (old('meter_pdam_floating_valve') == "0") {
+                                                    <input <?php if (old('cat') == "0") {
                                                                 echo ("checked");
-                                                            } ?> id="meter_pdam_floating_valve" name="meter_pdam_floating_valve" type="checkbox" class="checkmeter_pdam_floating_valve <?= ($validation->hasError('meter_pdam_floating_valve')) ? 'is-invalid' : ''; ?>" onclick="checkmeter_pdam_floating_valve(this.value);" value="0">
+                                                            } ?> id="cat" name="cat" type="checkbox" class="checkcat <?= ($validation->hasError('cat')) ? 'is-invalid' : ''; ?>" onclick="checkcat(this.value);" value="0">
                                                     Rusak
                                                 </div>
-                                                <?php if ($validation->hasError('meter_pdam_floating_valve')) : ?>
+                                                <?php if ($validation->hasError('cat')) : ?>
                                                     <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                        <?= $validation->getError('meter_pdam_floating_valve'); ?>
+                                                        <?= $validation->getError('cat'); ?>
                                                     </div>
                                                 <?php endif; ?>
                                             </td>
                                             <script>
-                                                function checkmeter_pdam_floating_valve(b) {
-                                                    var x = document.getElementsByClassName('checkmeter_pdam_floating_valve');
+                                                function checkcat(b) {
+                                                    var x = document.getElementsByClassName('checkcat');
                                                     var i;
 
                                                     for (i = 0; i < x.length; i++) {
@@ -169,79 +161,100 @@
                                             </script>
                                         </tr>
                                         <tr>
-                                            <td class="col-4" style="padding-left: 8px;">M&sup3;</td>
+                                            <td class="col-4" style="padding-left: 8px;">Kaca</td>
                                             <td>
-                                                <div class="row" style="padding-top: 20px;">
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group mb-3 row">
-                                                            <div class="col">
-                                                                <div class="input-icon mb-2">
-                                                                    <input value="<?= old('meter_pdam_m3'); ?>" class="form-control <?= ($validation->hasError('meter_pdam_m3')) ? 'is-invalid' : ''; ?>" id="meter_pdam_m3" name="meter_pdam_m3">
-                                                                    <?php if ($validation->hasError('meter_pdam_m3')) : ?>
-                                                                        <div style="font-size: 85.71428571%; color: #d63939;">
-                                                                            <?= $validation->getError('meter_pdam_m3'); ?>
-                                                                        </div>
-                                                                    <?php endif; ?>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                <div style="padding-top: 10px; padding-bottom: 5px;">
+                                                    <input <?php if (old('kaca') == "1") {
+                                                                echo ("checked");
+                                                            } ?> id="kaca" name="kaca" type="checkbox" class="checkkaca <?= ($validation->hasError('kaca')) ? 'is-invalid' : ''; ?>" onclick="checkkaca(this.value);" value="1">
+                                                    Baik<br>
                                                 </div>
+                                                <div style="padding-top: 5px; padding-bottom: 10px;">
+                                                    <input <?php if (old('kaca') == "0") {
+                                                                echo ("checked");
+                                                            } ?> id="kaca" name="kaca" type="checkbox" class="checkkaca <?= ($validation->hasError('kaca')) ? 'is-invalid' : ''; ?>" onclick="checkkaca(this.value);" value="0">
+                                                    Rusak
+                                                </div>
+                                                <?php if ($validation->hasError('kaca')) : ?>
+                                                    <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
+                                                        <?= $validation->getError('kaca'); ?>
+                                                    </div>
+                                                <?php endif; ?>
                                             </td>
-                                        </tr>
-                                        <tr style="border: 0;">
-                                            <td style="border: 0;"></td>
-                                            <td style="border: 0;"></td>
-                                            <td style="border: 0;"></td>
+                                            <script>
+                                                function checkkaca(b) {
+                                                    var x = document.getElementsByClassName('checkkaca');
+                                                    var i;
+
+                                                    for (i = 0; i < x.length; i++) {
+                                                        if (x[i].value != b) x[i].checked = false;
+                                                    }
+                                                }
+                                            </script>
                                         </tr>
                                         <tr>
-                                            <td class="col-3" rowspan="1">Meter Deep Well</td>
-                                            <td class="col-4" style="padding-left: 8px;">M&sup3;</td>
+                                            <td class="col-4" style="padding-left: 8px;">Kusen</td>
                                             <td>
-                                                <div class="row" style="padding-top: 20px;">
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group mb-3 row">
-                                                            <div class="col">
-                                                                <div class="input-icon mb-2">
-                                                                    <input value="<?= old('meter_deep_well_m3'); ?>" class="form-control <?= ($validation->hasError('meter_deep_well_m3')) ? 'is-invalid' : ''; ?>" id="meter_deep_well_m3" name="meter_deep_well_m3">
-                                                                    <?php if ($validation->hasError('meter_deep_well_m3')) : ?>
-                                                                        <div style="font-size: 85.71428571%; color: #d63939;">
-                                                                            <?= $validation->getError('meter_deep_well_m3'); ?>
-                                                                        </div>
-                                                                    <?php endif; ?>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                <div style="padding-top: 10px; padding-bottom: 5px;">
+                                                    <input <?php if (old('kusen') == "1") {
+                                                                echo ("checked");
+                                                            } ?> id="kusen" name="kusen" type="checkbox" class="checkkusen <?= ($validation->hasError('kusen')) ? 'is-invalid' : ''; ?>" onclick="checkkusen(this.value);" value="1">
+                                                    Baik<br>
                                                 </div>
+                                                <div style="padding-top: 5px; padding-bottom: 10px;">
+                                                    <input <?php if (old('kusen') == "0") {
+                                                                echo ("checked");
+                                                            } ?> id="kusen" name="kusen" type="checkbox" class="checkkusen <?= ($validation->hasError('kusen')) ? 'is-invalid' : ''; ?>" onclick="checkkusen(this.value);" value="0">
+                                                    Rusak
+                                                </div>
+                                                <?php if ($validation->hasError('kusen')) : ?>
+                                                    <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
+                                                        <?= $validation->getError('kusen'); ?>
+                                                    </div>
+                                                <?php endif; ?>
                                             </td>
-                                        </tr>
-                                        <tr style="border: 0;">
-                                            <td style="border: 0;"></td>
-                                            <td style="border: 0;"></td>
-                                            <td style="border: 0;"></td>
+                                            <script>
+                                                function checkkusen(b) {
+                                                    var x = document.getElementsByClassName('checkkusen');
+                                                    var i;
+
+                                                    for (i = 0; i < x.length; i++) {
+                                                        if (x[i].value != b) x[i].checked = false;
+                                                    }
+                                                }
+                                            </script>
                                         </tr>
                                         <tr>
-                                            <td class="col-3" rowspan="1">Meter Air Effluent</td>
-                                            <td class="col-4" style="padding-left: 8px;">M&sup3;</td>
+                                            <td class="col-4" style="padding-left: 8px;">Wall Paper</td>
                                             <td>
-                                                <div class="row" style="padding-top: 20px;">
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group mb-3 row">
-                                                            <div class="col">
-                                                                <div class="input-icon mb-2">
-                                                                    <input value="<?= old('meter_air_effluent_m3'); ?>" class="form-control <?= ($validation->hasError('meter_air_effluent_m3')) ? 'is-invalid' : ''; ?>" id="meter_air_effluent_m3" name="meter_air_effluent_m3">
-                                                                    <?php if ($validation->hasError('meter_air_effluent_m3')) : ?>
-                                                                        <div style="font-size: 85.71428571%; color: #d63939;">
-                                                                            <?= $validation->getError('meter_air_effluent_m3'); ?>
-                                                                        </div>
-                                                                    <?php endif; ?>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                <div style="padding-top: 10px; padding-bottom: 5px;">
+                                                    <input <?php if (old('wallpaper') == "1") {
+                                                                echo ("checked");
+                                                            } ?> id="wallpaper" name="wallpaper" type="checkbox" class="checkwallpaper <?= ($validation->hasError('wallpaper')) ? 'is-invalid' : ''; ?>" onclick="checkwallpaper(this.value);" value="1">
+                                                    Baik<br>
                                                 </div>
+                                                <div style="padding-top: 5px; padding-bottom: 10px;">
+                                                    <input <?php if (old('wallpaper') == "0") {
+                                                                echo ("checked");
+                                                            } ?> id="wallpaper" name="wallpaper" type="checkbox" class="checkwallpaper <?= ($validation->hasError('wallpaper')) ? 'is-invalid' : ''; ?>" onclick="checkwallpaper(this.value);" value="0">
+                                                    Rusak
+                                                </div>
+                                                <?php if ($validation->hasError('wallpaper')) : ?>
+                                                    <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
+                                                        <?= $validation->getError('wallpaper'); ?>
+                                                    </div>
+                                                <?php endif; ?>
                                             </td>
+                                            <script>
+                                                function checkwallpaper(b) {
+                                                    var x = document.getElementsByClassName('checkwallpaper');
+                                                    var i;
+
+                                                    for (i = 0; i < x.length; i++) {
+                                                        if (x[i].value != b) x[i].checked = false;
+                                                    }
+                                                }
+                                            </script>
                                         </tr>
                                         <tr style="border: 0;">
                                             <td style="border: 0;"></td>
@@ -254,11 +267,24 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group mb-3 row">
-                                        <label class="form-label col-3 col-form-label">Keterangan</label>
-                                        <textarea name="keterangan" id="keterangan" class="form-control col <?= ($validation->hasError('keterangan')) ? 'is-invalid' : ''; ?>" rows="6"><?= old('keterangan'); ?></textarea>
-                                        <?php if ($validation->hasError('keterangan')) : ?>
+                                        <label class="form-label col-3 col-form-label">Jumlah Temuan</label>
+                                        <div class="col">
+                                            <input type="text" class="form-control <?= ($validation->hasError('jumlah_temuan')) ? 'is-invalid' : ''; ?>" id="jumlah_temuan" name="jumlah_temuan" placeholder="Jumlah Temuan" value="<?= old('jumlah_temuan'); ?>">
+                                            <?php if ($validation->hasError('jumlah_temuan')) : ?>
+                                                <div class="invalid-feedback">
+                                                    <?= $validation->getError('jumlah_temuan'); ?>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">Penjelasan</label>
+                                        <textarea name="penjelasan" id="penjelasan" class="form-control col <?= ($validation->hasError('penjelasan')) ? 'is-invalid' : ''; ?>" rows="6"><?= old('penjelasan'); ?></textarea>
+                                        <?php if ($validation->hasError('penjelasan')) : ?>
                                             <div class="invalid-feedback">
-                                                <?= $validation->getError('keterangan'); ?>
+                                                <?= $validation->getError('penjelasan'); ?>
                                             </div>
                                         <?php endif; ?>
                                     </div>
@@ -296,7 +322,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Meter Sumber & Air Olahan</h3>
+                        <h3 class="card-title">Dinding Partisi</h3>
                     </div>
 
                     <div class="clearfix">
@@ -309,40 +335,36 @@
                                 <tr>
                                     <th class="w-1">No.</th>
                                     <th>Location</th>
-                                    <th>Jam Pengecekan</th>
                                     <th>Time Stamp</th>
                                     <th>PIC</th>
-                                    <th class="text-center">Meter PDAM
-                                        <br>Floating Valve
-                                    </th>
-                                    <th class="text-center">Meter PDAM
-                                        <br>M&sup3;
-                                    </th>
-                                    <th class="text-center">Meter Deep Well
-                                        <br>M&sup3;
-                                    </th>
-                                    <th class="text-center">Meter Air Effluent
-                                        <br>M&sup3;
-                                    </th>
-                                    <th>Keterangan</th>
+                                    <th>Lantai</th>
+                                    <th>Ruang</th>
+                                    <th>Cat</th>
+                                    <th>Kaca</th>
+                                    <th>Kusen</th>
+                                    <th>Wallpaper</th>
+                                    <th>Jumlah Temuan</th>
+                                    <th>Penjelasan</th>
                                     <th class="text-end">Action</th>
                                 </tr>
                             </thead>
 
                             <tbody>
                                 <?php $i = 1 ?>
-                                <?php foreach ($getDataTableMeterSumber as $ts) : ?>
+                                <?php foreach ($getDataTableDindingPartisi as $ts) : ?>
                                     <tr>
                                         <td><?= $i ?></td>
                                         <td><?= $ts['storeName']; ?></td>
-                                        <td><?= $ts['time']; ?></td>
                                         <td><?= dateView($ts['date']); ?></td>
                                         <td><?= $ts['initial']; ?></td>
-                                        <td><?= equipmentStatus($ts['meter_pdam_floating_valve']); ?></td>
-                                        <td><?= $ts['meter_pdam_m3']; ?></td>
-                                        <td><?= $ts['meter_deep_well_m3']; ?></td>
-                                        <td><?= $ts['meter_air_effluent_m3']; ?></td>
-                                        <td><?= $ts['keterangan']; ?></td>
+                                        <td><?= $ts['lantai']; ?></td>
+                                        <td><?= $ts['ruang']; ?></td>
+                                        <td><?= equipmentStatus($ts['cat']); ?></td>
+                                        <td><?= equipmentStatus($ts['kaca']); ?></td>
+                                        <td><?= equipmentStatus($ts['kusen']); ?></td>
+                                        <td><?= equipmentStatus($ts['wallpaper']); ?></td>
+                                        <td><?= $ts['jumlah_temuan']; ?></td>
+                                        <td><?= $ts['penjelasan']; ?></td>
                                         <td class="text-end">
                                             <div class="row g-2 align-items-center mb-n3">
                                                 <div class="col-6 col-sm-4 col-md-2 col-xl-auto mb-3">
@@ -412,46 +434,6 @@
                                 </div>
                             </div>
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">Jam Pengecekan</label>
-                                <div class="col">
-                                    <input type="text" hidden readonly id="timeValue" name="time" value="<?= old('time') ?>">
-                                    <div class="form-check">
-                                        <input disabled <?php if (old('time') == "08:00:00") {
-                                                            echo ("checked");
-                                                        } ?> value="08:00:00" id="time" name="time" class="jamCheck form-check-input  <?= ($validation->hasError('time')) ? 'is-invalid' : ''; ?>" type="checkbox" onclick="jamCheck(this.value)">
-                                        <span class="form-check-label">08:00</span>
-                                    </div>
-                                    <div class="form-check">
-                                        <input disabled <?php if (old('time') == "13:00:00") {
-                                                            echo ("checked");
-                                                        } ?> value="13:00:00" id="time" name="time" class="jamCheck form-check-input  <?= ($validation->hasError('time')) ? 'is-invalid' : ''; ?>" type="checkbox" onclick="jamCheck(this.value)">
-                                        <span class="form-check-label">13:00</span>
-                                    </div>
-                                    <div class="form-check">
-                                        <input disabled <?php if (old('time') == "19:00:00") {
-                                                            echo ("checked");
-                                                        } ?> value="19:00:00" id="time" name="time" class="jamCheck form-check-input  <?= ($validation->hasError('time')) ? 'is-invalid' : ''; ?>" type="checkbox" onclick="jamCheck(this.value)">
-                                        <span class="form-check-label">19:00</span>
-                                    </div>
-                                    <?php if ($validation->hasError('time')) : ?>
-                                        <div style="font-size: 85.71428571%; color: #d63939;">
-                                            <?= $validation->getError('time'); ?>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
-                                <!-- TODO sesuain class tambahin edit di belakang -->
-                                <script>
-                                    function jamCheck(b) {
-                                        var x = document.getElementsByClassName('jamCheck');
-                                        var i;
-
-                                        for (i = 0; i < x.length; i++) {
-                                            if (x[i].value != b) x[i].checked = false;
-                                        }
-                                    }
-                                </script>
-                            </div>
-                            <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">Date</label>
                                 <div class="col">
                                     <div class="input-icon mb-2">
@@ -494,6 +476,36 @@
 
                     <div style="width: 100%; border-top: 1px solid lightgrey; height: 0; margin-top: 20px; margin-bottom: 20px;"></div>
 
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label">Lantai</label>
+                                <div class="col">
+                                    <input type="text" class="form-control <?= ($validation->hasError('lantai')) ? 'is-invalid' : ''; ?>" id="lantai" name="lantai" placeholder="Lantai" value="<?= old('lantai'); ?>">
+                                    <?php if ($validation->hasError('lantai')) : ?>
+                                        <div class="invalid-feedback">
+                                            <?= $validation->getError('lantai'); ?>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label">Ruang</label>
+                                <div class="col">
+                                    <input type="text" class="form-control <?= ($validation->hasError('ruang')) ? 'is-invalid' : ''; ?>" id="ruang" name="ruang" placeholder="Ruang" value="<?= old('ruang'); ?>">
+                                    <?php if ($validation->hasError('ruang')) : ?>
+                                        <div class="invalid-feedback">
+                                            <?= $validation->getError('ruang'); ?>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="table-responsive">
                         <table class="table table-bordered card-table table-vcenter text-nowrap datatable" style="width:100%">
                             <tbody>
@@ -503,30 +515,30 @@
                                     <td style="border: 0;"></td>
                                 </tr>
                                 <tr>
-                                    <td class="col-3" rowspan="2">Meter PDAM</td>
-                                    <td class="col-4" style="padding-left: 8px;">Floating Valve</td>
+                                    <td class="col-3" rowspan="4">Inspeksi Dinding dan Partisi</td>
+                                    <td class="col-4" style="padding-left: 8px;">Cat</td>
                                     <td>
                                         <div style="padding-top: 10px; padding-bottom: 5px;">
-                                            <input <?php if (old('meter_pdam_floating_valve') == "1") {
+                                            <input <?php if (old('cat') == "1") {
                                                         echo ("checked");
-                                                    } ?> id="meter_pdam_floating_valve" name="meter_pdam_floating_valve" type="checkbox" class="checkmeter_pdam_floating_valve <?= ($validation->hasError('meter_pdam_floating_valve')) ? 'is-invalid' : ''; ?>" onclick="checkmeter_pdam_floating_valve(this.value);" value="1">
+                                                    } ?> id="cat" name="cat" type="checkbox" class="checkcatdit <?= ($validation->hasError('cat')) ? 'is-invalid' : ''; ?>" onclick="checkcatdit(this.value);" value="1">
                                             Baik<br>
                                         </div>
                                         <div style="padding-top: 5px; padding-bottom: 10px;">
-                                            <input <?php if (old('meter_pdam_floating_valve') == "0") {
+                                            <input <?php if (old('cat') == "0") {
                                                         echo ("checked");
-                                                    } ?> id="meter_pdam_floating_valve" name="meter_pdam_floating_valve" type="checkbox" class="checkmeter_pdam_floating_valve <?= ($validation->hasError('meter_pdam_floating_valve')) ? 'is-invalid' : ''; ?>" onclick="checkmeter_pdam_floating_valve(this.value);" value="0">
+                                                    } ?> id="cat" name="cat" type="checkbox" class="checkcatdit <?= ($validation->hasError('cat')) ? 'is-invalid' : ''; ?>" onclick="checkcatdit(this.value);" value="0">
                                             Rusak
                                         </div>
-                                        <?php if ($validation->hasError('meter_pdam_floating_valve')) : ?>
+                                        <?php if ($validation->hasError('cat')) : ?>
                                             <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                <?= $validation->getError('meter_pdam_floating_valve'); ?>
+                                                <?= $validation->getError('cat'); ?>
                                             </div>
                                         <?php endif; ?>
                                     </td>
                                     <script>
-                                        function checkmeter_pdam_floating_valve(b) {
-                                            var x = document.getElementsByClassName('checkmeter_pdam_floating_valve');
+                                        function checkcatdit(b) {
+                                            var x = document.getElementsByClassName('checkcatdit');
                                             var i;
 
                                             for (i = 0; i < x.length; i++) {
@@ -536,79 +548,100 @@
                                     </script>
                                 </tr>
                                 <tr>
-                                    <td class="col-4" style="padding-left: 8px;">M&sup3;</td>
+                                    <td class="col-4" style="padding-left: 8px;">Kaca</td>
                                     <td>
-                                        <div class="row" style="padding-top: 20px;">
-                                            <div class="col-lg-6">
-                                                <div class="form-group mb-3 row">
-                                                    <div class="col">
-                                                        <div class="input-icon mb-2">
-                                                            <input value="<?= old('meter_pdam_m3'); ?>" class="form-control <?= ($validation->hasError('meter_pdam_m3')) ? 'is-invalid' : ''; ?>" id="meter_pdam_m3" name="meter_pdam_m3">
-                                                            <?php if ($validation->hasError('meter_pdam_m3')) : ?>
-                                                                <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                                    <?= $validation->getError('meter_pdam_m3'); ?>
-                                                                </div>
-                                                            <?php endif; ?>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        <div style="padding-top: 10px; padding-bottom: 5px;">
+                                            <input <?php if (old('kaca') == "1") {
+                                                        echo ("checked");
+                                                    } ?> id="kaca" name="kaca" type="checkbox" class="checkkacadit <?= ($validation->hasError('kaca')) ? 'is-invalid' : ''; ?>" onclick="checkkacadit(this.value);" value="1">
+                                            Baik<br>
                                         </div>
+                                        <div style="padding-top: 5px; padding-bottom: 10px;">
+                                            <input <?php if (old('kaca') == "0") {
+                                                        echo ("checked");
+                                                    } ?> id="kaca" name="kaca" type="checkbox" class="checkkacadit <?= ($validation->hasError('kaca')) ? 'is-invalid' : ''; ?>" onclick="checkkacadit(this.value);" value="0">
+                                            Rusak
+                                        </div>
+                                        <?php if ($validation->hasError('kaca')) : ?>
+                                            <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
+                                                <?= $validation->getError('kaca'); ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </td>
-                                </tr>
-                                <tr style="border: 0;">
-                                    <td style="border: 0;"></td>
-                                    <td style="border: 0;"></td>
-                                    <td style="border: 0;"></td>
+                                    <script>
+                                        function checkkacadit(b) {
+                                            var x = document.getElementsByClassName('checkkacadit');
+                                            var i;
+
+                                            for (i = 0; i < x.length; i++) {
+                                                if (x[i].value != b) x[i].checked = false;
+                                            }
+                                        }
+                                    </script>
                                 </tr>
                                 <tr>
-                                    <td class="col-3" rowspan="1">Meter Deep Well</td>
-                                    <td class="col-4" style="padding-left: 8px;">M&sup3;</td>
+                                    <td class="col-4" style="padding-left: 8px;">Kusen</td>
                                     <td>
-                                        <div class="row" style="padding-top: 20px;">
-                                            <div class="col-lg-6">
-                                                <div class="form-group mb-3 row">
-                                                    <div class="col">
-                                                        <div class="input-icon mb-2">
-                                                            <input value="<?= old('meter_deep_well_m3'); ?>" class="form-control <?= ($validation->hasError('meter_deep_well_m3')) ? 'is-invalid' : ''; ?>" id="meter_deep_well_m3" name="meter_deep_well_m3">
-                                                            <?php if ($validation->hasError('meter_deep_well_m3')) : ?>
-                                                                <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                                    <?= $validation->getError('meter_deep_well_m3'); ?>
-                                                                </div>
-                                                            <?php endif; ?>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        <div style="padding-top: 10px; padding-bottom: 5px;">
+                                            <input <?php if (old('kusen') == "1") {
+                                                        echo ("checked");
+                                                    } ?> id="kusen" name="kusen" type="checkbox" class="checkkusendit <?= ($validation->hasError('kusen')) ? 'is-invalid' : ''; ?>" onclick="checkkusendit(this.value);" value="1">
+                                            Baik<br>
                                         </div>
+                                        <div style="padding-top: 5px; padding-bottom: 10px;">
+                                            <input <?php if (old('kusen') == "0") {
+                                                        echo ("checked");
+                                                    } ?> id="kusen" name="kusen" type="checkbox" class="checkkusendit <?= ($validation->hasError('kusen')) ? 'is-invalid' : ''; ?>" onclick="checkkusendit(this.value);" value="0">
+                                            Rusak
+                                        </div>
+                                        <?php if ($validation->hasError('kusen')) : ?>
+                                            <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
+                                                <?= $validation->getError('kusen'); ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </td>
-                                </tr>
-                                <tr style="border: 0;">
-                                    <td style="border: 0;"></td>
-                                    <td style="border: 0;"></td>
-                                    <td style="border: 0;"></td>
+                                    <script>
+                                        function checkkusendit(b) {
+                                            var x = document.getElementsByClassName('checkkusendit');
+                                            var i;
+
+                                            for (i = 0; i < x.length; i++) {
+                                                if (x[i].value != b) x[i].checked = false;
+                                            }
+                                        }
+                                    </script>
                                 </tr>
                                 <tr>
-                                    <td class="col-3" rowspan="1">Meter Air Effluent</td>
-                                    <td class="col-4" style="padding-left: 8px;">M&sup3;</td>
+                                    <td class="col-4" style="padding-left: 8px;">Wall Paper</td>
                                     <td>
-                                        <div class="row" style="padding-top: 20px;">
-                                            <div class="col-lg-6">
-                                                <div class="form-group mb-3 row">
-                                                    <div class="col">
-                                                        <div class="input-icon mb-2">
-                                                            <input value="<?= old('meter_air_effluent_m3'); ?>" class="form-control <?= ($validation->hasError('meter_air_effluent_m3')) ? 'is-invalid' : ''; ?>" id="meter_air_effluent_m3" name="meter_air_effluent_m3">
-                                                            <?php if ($validation->hasError('meter_air_effluent_m3')) : ?>
-                                                                <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                                    <?= $validation->getError('meter_air_effluent_m3'); ?>
-                                                                </div>
-                                                            <?php endif; ?>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        <div style="padding-top: 10px; padding-bottom: 5px;">
+                                            <input <?php if (old('wallpaper') == "1") {
+                                                        echo ("checked");
+                                                    } ?> id="wallpaper" name="wallpaper" type="checkbox" class="checkwallpaperedit <?= ($validation->hasError('wallpaper')) ? 'is-invalid' : ''; ?>" onclick="checkwallpaperedit(this.value);" value="1">
+                                            Baik<br>
                                         </div>
+                                        <div style="padding-top: 5px; padding-bottom: 10px;">
+                                            <input <?php if (old('wallpaper') == "0") {
+                                                        echo ("checked");
+                                                    } ?> id="wallpaper" name="wallpaper" type="checkbox" class="checkwallpaperedit <?= ($validation->hasError('wallpaper')) ? 'is-invalid' : ''; ?>" onclick="checkwallpaperedit(this.value);" value="0">
+                                            Rusak
+                                        </div>
+                                        <?php if ($validation->hasError('wallpaper')) : ?>
+                                            <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
+                                                <?= $validation->getError('wallpaper'); ?>
+                                            </div>
+                                        <?php endif; ?>
                                     </td>
+                                    <script>
+                                        function checkwallpaperedit(b) {
+                                            var x = document.getElementsByClassName('checkwallpaperedit');
+                                            var i;
+
+                                            for (i = 0; i < x.length; i++) {
+                                                if (x[i].value != b) x[i].checked = false;
+                                            }
+                                        }
+                                    </script>
                                 </tr>
                                 <tr style="border: 0;">
                                     <td style="border: 0;"></td>
@@ -618,14 +651,28 @@
                             </tbody>
                         </table>
                     </div>
+
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">Keterangan</label>
-                                <textarea name="keterangan" id="keterangan" class="form-control col <?= ($validation->hasError('keterangan')) ? 'is-invalid' : ''; ?>" rows="6"><?= old('keterangan'); ?></textarea>
-                                <?php if ($validation->hasError('keterangan')) : ?>
+                                <label class="form-label col-3 col-form-label">Jumlah Temuan</label>
+                                <div class="col">
+                                    <input type="text" class="form-control <?= ($validation->hasError('jumlah_temuan')) ? 'is-invalid' : ''; ?>" id="jumlah_temuan" name="jumlah_temuan" placeholder="Jumlah Temuan" value="<?= old('jumlah_temuan'); ?>">
+                                    <?php if ($validation->hasError('jumlah_temuan')) : ?>
+                                        <div class="invalid-feedback">
+                                            <?= $validation->getError('jumlah_temuan'); ?>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label">Penjelasan</label>
+                                <textarea name="penjelasan" id="penjelasan" class="form-control col <?= ($validation->hasError('penjelasan')) ? 'is-invalid' : ''; ?>" rows="6"><?= old('penjelasan'); ?></textarea>
+                                <?php if ($validation->hasError('penjelasan')) : ?>
                                     <div class="invalid-feedback">
-                                        <?= $validation->getError('keterangan'); ?>
+                                        <?= $validation->getError('penjelasan'); ?>
                                     </div>
                                 <?php endif; ?>
                             </div>
@@ -671,9 +718,9 @@
     var site_url = `<?= base_url() ?>`;
     $(document).ready(function() {
 
-        let urlUpdate = site_url + '/metersumber/updateMeterSumber/';
-        let urlAjaxData = site_url + '/metersumber/ajaxDataMeterSumber/';
-        let urlDelete = site_url + '/metersumber/deleteMeterSumber/';
+        let urlUpdate = site_url + '/dindingpartisi/updateDindingPartisi/';
+        let urlAjaxData = site_url + '/dindingpartisi/ajaxDataDindingPartisi/';
+        let urlDelete = site_url + '/dindingpartisi/deleteDindingPartisi/';
         let validateChecklist = `<?= $defaultChecklist['checklist'] ?>`;
         let dataChecklist = `<?= isset($checkInspection['data']) ? json_encode($checkInspection['data']) : '' ?>`;
 
@@ -726,17 +773,18 @@
                 success: function(data) {
                     if (data.data != null) {
                         modalView.find("#idFormEdit").val(data.data.id);
-                        modalView.find("#time[value='" + data.data.time + "']").prop('checked', true);
-                        modalView.find("#timeValue").val(data.data.time);
                         modalView.find("#date").val(data.data.date);
                         modalView.find("#worker").val(data.data.initial);
                         modalView.find("#location").val(data.data.storeName);
                         modalView.find("#equipment_checklist option[value=" + data.data.equipment_checklist + "]").prop('selected', true);
-                        modalView.find("#meter_pdam_floating_valve[value=" + data.data.meter_pdam_floating_valve + "]").prop('checked', true);
-                        modalView.find("#meter_pdam_m3").val(data.data.meter_pdam_m3);
-                        modalView.find("#meter_deep_well_m3").val(data.data.meter_deep_well_m3);
-                        modalView.find("#meter_air_effluent_m3").val(data.data.meter_air_effluent_m3);
-                        modalView.find("#keterangan").val(data.data.keterangan);
+                        modalView.find("#cat[value=" + data.data.cat + "]").prop('checked', true);
+                        modalView.find("#kaca[value=" + data.data.kaca + "]").prop('checked', true);
+                        modalView.find("#kusen[value=" + data.data.kusen + "]").prop('checked', true);
+                        modalView.find("#wallpaper[value=" + data.data.wallpaper + "]").prop('checked', true);
+                        modalView.find("#lantai").val(data.data.lantai);
+                        modalView.find("#ruang").val(data.data.ruang);
+                        modalView.find("#jumlah_temuan").val(data.data.jumlah_temuan);
+                        modalView.find("#penjelasan").val(data.data.penjelasan);
                     } else {
                         Swal.fire(
                             'Error',
