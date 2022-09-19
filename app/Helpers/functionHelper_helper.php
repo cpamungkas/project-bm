@@ -217,22 +217,11 @@ function timeCheck($time, $data)
     }
     if (isset($data['data'])) {
         foreach ($data['data'] as $key => $value) {
-            if (isset($value['equipment_checklist'])) {
-                if ($value['equipment_checklist'] == 'MONTHLY') {
-                    return 'disabled';
-                }
-                if ($value['time'] == $time) {
-                    return 'disabled';
-                }
-            } else {
-                foreach ($value as $p => $q) {
-                    if ($q['equipment_checklist'] == 'MONTHLY') {
-                        return 'disabled';
-                    }
-                    if ($q['time'] == $time) {
-                        return 'disabled';
-                    }
-                }
+            if ($value['equipment_checklist'] == 'MONTHLY') {
+                return 'disabled';
+            }
+            if ($value['time'] == $time) {
+                return 'disabled';
             }
         }
     }

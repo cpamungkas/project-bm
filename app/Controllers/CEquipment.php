@@ -1319,10 +1319,9 @@ class CEquipment extends BaseController
             $data['status_deleted'] = session()->get('status_deleted');
             $data['validation'] = \Config\Services::validation();
 
-            // TODO lanjutin cek data yg udh diisi per default checklist
             $data['getDataTablePlumbing'] = $this->mPlumbing->getDataTablePlumbing();
             $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_plumbing");
-            $data['checkInspection'] = $this->mPlumbing->checkInspection($checklist['checklist']);
+            $data['checkInspection'] = $this->mEquip->checkInspection('tb_plumbing', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
             
             return view('vPlumbing', $data);

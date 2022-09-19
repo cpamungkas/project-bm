@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use DateTime;
 
 class MEquipment extends Model
 {
@@ -292,8 +293,13 @@ class MEquipment extends Model
                 break;
 
             case 'WEEKLY':
-                // TODO optimalisasi dg tanggal ambil -7 day to +7 day
-                $builder->where("DATE_FORMAT(date, '%Y-%m')", convertDate($date, 'Y-m'));
+                $awal = new DateTime($date);
+                $akhir = new DateTime($date);
+                $awal->modify("-7 days");
+                $akhir->modify("+7 days");
+                
+                $builder->where("date >=", $awal->format('Y-m-d'));
+                $builder->where("date <=", $akhir->format('Y-m-d'));
                 $arrTanggal = $builder->get()->getResultArray();
 
                 $dateWeek = convertDate($date, 'W');
@@ -301,10 +307,7 @@ class MEquipment extends Model
                 $i = 0;
                 foreach ($arrTanggal as $key => $value) {
                     if ($dateWeek == convertDate($value['date'], 'W')) {
-                        $arrWeekNum[$i] = [ $value
-                            // 'id' => $value['id'],
-                            // 'weekNum' => convertDate($value['date'], 'W')
-                        ];
+                        $arrWeekNum[$i] = $value;
                         $i++;
                     }
                 }
