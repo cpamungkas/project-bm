@@ -288,7 +288,7 @@ class MEquipment extends Model
                         'data' => $data
                     ];
                 }
-                return ['status' => false, 'l' => $this->db->getLastQuery()];
+                return ['status' => false];
                 break;
 
             case 'WEEKLY':
@@ -322,9 +322,11 @@ class MEquipment extends Model
 
             case 'MONTHLY':
                 $builder->where("DATE_FORMAT(date, '%Y-%m')", convertDate($date, 'Y-m'));
-                $result = $builder->countAllResults();
+                $result = $builder->countAllResults(false);
+                $data = $builder->get()->getResultArray();
                 if ($result > 0) {
-                    ['status' => true];
+                   return ['status' => true,
+                    'data' => $data];
                 }
                 return ['status' => false];
                 break;

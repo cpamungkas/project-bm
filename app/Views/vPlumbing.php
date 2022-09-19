@@ -1181,27 +1181,15 @@
 <script>
     var site_url = `<?= base_url() ?>`;
     $(document).ready(function() {
+        
+        let validateChecklist = `<?= $defaultChecklist['checklist'] ?>`;
+        let dataChecklist = `<?= isset($checkInspection['data']) ? json_encode($checkInspection['data']) : '' ?>`;
 
-        // TODO check inspeksi
-        //? cek sudah ada data atau belum
-        // let dataExist = '';
-        // if (dataExist) {
-        //     $("#formInputData").find("input,button,select").prop('disabled', true);
-        //     Swal.fire(
-        //         'Data Already Exists!',
-        //         'Input form will be disabled',
-        //         'warning'
-        //     )
-        // }
-
-        //? buat cek jam checklist yg ga disabled
-        // console.log($("#formInputData .jamCheck").not(":disabled").length)
-
-        if ($("#formInputData .jamCheck").not(":disabled").length == 0) {
+        if (($("#formInputData .jamCheck").not(":disabled").length == 0 && validateChecklist != "MONTHLY") || (validateChecklist == "MONTHLY" && dataChecklist != '')) {
             $("#formInputData").find("input,button,select,textarea").prop('disabled', true);
             Swal.fire(
                 'Warning!',
-                'Data for the <?= strtolower($defaultChecklist['checklist'])?> inspection already exists or the timestamp has passed! Input form will be disabled',
+                'Data for the <?= strtolower($defaultChecklist['checklist']) ?> inspection already exists or the timestamp has passed! Input form will be disabled',
                 'warning'
             )
         }

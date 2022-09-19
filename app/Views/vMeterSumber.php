@@ -673,8 +673,10 @@
         let urlUpdate = site_url + '/metersumber/updateMeterSumber/';
         let urlAjaxData = site_url + '/metersumber/ajaxDataMeterSumber/';
         let urlDelete = site_url + '/metersumber/deleteMeterSumber/';
+        let validateChecklist = `<?= $defaultChecklist['checklist'] ?>`;
+        let dataChecklist = `<?= isset($checkInspection['data']) ? json_encode($checkInspection['data']) : '' ?>`;
 
-        if ($("#formInputData .jamCheck").not(":disabled").length == 0) {
+        if (($("#formInputData .jamCheck").not(":disabled").length == 0 && validateChecklist != "MONTHLY") || (validateChecklist == "MONTHLY" && dataChecklist != '')) {
             $("#formInputData").find("input,button,select,textarea").prop('disabled', true);
             Swal.fire(
                 'Warning!',

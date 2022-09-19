@@ -389,10 +389,6 @@ class CEquipment extends BaseController
             return redirect()->to('/');
         } else {
             $rules = [
-                'equipment_checklist' => [
-                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
-                    'label' => 'Checklist',
-                ],
                 'merk' => [
                     'rules' => 'required|max_length[25]',
                     'label' => 'Merk',
@@ -654,10 +650,6 @@ class CEquipment extends BaseController
             return redirect()->to('/');
         } else {
             $rules = [
-                'equipment_checklist' => [
-                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
-                    'label' => 'Checklist',
-                ],
                 'pressure' => [
                     'rules' => 'required|max_length[6]|regex_match[^\d+(\.\d{1,2})?$]',
                     'errors' => [
@@ -914,10 +906,6 @@ class CEquipment extends BaseController
             return redirect()->to('/');
         } else {
             $rules = [
-                'equipment_checklist' => [
-                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
-                    'label' => 'Checklist',
-                ],
                 'blower1' => [
                     'rules' => 'required|in_list[0,1]',
                     'label' => 'Blower 1',

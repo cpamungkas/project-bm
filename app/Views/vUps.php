@@ -991,14 +991,17 @@
     $(document).ready(function() {
 
         // TODO fix bug klo buat monthly gmn ngeceknya
-        // if ($("#formInputData .jamCheck").not(":disabled").length == 0) {
-        //     $("#formInputData").find("input,button,select,textarea").prop('disabled', true);
-        //     Swal.fire(
-        //         'Warning!',
-        //         'Data for the <?= strtolower($defaultChecklist['checklist'])?> inspection already exists or the timestamp has passed! Input form will be disabled',
-        //         'warning'
-        //     )
-        // }
+        let validateChecklist = `<?= $defaultChecklist['checklist'] ?>`;
+        let dataChecklist = `<?= isset($checkInspection['data']) ? json_encode($checkInspection['data']) : '' ?>`;
+
+        if (($("#formInputData .jamCheck").not(":disabled").length == 0 && validateChecklist != "MONTHLY") || (validateChecklist == "MONTHLY" && dataChecklist != '')) {
+            $("#formInputData").find("input,button,select,textarea").prop('disabled', true);
+            Swal.fire(
+                'Warning!',
+                'Data for the <?= strtolower($defaultChecklist['checklist']) ?> inspection already exists or the timestamp has passed! Input form will be disabled',
+                'warning'
+            )
+        }
 
         $('#formInputData').on('submit', function() {
             $('#equipment_checklist').prop('disabled', false);
