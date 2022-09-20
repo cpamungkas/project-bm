@@ -11,6 +11,7 @@ use App\Models\MGasStation;
 use App\Models\MMeterSumber;
 use App\Models\MPintu;
 use App\Models\MPlumbing;
+use App\Models\MRollingDoor;
 use App\Models\MStore;
 use App\Models\MStp;
 use App\Models\MUser;
@@ -32,6 +33,7 @@ class CEquipment extends BaseController
         $this->mDinding = new MDindingPartisi();
         $this->mPintu = new MPintu();
         $this->mGate = new MFoldingGate();
+        $this->mRollDoor = new MRollingDoor();
         helper(['form', 'url', 'functionHelper']);
     }
 
@@ -2436,6 +2438,246 @@ class CEquipment extends BaseController
     public function ajaxDataFoldingGate()
     {
         $data = $this->mGate->ajaxDataFoldingGate($this->request->getPost('id'));
+        if ($data) {
+            $response = [
+                'success' => true,
+                'data' => $data,
+            ];
+        } else {
+            $response = [
+                'success' => false,
+            ];
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function rollingdoor()
+    {
+        $data['url'] = $this->request->uri->getSegment(1);
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $data['title'] = 'Rolling Door | B.M Apps &copy; Gramedia ' . date('Y');
+            $data['isLoggedIn'] = session()->get('isLoggedIn');
+            $data['id'] = session()->get('id');
+            $data['username'] = session()->get('username');
+            $data['name'] = session()->get('name');
+            $data['email'] = session()->get('email');
+            $data['image'] = session()->get('image');
+            $data['is_active'] = session()->get('is_active');
+            $data['role_id'] = session()->get('role_id');
+            $data['roleuser'] = session()->get('roleuser');
+            $data['superior_role_id'] = session()->get('superior_role_id');
+            $data['location'] = session()->get('location');
+            $data['level'] = session()->get('level');
+            $data['status_deleted'] = session()->get('status_deleted');
+            $data['validation'] = \Config\Services::validation();
+
+            $data['getDataTableRollingDoor'] = $this->mRollDoor->getDataTableRollingDoor();
+            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_rollingdoor");
+            $data['checkInspection'] = $this->mEquip->checkInspection('tb_rolling_door', $checklist['checklist']);
+            $data['defaultChecklist'] = $checklist;
+            
+            return view('vRollingDoor', $data);
+        }
+    }
+
+    public function saveRollingDoor()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'equipment_checklist' => [
+                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
+                    'label' => 'Checklist',
+                ],
+                'name' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Nama Folding Gate',
+                ],
+                'kunci_set' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kunci Set',
+                ],
+                'daun_slot' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Daun / Slot',
+                ],
+                'pulley' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Pulley',
+                ],
+                'pegas' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Pegas / Per',
+                ],
+                'as_batang' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'AS Batang',
+                ],
+                'side_bracket' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Side Bracket',
+                ],
+                'bottom_t_rail' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Bottom Rail T',
+                ],
+                'pilar_rel' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Pillar Rel',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/rollingdoor')->withInput()->with('validation', $validation);
+            }
+
+            $dataInput = [
+                'location' => session()->get('idstore'),
+                'time' => $this->request->getPost('time'),
+                'date' => date('Y-m-d'),
+                'worker' => session()->get('id'),
+                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
+                'name' => $this->request->getPost('name'),
+                'kunci_set' => $this->request->getPost('kunci_set'),
+                'daun_slot' => $this->request->getPost('daun_slot'),
+                'pulley' => $this->request->getPost('pulley'),
+                'pegas' => $this->request->getPost('pegas'),
+                'as_batang' => $this->request->getPost('as_batang'),
+                'side_bracket' => $this->request->getPost('side_bracket'),
+                'bottom_t_rail' => $this->request->getPost('bottom_t_rail'),
+                'pilar_rel' => $this->request->getPost('pilar_rel'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $input = $this->mRollDoor->save($dataInput);
+
+            if ($input) {
+                session()->setFlashdata('success', 'Rolling Door Data has been added');
+                return redirect()->to('/rollingdoor', 201);
+            }
+
+            session()->setFlashdata('error', 'Rolling Door Data has not been added');
+            return redirect()->to('/rollingdoor', 500);
+        }
+    }
+
+    public function updateRollingDoor($id)
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'name' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Nama Folding Gate',
+                ],
+                'kunci_set' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kunci Set',
+                ],
+                'daun_slot' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Daun / Slot',
+                ],
+                'pulley' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Pulley',
+                ],
+                'pegas' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Pegas / Per',
+                ],
+                'as_batang' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'AS Batang',
+                ],
+                'side_bracket' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Side Bracket',
+                ],
+                'bottom_t_rail' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Bottom Rail T',
+                ],
+                'pilar_rel' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Pillar Rel',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/rollingdoor')->withInput()->with('validation', $validation);
+            }
+
+            $dataUpdate = [
+                'id' => $id,
+                'name' => $this->request->getPost('name'),
+                'kunci_set' => $this->request->getPost('kunci_set'),
+                'daun_slot' => $this->request->getPost('daun_slot'),
+                'pulley' => $this->request->getPost('pulley'),
+                'pegas' => $this->request->getPost('pegas'),
+                'as_batang' => $this->request->getPost('as_batang'),
+                'side_bracket' => $this->request->getPost('side_bracket'),
+                'bottom_t_rail' => $this->request->getPost('bottom_t_rail'),
+                'pilar_rel' => $this->request->getPost('pilar_rel'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $update = $this->mRollDoor->save($dataUpdate);
+
+            if ($update) {
+                session()->setFlashdata('success', 'Rolling Door Data has been edited');
+                return redirect()->to('/rollingdoor', 200);
+            }
+
+            session()->setFlashdata('error', 'Rolling Door Data has not been edited');
+            return redirect()->to('/rollingdoor', 500);
+        }
+    }
+
+    public function deleteRollingDoor()
+    {
+        $delete = $this->mRollDoor->delete($this->request->getPost('id'));
+        if ($delete) {
+            $response = [
+                'success' => true,
+            ];
+            session()->setFlashdata('success', 'Rolling Door Data has been deleted');
+        } else {
+            $response = [
+                'success' => false,
+            ];
+            session()->setFlashdata('error', 'Rolling Door Data has not been deleted');
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function ajaxDataRollingDoor()
+    {
+        $data = $this->mRollDoor->ajaxDataRollingDoor($this->request->getPost('id'));
         if ($data) {
             $response = [
                 'success' => true,

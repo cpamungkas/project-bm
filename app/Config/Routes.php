@@ -281,6 +281,17 @@ $routes->post('foldinggate/deleteFoldingGate', 'CEquipment::deleteFoldingGate');
 $routes->get('foldinggate/ajaxDataFoldingGate', 'CEquipment::ajaxDataFoldingGate');
 $routes->post('foldinggate/ajaxDataFoldingGate', 'CEquipment::ajaxDataFoldingGate');
 
+//? Equipment Rolling Door
+$routes->get('rollingdoor', 'CEquipment::rollingdoor');
+$routes->get('rollingdoor/saveRollingDoor', 'CEquipment::saveRollingDoor');
+$routes->post('rollingdoor/saveRollingDoor', 'CEquipment::saveRollingDoor');
+$routes->get('rollingdoor/updateRollingDoor/(:num)', 'CEquipment::updateRollingDoor/$1');
+$routes->post('rollingdoor/updateRollingDoor/(:num)', 'CEquipment::updateRollingDoor/$1');
+$routes->get('rollingdoor/deleteRollingDoor', 'CEquipment::deleteRollingDoor');
+$routes->post('rollingdoor/deleteRollingDoor', 'CEquipment::deleteRollingDoor');
+$routes->get('rollingdoor/ajaxDataRollingDoor', 'CEquipment::ajaxDataRollingDoor');
+$routes->post('rollingdoor/ajaxDataRollingDoor', 'CEquipment::ajaxDataRollingDoor');
+
 
 
 
