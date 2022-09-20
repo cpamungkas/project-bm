@@ -410,7 +410,7 @@
                                                         <a class="dropdown-item " href="<?= base_url('pintu')?>">
                                                             Pintu
                                                         </a>
-                                                        <a class="dropdown-item " href="./empty.html">
+                                                        <a class="dropdown-item " href="<?= base_url('foldinggate')?>">
                                                             Folding Gate
                                                         </a>
                                                         <a class="dropdown-item " href="./empty.html">

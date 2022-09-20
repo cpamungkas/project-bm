@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\MCctv;
 use App\Models\MDindingPartisi;
 use App\Models\MEquipment;
+use App\Models\MFoldingGate;
 use App\Models\MGasStation;
 use App\Models\MMeterSumber;
 use App\Models\MPintu;
@@ -30,6 +31,7 @@ class CEquipment extends BaseController
         $this->mMeterSumber = new MMeterSumber();
         $this->mDinding = new MDindingPartisi();
         $this->mPintu = new MPintu();
+        $this->mGate = new MFoldingGate();
         helper(['form', 'url', 'functionHelper']);
     }
 
@@ -2194,6 +2196,246 @@ class CEquipment extends BaseController
     public function ajaxDataPintu()
     {
         $data = $this->mPintu->ajaxDataPintu($this->request->getPost('id'));
+        if ($data) {
+            $response = [
+                'success' => true,
+                'data' => $data,
+            ];
+        } else {
+            $response = [
+                'success' => false,
+            ];
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function foldinggate()
+    {
+        $data['url'] = $this->request->uri->getSegment(1);
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $data['title'] = 'Folding Gate | B.M Apps &copy; Gramedia ' . date('Y');
+            $data['isLoggedIn'] = session()->get('isLoggedIn');
+            $data['id'] = session()->get('id');
+            $data['username'] = session()->get('username');
+            $data['name'] = session()->get('name');
+            $data['email'] = session()->get('email');
+            $data['image'] = session()->get('image');
+            $data['is_active'] = session()->get('is_active');
+            $data['role_id'] = session()->get('role_id');
+            $data['roleuser'] = session()->get('roleuser');
+            $data['superior_role_id'] = session()->get('superior_role_id');
+            $data['location'] = session()->get('location');
+            $data['level'] = session()->get('level');
+            $data['status_deleted'] = session()->get('status_deleted');
+            $data['validation'] = \Config\Services::validation();
+
+            $data['getDataTableFoldingGate'] = $this->mGate->getDataTableFoldingGate();
+            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_foldinggate");
+            $data['checkInspection'] = $this->mEquip->checkInspection('tb_folding_gate', $checklist['checklist']);
+            $data['defaultChecklist'] = $checklist;
+            
+            return view('vFoldingGate', $data);
+        }
+    }
+
+    public function saveFoldingGate()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'equipment_checklist' => [
+                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
+                    'label' => 'Checklist',
+                ],
+                'name' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Nama Folding Gate',
+                ],
+                'kunci_set' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kunci Set',
+                ],
+                'daun' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Daun',
+                ],
+                'silangan' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Silangan',
+                ],
+                'rangka_cnp' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Rangka CNP',
+                ],
+                'rangka_unp' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Rangka UNP',
+                ],
+                'handle' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Handle',
+                ],
+                'roda_bearing' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Roda Bearing',
+                ],
+                'rel' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Rel',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/foldinggate')->withInput()->with('validation', $validation);
+            }
+
+            $dataInput = [
+                'location' => session()->get('idstore'),
+                'time' => $this->request->getPost('time'),
+                'date' => date('Y-m-d'),
+                'worker' => session()->get('id'),
+                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
+                'name' => $this->request->getPost('name'),
+                'kunci_set' => $this->request->getPost('kunci_set'),
+                'daun' => $this->request->getPost('daun'),
+                'silangan' => $this->request->getPost('silangan'),
+                'rangka_cnp' => $this->request->getPost('rangka_cnp'),
+                'rangka_unp' => $this->request->getPost('rangka_unp'),
+                'handle' => $this->request->getPost('handle'),
+                'roda_bearing' => $this->request->getPost('roda_bearing'),
+                'rel' => $this->request->getPost('rel'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $input = $this->mGate->save($dataInput);
+
+            if ($input) {
+                session()->setFlashdata('success', 'Folding Gate Data has been added');
+                return redirect()->to('/foldinggate', 201);
+            }
+
+            session()->setFlashdata('error', 'Folding Gate Data has not been added');
+            return redirect()->to('/foldinggate', 500);
+        }
+    }
+
+    public function updateFoldingGate($id)
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'name' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Nama Folding Gate',
+                ],
+                'kunci_set' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kunci Set',
+                ],
+                'daun' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Daun',
+                ],
+                'silangan' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Silangan',
+                ],
+                'rangka_cnp' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Rangka CNP',
+                ],
+                'rangka_unp' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Rangka UNP',
+                ],
+                'handle' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Handle',
+                ],
+                'roda_bearing' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Roda Bearing',
+                ],
+                'rel' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Rel',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/foldinggate')->withInput()->with('validation', $validation);
+            }
+
+            $dataUpdate = [
+                'id' => $id,
+                'name' => $this->request->getPost('name'),
+                'kunci_set' => $this->request->getPost('kunci_set'),
+                'daun' => $this->request->getPost('daun'),
+                'silangan' => $this->request->getPost('silangan'),
+                'rangka_cnp' => $this->request->getPost('rangka_cnp'),
+                'rangka_unp' => $this->request->getPost('rangka_unp'),
+                'handle' => $this->request->getPost('handle'),
+                'roda_bearing' => $this->request->getPost('roda_bearing'),
+                'rel' => $this->request->getPost('rel'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $update = $this->mGate->save($dataUpdate);
+
+            if ($update) {
+                session()->setFlashdata('success', 'Folding Gate Data has been edited');
+                return redirect()->to('/foldinggate', 200);
+            }
+
+            session()->setFlashdata('error', 'Folding Gate Data has not been edited');
+            return redirect()->to('/foldinggate', 500);
+        }
+    }
+
+    public function deleteFoldingGate()
+    {
+        $delete = $this->mGate->delete($this->request->getPost('id'));
+        if ($delete) {
+            $response = [
+                'success' => true,
+            ];
+            session()->setFlashdata('success', 'Folding Gate Data has been deleted');
+        } else {
+            $response = [
+                'success' => false,
+            ];
+            session()->setFlashdata('error', 'Folding Gate Data has not been deleted');
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function ajaxDataFoldingGate()
+    {
+        $data = $this->mGate->ajaxDataFoldingGate($this->request->getPost('id'));
         if ($data) {
             $response = [
                 'success' => true,

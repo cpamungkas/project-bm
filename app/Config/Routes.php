@@ -270,6 +270,17 @@ $routes->post('pintu/deletePintu', 'CEquipment::deletePintu');
 $routes->get('pintu/ajaxDataPintu', 'CEquipment::ajaxDataPintu');
 $routes->post('pintu/ajaxDataPintu', 'CEquipment::ajaxDataPintu');
 
+//? Equipment Folding Gate
+$routes->get('foldinggate', 'CEquipment::foldinggate');
+$routes->get('foldinggate/saveFoldingGate', 'CEquipment::saveFoldingGate');
+$routes->post('foldinggate/saveFoldingGate', 'CEquipment::saveFoldingGate');
+$routes->get('foldinggate/updateFoldingGate/(:num)', 'CEquipment::updateFoldingGate/$1');
+$routes->post('foldinggate/updateFoldingGate/(:num)', 'CEquipment::updateFoldingGate/$1');
+$routes->get('foldinggate/deleteFoldingGate', 'CEquipment::deleteFoldingGate');
+$routes->post('foldinggate/deleteFoldingGate', 'CEquipment::deleteFoldingGate');
+$routes->get('foldinggate/ajaxDataFoldingGate', 'CEquipment::ajaxDataFoldingGate');
+$routes->post('foldinggate/ajaxDataFoldingGate', 'CEquipment::ajaxDataFoldingGate');
+
 
 
 
