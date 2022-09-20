@@ -8,6 +8,7 @@ use App\Models\MDindingPartisi;
 use App\Models\MEquipment;
 use App\Models\MGasStation;
 use App\Models\MMeterSumber;
+use App\Models\MPintu;
 use App\Models\MPlumbing;
 use App\Models\MStore;
 use App\Models\MStp;
@@ -28,6 +29,7 @@ class CEquipment extends BaseController
         $this->mPlumbing = new MPlumbing();
         $this->mMeterSumber = new MMeterSumber();
         $this->mDinding = new MDindingPartisi();
+        $this->mPintu = new MPintu();
         helper(['form', 'url', 'functionHelper']);
     }
 
@@ -1972,6 +1974,226 @@ class CEquipment extends BaseController
     public function ajaxDataDindingPartisi()
     {
         $data = $this->mDinding->ajaxDataDindingPartisi($this->request->getPost('id'));
+        if ($data) {
+            $response = [
+                'success' => true,
+                'data' => $data,
+            ];
+        } else {
+            $response = [
+                'success' => false,
+            ];
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function pintu()
+    {
+        $data['url'] = $this->request->uri->getSegment(1);
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $data['title'] = 'Pintu | B.M Apps &copy; Gramedia ' . date('Y');
+            $data['isLoggedIn'] = session()->get('isLoggedIn');
+            $data['id'] = session()->get('id');
+            $data['username'] = session()->get('username');
+            $data['name'] = session()->get('name');
+            $data['email'] = session()->get('email');
+            $data['image'] = session()->get('image');
+            $data['is_active'] = session()->get('is_active');
+            $data['role_id'] = session()->get('role_id');
+            $data['roleuser'] = session()->get('roleuser');
+            $data['superior_role_id'] = session()->get('superior_role_id');
+            $data['location'] = session()->get('location');
+            $data['level'] = session()->get('level');
+            $data['status_deleted'] = session()->get('status_deleted');
+            $data['validation'] = \Config\Services::validation();
+
+            $data['getDataTablePintu'] = $this->mPintu->getDataTablePintu();
+            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_pintu");
+            $data['checkInspection'] = $this->mEquip->checkInspection('tb_pintu', $checklist['checklist']);
+            $data['defaultChecklist'] = $checklist;
+            
+            return view('vPintu', $data);
+        }
+    }
+
+    public function savePintu()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'equipment_checklist' => [
+                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
+                    'label' => 'Checklist',
+                ],
+                'ruang' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Ruang',
+                ],
+                'lantai' => [
+                    'rules' => 'required|max_length[2]',
+                    'label' => 'Lantai',
+                ],
+                'cat' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Cat',
+                ],
+                'kunci' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kunci',
+                ],
+                'kusen' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kusen',
+                ],
+                'handle_pintu' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Handle Pintu',
+                ],
+                'engsel' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Engsel',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/pintu')->withInput()->with('validation', $validation);
+            }
+
+            $dataInput = [
+                'location' => session()->get('idstore'),
+                'time' => $this->request->getPost('time'),
+                'date' => date('Y-m-d'),
+                'worker' => session()->get('id'),
+                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
+                'ruang' => $this->request->getPost('ruang'),
+                'lantai' => $this->request->getPost('lantai'),
+                'cat' => $this->request->getPost('cat'),
+                'kunci' => $this->request->getPost('kunci'),
+                'kusen' => $this->request->getPost('kusen'),
+                'handle_pintu' => $this->request->getPost('handle_pintu'),
+                'engsel' => $this->request->getPost('engsel'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $input = $this->mPintu->save($dataInput);
+
+            if ($input) {
+                session()->setFlashdata('success', 'Pintu Data has been added');
+                return redirect()->to('/pintu', 201);
+            }
+
+            session()->setFlashdata('error', 'Pintu Data has not been added');
+            return redirect()->to('/pintu', 500);
+        }
+    }
+
+    public function updatePintu($id)
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'ruang' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Ruang',
+                ],
+                'lantai' => [
+                    'rules' => 'required|max_length[2]',
+                    'label' => 'Lantai',
+                ],
+                'cat' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Cat',
+                ],
+                'kunci' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kunci',
+                ],
+                'kusen' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kusen',
+                ],
+                'handle_pintu' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Handle Pintu',
+                ],
+                'engsel' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Engsel',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/pintu')->withInput()->with('validation', $validation);
+            }
+
+            $dataUpdate = [
+                'id' => $id,
+                'ruang' => $this->request->getPost('ruang'),
+                'lantai' => $this->request->getPost('lantai'),
+                'cat' => $this->request->getPost('cat'),
+                'kunci' => $this->request->getPost('kunci'),
+                'kusen' => $this->request->getPost('kusen'),
+                'handle_pintu' => $this->request->getPost('handle_pintu'),
+                'engsel' => $this->request->getPost('engsel'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $update = $this->mPintu->save($dataUpdate);
+
+            if ($update) {
+                session()->setFlashdata('success', 'Pintu Data has been edited');
+                return redirect()->to('/pintu', 200);
+            }
+
+            session()->setFlashdata('error', 'Pintu Data has not been edited');
+            return redirect()->to('/pintu', 500);
+        }
+    }
+
+    public function deletePintu()
+    {
+        $delete = $this->mPintu->delete($this->request->getPost('id'));
+        if ($delete) {
+            $response = [
+                'success' => true,
+            ];
+            session()->setFlashdata('success', 'Pintu Data has been deleted');
+        } else {
+            $response = [
+                'success' => false,
+            ];
+            session()->setFlashdata('error', 'Pintu Data has not been deleted');
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function ajaxDataPintu()
+    {
+        $data = $this->mPintu->ajaxDataPintu($this->request->getPost('id'));
         if ($data) {
             $response = [
                 'success' => true,

@@ -259,6 +259,17 @@ $routes->post('dindingpartisi/deleteDindingPartisi', 'CEquipment::deleteDindingP
 $routes->get('dindingpartisi/ajaxDataDindingPartisi', 'CEquipment::ajaxDataDindingPartisi');
 $routes->post('dindingpartisi/ajaxDataDindingPartisi', 'CEquipment::ajaxDataDindingPartisi');
 
+//? Equipment Pintu
+$routes->get('pintu', 'CEquipment::pintu');
+$routes->get('pintu/savePintu', 'CEquipment::savePintu');
+$routes->post('pintu/savePintu', 'CEquipment::savePintu');
+$routes->get('pintu/updatePintu/(:num)', 'CEquipment::updatePintu/$1');
+$routes->post('pintu/updatePintu/(:num)', 'CEquipment::updatePintu/$1');
+$routes->get('pintu/deletePintu', 'CEquipment::deletePintu');
+$routes->post('pintu/deletePintu', 'CEquipment::deletePintu');
+$routes->get('pintu/ajaxDataPintu', 'CEquipment::ajaxDataPintu');
+$routes->post('pintu/ajaxDataPintu', 'CEquipment::ajaxDataPintu');
+
 
 
 

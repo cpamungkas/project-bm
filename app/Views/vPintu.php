@@ -31,11 +31,11 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Dinding Partisi</h3>
+                        <h3 class="card-title">Pintu</h3>
                     </div>
 
                     <div class="card-body">
-                        <form id="formInputData" action="<?php echo base_url('dindingpartisi/saveDindingPartisi'); ?>" method="post">
+                        <form id="formInputData" action="<?php echo base_url('pintu/savePintu'); ?>" method="post">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group mb-3 row">
@@ -128,7 +128,7 @@
                                             <td style="border: 0;"></td>
                                         </tr>
                                         <tr>
-                                            <td class="col-3" rowspan="4">Inspeksi Dinding dan Partisi</td>
+                                            <td class="col-3" rowspan="5">Inspeksi Pintu</td>
                                             <td class="col-4" style="padding-left: 8px;">Cat</td>
                                             <td>
                                                 <div style="padding-top: 10px; padding-bottom: 5px;">
@@ -161,29 +161,29 @@
                                             </script>
                                         </tr>
                                         <tr>
-                                            <td class="col-4" style="padding-left: 8px;">Kaca</td>
+                                            <td class="col-4" style="padding-left: 8px;">Kunci</td>
                                             <td>
                                                 <div style="padding-top: 10px; padding-bottom: 5px;">
-                                                    <input <?php if (old('kaca') == "1") {
+                                                    <input <?php if (old('kunci') == "1") {
                                                                 echo ("checked");
-                                                            } ?> id="kaca" name="kaca" type="checkbox" class="checkkaca <?= ($validation->hasError('kaca')) ? 'is-invalid' : ''; ?>" onclick="checkkaca(this.value);" value="1">
+                                                            } ?> id="kunci" name="kunci" type="checkbox" class="checkkunci <?= ($validation->hasError('kunci')) ? 'is-invalid' : ''; ?>" onclick="checkkunci(this.value);" value="1">
                                                     Baik<br>
                                                 </div>
                                                 <div style="padding-top: 5px; padding-bottom: 10px;">
-                                                    <input <?php if (old('kaca') == "0") {
+                                                    <input <?php if (old('kunci') == "0") {
                                                                 echo ("checked");
-                                                            } ?> id="kaca" name="kaca" type="checkbox" class="checkkaca <?= ($validation->hasError('kaca')) ? 'is-invalid' : ''; ?>" onclick="checkkaca(this.value);" value="0">
+                                                            } ?> id="kunci" name="kunci" type="checkbox" class="checkkunci <?= ($validation->hasError('kunci')) ? 'is-invalid' : ''; ?>" onclick="checkkunci(this.value);" value="0">
                                                     Rusak
                                                 </div>
-                                                <?php if ($validation->hasError('kaca')) : ?>
+                                                <?php if ($validation->hasError('kunci')) : ?>
                                                     <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                        <?= $validation->getError('kaca'); ?>
+                                                        <?= $validation->getError('kunci'); ?>
                                                     </div>
                                                 <?php endif; ?>
                                             </td>
                                             <script>
-                                                function checkkaca(b) {
-                                                    var x = document.getElementsByClassName('checkkaca');
+                                                function checkkunci(b) {
+                                                    var x = document.getElementsByClassName('checkkunci');
                                                     var i;
 
                                                     for (i = 0; i < x.length; i++) {
@@ -225,29 +225,61 @@
                                             </script>
                                         </tr>
                                         <tr>
-                                            <td class="col-4" style="padding-left: 8px;">Wall Paper</td>
+                                            <td class="col-4" style="padding-left: 8px;">Handle Pintu</td>
                                             <td>
                                                 <div style="padding-top: 10px; padding-bottom: 5px;">
-                                                    <input <?php if (old('wallpaper') == "1") {
+                                                    <input <?php if (old('handle_pintu') == "1") {
                                                                 echo ("checked");
-                                                            } ?> id="wallpaper" name="wallpaper" type="checkbox" class="checkwallpaper <?= ($validation->hasError('wallpaper')) ? 'is-invalid' : ''; ?>" onclick="checkwallpaper(this.value);" value="1">
+                                                            } ?> id="handle_pintu" name="handle_pintu" type="checkbox" class="checkhandle_pintu <?= ($validation->hasError('handle_pintu')) ? 'is-invalid' : ''; ?>" onclick="checkhandle_pintu(this.value);" value="1">
                                                     Baik<br>
                                                 </div>
                                                 <div style="padding-top: 5px; padding-bottom: 10px;">
-                                                    <input <?php if (old('wallpaper') == "0") {
+                                                    <input <?php if (old('handle_pintu') == "0") {
                                                                 echo ("checked");
-                                                            } ?> id="wallpaper" name="wallpaper" type="checkbox" class="checkwallpaper <?= ($validation->hasError('wallpaper')) ? 'is-invalid' : ''; ?>" onclick="checkwallpaper(this.value);" value="0">
+                                                            } ?> id="handle_pintu" name="handle_pintu" type="checkbox" class="checkhandle_pintu <?= ($validation->hasError('handle_pintu')) ? 'is-invalid' : ''; ?>" onclick="checkhandle_pintu(this.value);" value="0">
                                                     Rusak
                                                 </div>
-                                                <?php if ($validation->hasError('wallpaper')) : ?>
+                                                <?php if ($validation->hasError('handle_pintu')) : ?>
                                                     <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                        <?= $validation->getError('wallpaper'); ?>
+                                                        <?= $validation->getError('handle_pintu'); ?>
                                                     </div>
                                                 <?php endif; ?>
                                             </td>
                                             <script>
-                                                function checkwallpaper(b) {
-                                                    var x = document.getElementsByClassName('checkwallpaper');
+                                                function checkhandle_pintu(b) {
+                                                    var x = document.getElementsByClassName('checkhandle_pintu');
+                                                    var i;
+
+                                                    for (i = 0; i < x.length; i++) {
+                                                        if (x[i].value != b) x[i].checked = false;
+                                                    }
+                                                }
+                                            </script>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-4" style="padding-left: 8px;">Engsel</td>
+                                            <td>
+                                                <div style="padding-top: 10px; padding-bottom: 5px;">
+                                                    <input <?php if (old('engsel') == "1") {
+                                                                echo ("checked");
+                                                            } ?> id="engsel" name="engsel" type="checkbox" class="checkengsel <?= ($validation->hasError('engsel')) ? 'is-invalid' : ''; ?>" onclick="checkengsel(this.value);" value="1">
+                                                    Baik<br>
+                                                </div>
+                                                <div style="padding-top: 5px; padding-bottom: 10px;">
+                                                    <input <?php if (old('engsel') == "0") {
+                                                                echo ("checked");
+                                                            } ?> id="engsel" name="engsel" type="checkbox" class="checkengsel <?= ($validation->hasError('engsel')) ? 'is-invalid' : ''; ?>" onclick="checkengsel(this.value);" value="0">
+                                                    Rusak
+                                                </div>
+                                                <?php if ($validation->hasError('engsel')) : ?>
+                                                    <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
+                                                        <?= $validation->getError('engsel'); ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </td>
+                                            <script>
+                                                function checkengsel(b) {
+                                                    var x = document.getElementsByClassName('checkengsel');
                                                     var i;
 
                                                     for (i = 0; i < x.length; i++) {
@@ -322,7 +354,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Dinding Partisi</h3>
+                        <h3 class="card-title">Pintu</h3>
                     </div>
 
                     <div class="clearfix">
@@ -340,9 +372,10 @@
                                     <th>Lantai</th>
                                     <th>Ruang</th>
                                     <th>Cat</th>
-                                    <th>Kaca</th>
+                                    <th>Kunci</th>
                                     <th>Kusen</th>
-                                    <th>Wallpaper</th>
+                                    <th>Handle Pintu</th>
+                                    <th>Engsel</th>
                                     <th>Jumlah Temuan</th>
                                     <th>Penjelasan</th>
                                     <th class="text-end">Action</th>
@@ -351,7 +384,7 @@
 
                             <tbody>
                                 <?php $i = 1 ?>
-                                <?php foreach ($getDataTableDindingPartisi as $ts) : ?>
+                                <?php foreach ($getDataTablePintu as $ts) : ?>
                                     <tr>
                                         <td><?= $i ?></td>
                                         <td><?= $ts['storeName']; ?></td>
@@ -360,9 +393,10 @@
                                         <td><?= $ts['lantai']; ?></td>
                                         <td><?= $ts['ruang']; ?></td>
                                         <td><?= equipmentStatus($ts['cat']); ?></td>
-                                        <td><?= equipmentStatus($ts['kaca']); ?></td>
+                                        <td><?= equipmentStatus($ts['kunci']); ?></td>
                                         <td><?= equipmentStatus($ts['kusen']); ?></td>
-                                        <td><?= equipmentStatus($ts['wallpaper']); ?></td>
+                                        <td><?= equipmentStatus($ts['handle_pintu']); ?></td>
+                                        <td><?= equipmentStatus($ts['engsel']); ?></td>
                                         <td><?= $ts['jumlah_temuan']; ?></td>
                                         <td><?= $ts['penjelasan']; ?></td>
                                         <td class="text-end">
@@ -417,7 +451,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit Data Dinding Partisi</h5>
+                <h5 class="modal-title">Edit Data Pintu</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -515,19 +549,19 @@
                                     <td style="border: 0;"></td>
                                 </tr>
                                 <tr>
-                                    <td class="col-3" rowspan="4">Inspeksi Dinding dan Partisi</td>
+                                    <td class="col-3" rowspan="5">Inspeksi Pintu</td>
                                     <td class="col-4" style="padding-left: 8px;">Cat</td>
                                     <td>
                                         <div style="padding-top: 10px; padding-bottom: 5px;">
                                             <input <?php if (old('cat') == "1") {
                                                         echo ("checked");
-                                                    } ?> id="cat" name="cat" type="checkbox" class="checkcatdit <?= ($validation->hasError('cat')) ? 'is-invalid' : ''; ?>" onclick="checkcatdit(this.value);" value="1">
+                                                    } ?> id="cat" name="cat" type="checkbox" class="checkcatEdit <?= ($validation->hasError('cat')) ? 'is-invalid' : ''; ?>" onclick="checkcatEdit(this.value);" value="1">
                                             Baik<br>
                                         </div>
                                         <div style="padding-top: 5px; padding-bottom: 10px;">
                                             <input <?php if (old('cat') == "0") {
                                                         echo ("checked");
-                                                    } ?> id="cat" name="cat" type="checkbox" class="checkcatdit <?= ($validation->hasError('cat')) ? 'is-invalid' : ''; ?>" onclick="checkcatdit(this.value);" value="0">
+                                                    } ?> id="cat" name="cat" type="checkbox" class="checkcatEdit <?= ($validation->hasError('cat')) ? 'is-invalid' : ''; ?>" onclick="checkcatEdit(this.value);" value="0">
                                             Rusak
                                         </div>
                                         <?php if ($validation->hasError('cat')) : ?>
@@ -537,8 +571,8 @@
                                         <?php endif; ?>
                                     </td>
                                     <script>
-                                        function checkcatdit(b) {
-                                            var x = document.getElementsByClassName('checkcatdit');
+                                        function checkcatEdit(b) {
+                                            var x = document.getElementsByClassName('checkcatEdit');
                                             var i;
 
                                             for (i = 0; i < x.length; i++) {
@@ -548,29 +582,29 @@
                                     </script>
                                 </tr>
                                 <tr>
-                                    <td class="col-4" style="padding-left: 8px;">Kaca</td>
+                                    <td class="col-4" style="padding-left: 8px;">Kunci</td>
                                     <td>
                                         <div style="padding-top: 10px; padding-bottom: 5px;">
-                                            <input <?php if (old('kaca') == "1") {
+                                            <input <?php if (old('kunci') == "1") {
                                                         echo ("checked");
-                                                    } ?> id="kaca" name="kaca" type="checkbox" class="checkkacadit <?= ($validation->hasError('kaca')) ? 'is-invalid' : ''; ?>" onclick="checkkacadit(this.value);" value="1">
+                                                    } ?> id="kunci" name="kunci" type="checkbox" class="checkkunciEdit <?= ($validation->hasError('kunci')) ? 'is-invalid' : ''; ?>" onclick="checkkunciEdit(this.value);" value="1">
                                             Baik<br>
                                         </div>
                                         <div style="padding-top: 5px; padding-bottom: 10px;">
-                                            <input <?php if (old('kaca') == "0") {
+                                            <input <?php if (old('kunci') == "0") {
                                                         echo ("checked");
-                                                    } ?> id="kaca" name="kaca" type="checkbox" class="checkkacadit <?= ($validation->hasError('kaca')) ? 'is-invalid' : ''; ?>" onclick="checkkacadit(this.value);" value="0">
+                                                    } ?> id="kunci" name="kunci" type="checkbox" class="checkkunciEdit <?= ($validation->hasError('kunci')) ? 'is-invalid' : ''; ?>" onclick="checkkunciEdit(this.value);" value="0">
                                             Rusak
                                         </div>
-                                        <?php if ($validation->hasError('kaca')) : ?>
+                                        <?php if ($validation->hasError('kunci')) : ?>
                                             <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                <?= $validation->getError('kaca'); ?>
+                                                <?= $validation->getError('kunci'); ?>
                                             </div>
                                         <?php endif; ?>
                                     </td>
                                     <script>
-                                        function checkkacadit(b) {
-                                            var x = document.getElementsByClassName('checkkacadit');
+                                        function checkkunciEdit(b) {
+                                            var x = document.getElementsByClassName('checkkunciEdit');
                                             var i;
 
                                             for (i = 0; i < x.length; i++) {
@@ -585,13 +619,13 @@
                                         <div style="padding-top: 10px; padding-bottom: 5px;">
                                             <input <?php if (old('kusen') == "1") {
                                                         echo ("checked");
-                                                    } ?> id="kusen" name="kusen" type="checkbox" class="checkkusendit <?= ($validation->hasError('kusen')) ? 'is-invalid' : ''; ?>" onclick="checkkusendit(this.value);" value="1">
+                                                    } ?> id="kusen" name="kusen" type="checkbox" class="checkkusenEdit <?= ($validation->hasError('kusen')) ? 'is-invalid' : ''; ?>" onclick="checkkusenEdit(this.value);" value="1">
                                             Baik<br>
                                         </div>
                                         <div style="padding-top: 5px; padding-bottom: 10px;">
                                             <input <?php if (old('kusen') == "0") {
                                                         echo ("checked");
-                                                    } ?> id="kusen" name="kusen" type="checkbox" class="checkkusendit <?= ($validation->hasError('kusen')) ? 'is-invalid' : ''; ?>" onclick="checkkusendit(this.value);" value="0">
+                                                    } ?> id="kusen" name="kusen" type="checkbox" class="checkkusenEdit <?= ($validation->hasError('kusen')) ? 'is-invalid' : ''; ?>" onclick="checkkusenEdit(this.value);" value="0">
                                             Rusak
                                         </div>
                                         <?php if ($validation->hasError('kusen')) : ?>
@@ -601,8 +635,8 @@
                                         <?php endif; ?>
                                     </td>
                                     <script>
-                                        function checkkusendit(b) {
-                                            var x = document.getElementsByClassName('checkkusendit');
+                                        function checkkusenEdit(b) {
+                                            var x = document.getElementsByClassName('checkkusenEdit');
                                             var i;
 
                                             for (i = 0; i < x.length; i++) {
@@ -612,29 +646,61 @@
                                     </script>
                                 </tr>
                                 <tr>
-                                    <td class="col-4" style="padding-left: 8px;">Wall Paper</td>
+                                    <td class="col-4" style="padding-left: 8px;">Handle Pintu</td>
                                     <td>
                                         <div style="padding-top: 10px; padding-bottom: 5px;">
-                                            <input <?php if (old('wallpaper') == "1") {
+                                            <input <?php if (old('handle_pintu') == "1") {
                                                         echo ("checked");
-                                                    } ?> id="wallpaper" name="wallpaper" type="checkbox" class="checkwallpaperedit <?= ($validation->hasError('wallpaper')) ? 'is-invalid' : ''; ?>" onclick="checkwallpaperedit(this.value);" value="1">
+                                                    } ?> id="handle_pintu" name="handle_pintu" type="checkbox" class="checkhandle_pintuEdit <?= ($validation->hasError('handle_pintu')) ? 'is-invalid' : ''; ?>" onclick="checkhandle_pintuEdit(this.value);" value="1">
                                             Baik<br>
                                         </div>
                                         <div style="padding-top: 5px; padding-bottom: 10px;">
-                                            <input <?php if (old('wallpaper') == "0") {
+                                            <input <?php if (old('handle_pintu') == "0") {
                                                         echo ("checked");
-                                                    } ?> id="wallpaper" name="wallpaper" type="checkbox" class="checkwallpaperedit <?= ($validation->hasError('wallpaper')) ? 'is-invalid' : ''; ?>" onclick="checkwallpaperedit(this.value);" value="0">
+                                                    } ?> id="handle_pintu" name="handle_pintu" type="checkbox" class="checkhandle_pintuEdit <?= ($validation->hasError('handle_pintu')) ? 'is-invalid' : ''; ?>" onclick="checkhandle_pintuEdit(this.value);" value="0">
                                             Rusak
                                         </div>
-                                        <?php if ($validation->hasError('wallpaper')) : ?>
+                                        <?php if ($validation->hasError('handle_pintu')) : ?>
                                             <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                <?= $validation->getError('wallpaper'); ?>
+                                                <?= $validation->getError('handle_pintu'); ?>
                                             </div>
                                         <?php endif; ?>
                                     </td>
                                     <script>
-                                        function checkwallpaperedit(b) {
-                                            var x = document.getElementsByClassName('checkwallpaperedit');
+                                        function checkhandle_pintuEdit(b) {
+                                            var x = document.getElementsByClassName('checkhandle_pintuEdit');
+                                            var i;
+
+                                            for (i = 0; i < x.length; i++) {
+                                                if (x[i].value != b) x[i].checked = false;
+                                            }
+                                        }
+                                    </script>
+                                </tr>
+                                <tr>
+                                    <td class="col-4" style="padding-left: 8px;">Engsel</td>
+                                    <td>
+                                        <div style="padding-top: 10px; padding-bottom: 5px;">
+                                            <input <?php if (old('engsel') == "1") {
+                                                        echo ("checked");
+                                                    } ?> id="engsel" name="engsel" type="checkbox" class="checkengselEdit <?= ($validation->hasError('engsel')) ? 'is-invalid' : ''; ?>" onclick="checkengselEdit(this.value);" value="1">
+                                            Baik<br>
+                                        </div>
+                                        <div style="padding-top: 5px; padding-bottom: 10px;">
+                                            <input <?php if (old('engsel') == "0") {
+                                                        echo ("checked");
+                                                    } ?> id="engsel" name="engsel" type="checkbox" class="checkengselEdit <?= ($validation->hasError('engsel')) ? 'is-invalid' : ''; ?>" onclick="checkengselEdit(this.value);" value="0">
+                                            Rusak
+                                        </div>
+                                        <?php if ($validation->hasError('engsel')) : ?>
+                                            <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
+                                                <?= $validation->getError('engsel'); ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </td>
+                                    <script>
+                                        function checkengselEdit(b) {
+                                            var x = document.getElementsByClassName('checkengselEdit');
                                             var i;
 
                                             for (i = 0; i < x.length; i++) {
@@ -718,9 +784,9 @@
     var site_url = `<?= base_url() ?>`;
     $(document).ready(function() {
 
-        let urlUpdate = site_url + '/dindingpartisi/updateDindingPartisi/';
-        let urlAjaxData = site_url + '/dindingpartisi/ajaxDataDindingPartisi/';
-        let urlDelete = site_url + '/dindingpartisi/deleteDindingPartisi/';
+        let urlUpdate = site_url + '/pintu/updatePintu/';
+        let urlAjaxData = site_url + '/pintu/ajaxDataPintu/';
+        let urlDelete = site_url + '/pintu/deletePintu/';
         let validateChecklist = `<?= $defaultChecklist['checklist'] ?>`;
         let dataChecklist = `<?= isset($checkInspection['data']) ? json_encode($checkInspection['data']) : '' ?>`;
 
@@ -778,9 +844,10 @@
                         modalView.find("#location").val(data.data.storeName);
                         modalView.find("#equipment_checklist option[value=" + data.data.equipment_checklist + "]").prop('selected', true);
                         modalView.find("#cat[value=" + data.data.cat + "]").prop('checked', true);
-                        modalView.find("#kaca[value=" + data.data.kaca + "]").prop('checked', true);
+                        modalView.find("#kunci[value=" + data.data.kunci + "]").prop('checked', true);
                         modalView.find("#kusen[value=" + data.data.kusen + "]").prop('checked', true);
-                        modalView.find("#wallpaper[value=" + data.data.wallpaper + "]").prop('checked', true);
+                        modalView.find("#handle_pintu[value=" + data.data.handle_pintu + "]").prop('checked', true);
+                        modalView.find("#engsel[value=" + data.data.engsel + "]").prop('checked', true);
                         modalView.find("#lantai").val(data.data.lantai);
                         modalView.find("#ruang").val(data.data.ruang);
                         modalView.find("#jumlah_temuan").val(data.data.jumlah_temuan);
