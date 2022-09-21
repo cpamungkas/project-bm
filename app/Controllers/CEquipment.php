@@ -15,6 +15,7 @@ use App\Models\MPlumbing;
 use App\Models\MRollingDoor;
 use App\Models\MStore;
 use App\Models\MStp;
+use App\Models\MTelephonePabx;
 use App\Models\MUser;
 use App\Models\MUps;
 
@@ -36,6 +37,7 @@ class CEquipment extends BaseController
         $this->mGate = new MFoldingGate();
         $this->mRollDoor = new MRollingDoor();
         $this->mFireFight = new MFireFighting();
+        $this->mTelpPabx = new MTelephonePabx();
         helper(['form', 'url', 'functionHelper']);
     }
 
@@ -3050,6 +3052,245 @@ class CEquipment extends BaseController
     public function ajaxDataFireFighting()
     {
         $data = $this->mFireFight->ajaxDataFireFighting($this->request->getPost('id'));
+        if ($data) {
+            $response = [
+                'success' => true,
+                'data' => $data,
+            ];
+        } else {
+            $response = [
+                'success' => false,
+            ];
+        }
+        return $this->response->setJSON($response);
+    }
+    public function telppabx()
+    {
+        $data['url'] = $this->request->uri->getSegment(1);
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $data['title'] = 'Telephone & PABX | B.M Apps &copy; Gramedia ' . date('Y');
+            $data['isLoggedIn'] = session()->get('isLoggedIn');
+            $data['id'] = session()->get('id');
+            $data['username'] = session()->get('username');
+            $data['name'] = session()->get('name');
+            $data['email'] = session()->get('email');
+            $data['image'] = session()->get('image');
+            $data['is_active'] = session()->get('is_active');
+            $data['role_id'] = session()->get('role_id');
+            $data['roleuser'] = session()->get('roleuser');
+            $data['superior_role_id'] = session()->get('superior_role_id');
+            $data['location'] = session()->get('location');
+            $data['level'] = session()->get('level');
+            $data['status_deleted'] = session()->get('status_deleted');
+            $data['validation'] = \Config\Services::validation();
+
+            $data['getDataTableTelpPabx'] = $this->mTelpPabx->getDataTableTelpPabx();
+            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_telephonepabx");
+            $data['checkInspection'] = $this->mEquip->checkInspection('tb_telephone_pabx', $checklist['checklist']);
+            $data['defaultChecklist'] = $checklist;
+            
+            return view('vTelephoneDanPABX', $data);
+        }
+    }
+
+    public function saveTelpPabx()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'equipment_checklist' => [
+                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
+                    'label' => 'Checklist',
+                ],
+                'ruang' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Ruang',
+                ],
+                'lantai' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Lantai',
+                ],
+                'line_co' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Line CO',
+                ],
+                'line_ext' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Line Ext',
+                ],
+                'microphone' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Microphone',
+                ],
+                'kabel_handle' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kabel Handle',
+                ],
+                'speaker' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Speaker',
+                ],
+                'layar_display' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Layar Display',
+                ],
+                'roset' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Roset',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/telppabx')->withInput()->with('validation', $validation);
+            }
+
+            $dataInput = [
+                'location' => session()->get('idstore'),
+                'time' => $this->request->getPost('time'),
+                'date' => date('Y-m-d'),
+                'worker' => session()->get('id'),
+                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
+                'ruang' => $this->request->getPost('ruang'),
+                'lantai' => $this->request->getPost('lantai'),
+                'line_co' => $this->request->getPost('line_co'),
+                'line_ext' => $this->request->getPost('line_ext'),
+                'microphone' => $this->request->getPost('microphone'),
+                'kabel_handle' => $this->request->getPost('kabel_handle'),
+                'speaker' => $this->request->getPost('speaker'),
+                'layar_display' => $this->request->getPost('layar_display'),
+                'roset' => $this->request->getPost('roset'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $input = $this->mTelpPabx->save($dataInput);
+
+            if ($input) {
+                session()->setFlashdata('success', 'Telephone & PABX Data has been added');
+                return redirect()->to('/telppabx', 201);
+            }
+
+            session()->setFlashdata('error', 'Telephone & PABX Data has not been added');
+            return redirect()->to('/telppabx', 500);
+        }
+    }
+
+    public function updateTelpPabx($id)
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'ruang' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Ruang',
+                ],
+                'lantai' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Lantai',
+                ],
+                'line_co' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Line CO',
+                ],
+                'line_ext' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Line Ext',
+                ],
+                'microphone' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Microphone',
+                ],
+                'kabel_handle' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kabel Handle',
+                ],
+                'speaker' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Speaker',
+                ],
+                'layar_display' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Layar Display',
+                ],
+                'roset' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Roset',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/telppabx')->withInput()->with('validation', $validation);
+            }
+
+            $dataUpdate = [
+                'id' => $id,
+                'ruang' => $this->request->getPost('ruang'),
+                'lantai' => $this->request->getPost('lantai'),
+                'line_co' => $this->request->getPost('line_co'),
+                'line_ext' => $this->request->getPost('line_ext'),
+                'microphone' => $this->request->getPost('microphone'),
+                'kabel_handle' => $this->request->getPost('kabel_handle'),
+                'speaker' => $this->request->getPost('speaker'),
+                'layar_display' => $this->request->getPost('layar_display'),
+                'roset' => $this->request->getPost('roset'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $update = $this->mTelpPabx->save($dataUpdate);
+
+            if ($update) {
+                session()->setFlashdata('success', 'Telephone & PABX Data has been edited');
+                return redirect()->to('/telppabx', 200);
+            }
+
+            session()->setFlashdata('error', 'Telephone & PABX Data has not been edited');
+            return redirect()->to('/telppabx', 500);
+        }
+    }
+
+    public function deleteTelpPabx()
+    {
+        $delete = $this->mTelpPabx->delete($this->request->getPost('id'));
+        if ($delete) {
+            $response = [
+                'success' => true,
+            ];
+            session()->setFlashdata('success', 'Telephone & PABX Data has been deleted');
+        } else {
+            $response = [
+                'success' => false,
+            ];
+            session()->setFlashdata('error', 'Telephone & PABX Data has not been deleted');
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function ajaxDataTelpPabx()
+    {
+        $data = $this->mTelpPabx->ajaxDataTelpPabx($this->request->getPost('id'));
         if ($data) {
             $response = [
                 'success' => true,

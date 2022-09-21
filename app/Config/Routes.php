@@ -303,6 +303,17 @@ $routes->post('firefighting/deleteFireFighting', 'CEquipment::deleteFireFighting
 $routes->get('firefighting/ajaxDataFireFighting', 'CEquipment::ajaxDataFireFighting');
 $routes->post('firefighting/ajaxDataFireFighting', 'CEquipment::ajaxDataFireFighting');
 
+//? Equipment Telephone & PABX
+$routes->get('telppabx', 'CEquipment::telppabx');
+$routes->get('telppabx/saveTelpPabx', 'CEquipment::saveTelpPabx');
+$routes->post('telppabx/saveTelpPabx', 'CEquipment::saveTelpPabx');
+$routes->get('telppabx/updateTelpPabx/(:num)', 'CEquipment::updateTelpPabx/$1');
+$routes->post('telppabx/updateTelpPabx/(:num)', 'CEquipment::updateTelpPabx/$1');
+$routes->get('telppabx/deleteTelpPabx', 'CEquipment::deleteTelpPabx');
+$routes->post('telppabx/deleteTelpPabx', 'CEquipment::deleteTelpPabx');
+$routes->get('telppabx/ajaxDataTelpPabx', 'CEquipment::ajaxDataTelpPabx');
+$routes->post('telppabx/ajaxDataTelpPabx', 'CEquipment::ajaxDataTelpPabx');
+
 
 
 

@@ -1816,7 +1816,6 @@
         oldData = <?= json_encode(session()->get('_ci_old_input')) ?>;
         if (oldData != null && oldData.post.idFormEdit != null) {
             $("#modal-editData").modal('show');
-            console.log(oldData.post.idFormEdit);
             $("#formEditData").attr('action', urlUpdate + oldData.post.idFormEdit);
 
             $("#formInputData").find("input:text, textarea").not("#location,#date,#worker").val("");
