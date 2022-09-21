@@ -624,13 +624,13 @@
                                         <div style="padding-top: 10px; padding-bottom: 5px;">
                                             <input <?php if (old('line_co') == "1") {
                                                         echo ("checked");
-                                                    } ?> id="line_co" name="line_co" type="checkbox" class="checkline_co <?= ($validation->hasError('line_co')) ? 'is-invalid' : ''; ?>" onclick="checkline_co(this.value);" value="1">
+                                                    } ?> id="line_co" name="line_co" type="checkbox" class="checkline_coEdit <?= ($validation->hasError('line_co')) ? 'is-invalid' : ''; ?>" onclick="checkline_coEdit(this.value);" value="1">
                                             Baik<br>
                                         </div>
                                         <div style="padding-top: 5px; padding-bottom: 10px;">
                                             <input <?php if (old('line_co') == "0") {
                                                         echo ("checked");
-                                                    } ?> id="line_co" name="line_co" type="checkbox" class="checkline_co <?= ($validation->hasError('line_co')) ? 'is-invalid' : ''; ?>" onclick="checkline_co(this.value);" value="0">
+                                                    } ?> id="line_co" name="line_co" type="checkbox" class="checkline_coEdit <?= ($validation->hasError('line_co')) ? 'is-invalid' : ''; ?>" onclick="checkline_coEdit(this.value);" value="0">
                                             Rusak
                                         </div>
                                         <?php if ($validation->hasError('line_co')) : ?>
@@ -640,8 +640,8 @@
                                         <?php endif; ?>
                                     </td>
                                     <script>
-                                        function checkline_co(b) {
-                                            var x = document.getElementsByClassName('checkline_co');
+                                        function checkline_coEdit(b) {
+                                            var x = document.getElementsByClassName('checkline_coEdit');
                                             var i;
 
                                             for (i = 0; i < x.length; i++) {
@@ -656,13 +656,13 @@
                                         <div style="padding-top: 10px; padding-bottom: 5px;">
                                             <input <?php if (old('line_ext') == "1") {
                                                         echo ("checked");
-                                                    } ?> id="line_ext" name="line_ext" type="checkbox" class="checkline_ext <?= ($validation->hasError('line_ext')) ? 'is-invalid' : ''; ?>" onclick="checkline_ext(this.value);" value="1">
+                                                    } ?> id="line_ext" name="line_ext" type="checkbox" class="checkline_extEdit <?= ($validation->hasError('line_ext')) ? 'is-invalid' : ''; ?>" onclick="checkline_extEdit(this.value);" value="1">
                                             Baik<br>
                                         </div>
                                         <div style="padding-top: 5px; padding-bottom: 10px;">
                                             <input <?php if (old('line_ext') == "0") {
                                                         echo ("checked");
-                                                    } ?> id="line_ext" name="line_ext" type="checkbox" class="checkline_ext <?= ($validation->hasError('line_ext')) ? 'is-invalid' : ''; ?>" onclick="checkline_ext(this.value);" value="0">
+                                                    } ?> id="line_ext" name="line_ext" type="checkbox" class="checkline_extEdit <?= ($validation->hasError('line_ext')) ? 'is-invalid' : ''; ?>" onclick="checkline_extEdit(this.value);" value="0">
                                             Rusak
                                         </div>
                                         <?php if ($validation->hasError('line_ext')) : ?>
@@ -672,8 +672,8 @@
                                         <?php endif; ?>
                                     </td>
                                     <script>
-                                        function checkline_ext(b) {
-                                            var x = document.getElementsByClassName('checkline_ext');
+                                        function checkline_extEdit(b) {
+                                            var x = document.getElementsByClassName('checkline_extEdit');
                                             var i;
 
                                             for (i = 0; i < x.length; i++) {
@@ -689,13 +689,13 @@
                                         <div style="padding-top: 10px; padding-bottom: 5px;">
                                             <input <?php if (old('microphone') == "1") {
                                                         echo ("checked");
-                                                    } ?> id="microphone" name="microphone" type="checkbox" class="checkmicrophone <?= ($validation->hasError('microphone')) ? 'is-invalid' : ''; ?>" onclick="checkmicrophone(this.value);" value="1">
+                                                    } ?> id="microphone" name="microphone" type="checkbox" class="checkmicrophoneEdit <?= ($validation->hasError('microphone')) ? 'is-invalid' : ''; ?>" onclick="checkmicrophoneEdit(this.value);" value="1">
                                             Baik<br>
                                         </div>
                                         <div style="padding-top: 5px; padding-bottom: 10px;">
                                             <input <?php if (old('microphone') == "0") {
                                                         echo ("checked");
-                                                    } ?> id="microphone" name="microphone" type="checkbox" class="checkmicrophone <?= ($validation->hasError('microphone')) ? 'is-invalid' : ''; ?>" onclick="checkmicrophone(this.value);" value="0">
+                                                    } ?> id="microphone" name="microphone" type="checkbox" class="checkmicrophoneEdit <?= ($validation->hasError('microphone')) ? 'is-invalid' : ''; ?>" onclick="checkmicrophoneEdit(this.value);" value="0">
                                             Rusak
                                         </div>
                                         <?php if ($validation->hasError('microphone')) : ?>
@@ -705,8 +705,8 @@
                                         <?php endif; ?>
                                     </td>
                                     <script>
-                                        function checkmicrophone(b) {
-                                            var x = document.getElementsByClassName('checkmicrophone');
+                                        function checkmicrophoneEdit(b) {
+                                            var x = document.getElementsByClassName('checkmicrophoneEdit');
                                             var i;
 
                                             for (i = 0; i < x.length; i++) {
@@ -721,13 +721,13 @@
                                         <div style="padding-top: 10px; padding-bottom: 5px;">
                                             <input <?php if (old('kabel_handle') == "1") {
                                                         echo ("checked");
-                                                    } ?> id="kabel_handle" name="kabel_handle" type="checkbox" class="checkkabel_handle <?= ($validation->hasError('kabel_handle')) ? 'is-invalid' : ''; ?>" onclick="checkkabel_handle(this.value);" value="1">
+                                                    } ?> id="kabel_handle" name="kabel_handle" type="checkbox" class="checkkabel_handleEdit <?= ($validation->hasError('kabel_handle')) ? 'is-invalid' : ''; ?>" onclick="checkkabel_handleEdit(this.value);" value="1">
                                             Baik<br>
                                         </div>
                                         <div style="padding-top: 5px; padding-bottom: 10px;">
                                             <input <?php if (old('kabel_handle') == "0") {
                                                         echo ("checked");
-                                                    } ?> id="kabel_handle" name="kabel_handle" type="checkbox" class="checkkabel_handle <?= ($validation->hasError('kabel_handle')) ? 'is-invalid' : ''; ?>" onclick="checkkabel_handle(this.value);" value="0">
+                                                    } ?> id="kabel_handle" name="kabel_handle" type="checkbox" class="checkkabel_handleEdit <?= ($validation->hasError('kabel_handle')) ? 'is-invalid' : ''; ?>" onclick="checkkabel_handleEdit(this.value);" value="0">
                                             Rusak
                                         </div>
                                         <?php if ($validation->hasError('kabel_handle')) : ?>
@@ -737,8 +737,8 @@
                                         <?php endif; ?>
                                     </td>
                                     <script>
-                                        function checkkabel_handle(b) {
-                                            var x = document.getElementsByClassName('checkkabel_handle');
+                                        function checkkabel_handleEdit(b) {
+                                            var x = document.getElementsByClassName('checkkabel_handleEdit');
                                             var i;
 
                                             for (i = 0; i < x.length; i++) {
@@ -753,13 +753,13 @@
                                         <div style="padding-top: 10px; padding-bottom: 5px;">
                                             <input <?php if (old('speaker') == "1") {
                                                         echo ("checked");
-                                                    } ?> id="speaker" name="speaker" type="checkbox" class="checkspeaker <?= ($validation->hasError('speaker')) ? 'is-invalid' : ''; ?>" onclick="checkspeaker(this.value);" value="1">
+                                                    } ?> id="speaker" name="speaker" type="checkbox" class="checkspeakerEdit <?= ($validation->hasError('speaker')) ? 'is-invalid' : ''; ?>" onclick="checkspeakerEdit(this.value);" value="1">
                                             Baik<br>
                                         </div>
                                         <div style="padding-top: 5px; padding-bottom: 10px;">
                                             <input <?php if (old('speaker') == "0") {
                                                         echo ("checked");
-                                                    } ?> id="speaker" name="speaker" type="checkbox" class="checkspeaker <?= ($validation->hasError('speaker')) ? 'is-invalid' : ''; ?>" onclick="checkspeaker(this.value);" value="0">
+                                                    } ?> id="speaker" name="speaker" type="checkbox" class="checkspeakerEdit <?= ($validation->hasError('speaker')) ? 'is-invalid' : ''; ?>" onclick="checkspeakerEdit(this.value);" value="0">
                                             Rusak
                                         </div>
                                         <?php if ($validation->hasError('speaker')) : ?>
@@ -769,8 +769,8 @@
                                         <?php endif; ?>
                                     </td>
                                     <script>
-                                        function checkspeaker(b) {
-                                            var x = document.getElementsByClassName('checkspeaker');
+                                        function checkspeakerEdit(b) {
+                                            var x = document.getElementsByClassName('checkspeakerEdit');
                                             var i;
 
                                             for (i = 0; i < x.length; i++) {
@@ -785,13 +785,13 @@
                                         <div style="padding-top: 10px; padding-bottom: 5px;">
                                             <input <?php if (old('layar_display') == "1") {
                                                         echo ("checked");
-                                                    } ?> id="layar_display" name="layar_display" type="checkbox" class="checklayar_display <?= ($validation->hasError('layar_display')) ? 'is-invalid' : ''; ?>" onclick="checklayar_display(this.value);" value="1">
+                                                    } ?> id="layar_display" name="layar_display" type="checkbox" class="checklayar_displayEdit <?= ($validation->hasError('layar_display')) ? 'is-invalid' : ''; ?>" onclick="checklayar_displayEdit(this.value);" value="1">
                                             Baik<br>
                                         </div>
                                         <div style="padding-top: 5px; padding-bottom: 10px;">
                                             <input <?php if (old('layar_display') == "0") {
                                                         echo ("checked");
-                                                    } ?> id="layar_display" name="layar_display" type="checkbox" class="checklayar_display <?= ($validation->hasError('layar_display')) ? 'is-invalid' : ''; ?>" onclick="checklayar_display(this.value);" value="0">
+                                                    } ?> id="layar_display" name="layar_display" type="checkbox" class="checklayar_displayEdit <?= ($validation->hasError('layar_display')) ? 'is-invalid' : ''; ?>" onclick="checklayar_displayEdit(this.value);" value="0">
                                             Rusak
                                         </div>
                                         <?php if ($validation->hasError('layar_display')) : ?>
@@ -801,8 +801,8 @@
                                         <?php endif; ?>
                                     </td>
                                     <script>
-                                        function checklayar_display(b) {
-                                            var x = document.getElementsByClassName('checklayar_display');
+                                        function checklayar_displayEdit(b) {
+                                            var x = document.getElementsByClassName('checklayar_displayEdit');
                                             var i;
 
                                             for (i = 0; i < x.length; i++) {
@@ -817,13 +817,13 @@
                                         <div style="padding-top: 10px; padding-bottom: 5px;">
                                             <input <?php if (old('roset') == "1") {
                                                         echo ("checked");
-                                                    } ?> id="roset" name="roset" type="checkbox" class="checkroset <?= ($validation->hasError('roset')) ? 'is-invalid' : ''; ?>" onclick="checkroset(this.value);" value="1">
+                                                    } ?> id="roset" name="roset" type="checkbox" class="checkrosetEdit <?= ($validation->hasError('roset')) ? 'is-invalid' : ''; ?>" onclick="checkrosetEdit(this.value);" value="1">
                                             Baik<br>
                                         </div>
                                         <div style="padding-top: 5px; padding-bottom: 10px;">
                                             <input <?php if (old('roset') == "0") {
                                                         echo ("checked");
-                                                    } ?> id="roset" name="roset" type="checkbox" class="checkroset <?= ($validation->hasError('roset')) ? 'is-invalid' : ''; ?>" onclick="checkroset(this.value);" value="0">
+                                                    } ?> id="roset" name="roset" type="checkbox" class="checkrosetEdit <?= ($validation->hasError('roset')) ? 'is-invalid' : ''; ?>" onclick="checkrosetEdit(this.value);" value="0">
                                             Rusak
                                         </div>
                                         <?php if ($validation->hasError('roset')) : ?>
@@ -833,8 +833,8 @@
                                         <?php endif; ?>
                                     </td>
                                     <script>
-                                        function checkroset(b) {
-                                            var x = document.getElementsByClassName('checkroset');
+                                        function checkrosetEdit(b) {
+                                            var x = document.getElementsByClassName('checkrosetEdit');
                                             var i;
 
                                             for (i = 0; i < x.length; i++) {
