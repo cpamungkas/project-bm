@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\MCctv;
 use App\Models\MDindingPartisi;
 use App\Models\MEquipment;
+use App\Models\MFireFighting;
 use App\Models\MFoldingGate;
 use App\Models\MGasStation;
 use App\Models\MMeterSumber;
@@ -34,6 +35,7 @@ class CEquipment extends BaseController
         $this->mPintu = new MPintu();
         $this->mGate = new MFoldingGate();
         $this->mRollDoor = new MRollingDoor();
+        $this->mFireFight = new MFireFighting();
         helper(['form', 'url', 'functionHelper']);
     }
 
@@ -2678,6 +2680,376 @@ class CEquipment extends BaseController
     public function ajaxDataRollingDoor()
     {
         $data = $this->mRollDoor->ajaxDataRollingDoor($this->request->getPost('id'));
+        if ($data) {
+            $response = [
+                'success' => true,
+                'data' => $data,
+            ];
+        } else {
+            $response = [
+                'success' => false,
+            ];
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function firefighting()
+    {
+        $data['url'] = $this->request->uri->getSegment(1);
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $data['title'] = 'Fire Fighting | B.M Apps &copy; Gramedia ' . date('Y');
+            $data['isLoggedIn'] = session()->get('isLoggedIn');
+            $data['id'] = session()->get('id');
+            $data['username'] = session()->get('username');
+            $data['name'] = session()->get('name');
+            $data['email'] = session()->get('email');
+            $data['image'] = session()->get('image');
+            $data['is_active'] = session()->get('is_active');
+            $data['role_id'] = session()->get('role_id');
+            $data['roleuser'] = session()->get('roleuser');
+            $data['superior_role_id'] = session()->get('superior_role_id');
+            $data['location'] = session()->get('location');
+            $data['level'] = session()->get('level');
+            $data['status_deleted'] = session()->get('status_deleted');
+            $data['validation'] = \Config\Services::validation();
+
+            $data['getDataTableFireFighting'] = $this->mFireFight->getDataTableFireFighting();
+            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_firefighting");
+            $data['checkInspection'] = $this->mEquip->checkInspection('tb_fire_fighting', $checklist['checklist']);
+            $data['defaultChecklist'] = $checklist;
+            
+            return view('vFireFighting', $data);
+        }
+    }
+
+    public function saveFireFighting()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'equipment_checklist' => [
+                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
+                    'label' => 'Checklist',
+                ],
+                'type' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Type',
+                ],
+                'jumlah_zona' => [
+                    'rules' => 'required|max_length[30]|numeric',
+                    'label' => 'Jumlah Zona',
+                ],
+                'mcfa_normal' => [
+                    'rules' => 'permit_empty|in_list[0,1]',
+                    'label' => 'MCFA - Normal',
+                ],
+                'mcfa_alarm_silenced' => [
+                    'rules' => 'permit_empty|in_list[0,1]',
+                    'label' => 'MCFA - Alarm Silenced',
+                ],
+                'mcfa_fire' => [
+                    'rules' => 'permit_empty|in_list[0,1]',
+                    'label' => 'MCFA - Fire',
+                ],
+                'mcfa_trouble' => [
+                    'rules' => 'permit_empty|in_list[0,1]',
+                    'label' => 'MCFA - Trouble',
+                ],
+                'lt1_smoke_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 1 - Smoke Detector',
+                ],
+                'lt1_heat_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 1 - Heat Detector',
+                ],
+                'lt1_flow_switch' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 1 - Flow Switch',
+                ],
+                'lt2_smoke_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 2 - Smoke Detector',
+                ],
+                'lt2_heat_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 2 - Heat Detector',
+                ],
+                'lt2_flow_switch' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 2 - Flow Switch',
+                ],
+                'lt3_smoke_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 3 - Smoke Detector',
+                ],
+                'lt3_heat_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 3 - Heat Detector',
+                ],
+                'lt3_flow_switch' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 3 - Flow Switch',
+                ],
+                'lt4_smoke_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 4 - Smoke Detector',
+                ],
+                'lt4_heat_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 4 - Heat Detector',
+                ],
+                'lt4_flow_switch' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 4 - Flow Switch',
+                ],
+                'hydrant_pillar' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Hydrant Pillar',
+                ],
+                'siamese_connection' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Siamese Connection',
+                ],
+                'lampu_dan_bell' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lampu & Bell',
+                ],
+                'break_glass' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Break Glass',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/firefighting')->withInput()->with('validation', $validation);
+            }
+
+            $dataInput = [
+                'location' => session()->get('idstore'),
+                'time' => $this->request->getPost('time'),
+                'date' => date('Y-m-d'),
+                'worker' => session()->get('id'),
+                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
+                'type' => $this->request->getPost('type'),
+                'jumlah_zona' => $this->request->getPost('jumlah_zona'),
+                'mcfa_normal' => $this->request->getPost('mcfa_normal'),
+                'mcfa_alarm_silenced' => $this->request->getPost('mcfa_alarm_silenced'),
+                'mcfa_fire' => $this->request->getPost('mcfa_fire'),
+                'mcfa_trouble' => $this->request->getPost('mcfa_trouble'),
+                'lt1_smoke_detector' => $this->request->getPost('lt1_smoke_detector'),
+                'lt1_heat_detector' => $this->request->getPost('lt1_heat_detector'),
+                'lt1_flow_switch' => $this->request->getPost('lt1_flow_switch'),
+                'lt2_smoke_detector' => $this->request->getPost('lt2_smoke_detector'),
+                'lt2_heat_detector' => $this->request->getPost('lt2_heat_detector'),
+                'lt2_flow_switch' => $this->request->getPost('lt2_flow_switch'),
+                'lt3_smoke_detector' => $this->request->getPost('lt3_smoke_detector'),
+                'lt3_heat_detector' => $this->request->getPost('lt3_heat_detector'),
+                'lt3_flow_switch' => $this->request->getPost('lt3_flow_switch'),
+                'lt4_smoke_detector' => $this->request->getPost('lt4_smoke_detector'),
+                'lt4_heat_detector' => $this->request->getPost('lt4_heat_detector'),
+                'lt4_flow_switch' => $this->request->getPost('lt4_flow_switch'),
+                'hydrant_pillar' => $this->request->getPost('hydrant_pillar'),
+                'siamese_connection' => $this->request->getPost('siamese_connection'),
+                'lampu_dan_bell' => $this->request->getPost('lampu_dan_bell'),
+                'break_glass' => $this->request->getPost('break_glass'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $input = $this->mFireFight->save($dataInput);
+
+            if ($input) {
+                session()->setFlashdata('success', 'Fire Fighting Data has been added');
+                return redirect()->to('/firefighting', 201);
+            }
+
+            session()->setFlashdata('error', 'Fire Fighting Data has not been added');
+            return redirect()->to('/firefighting', 500);
+        }
+    }
+
+    public function updateFireFighting($id)
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'type' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Type',
+                ],
+                'jumlah_zona' => [
+                    'rules' => 'required|max_length[30]|numeric',
+                    'label' => 'Jumlah Zona',
+                ],
+                'mcfa_normal' => [
+                    'rules' => 'permit_empty|in_list[0,1]',
+                    'label' => 'MCFA - Normal',
+                ],
+                'mcfa_alarm_silenced' => [
+                    'rules' => 'permit_empty|in_list[0,1]',
+                    'label' => 'MCFA - Alarm Silenced',
+                ],
+                'mcfa_fire' => [
+                    'rules' => 'permit_empty|in_list[0,1]',
+                    'label' => 'MCFA - Fire',
+                ],
+                'mcfa_trouble' => [
+                    'rules' => 'permit_empty|in_list[0,1]',
+                    'label' => 'MCFA - Trouble',
+                ],
+                'lt1_smoke_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 1 - Smoke Detector',
+                ],
+                'lt1_heat_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 1 - Heat Detector',
+                ],
+                'lt1_flow_switch' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 1 - Flow Switch',
+                ],
+                'lt2_smoke_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 2 - Smoke Detector',
+                ],
+                'lt2_heat_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 2 - Heat Detector',
+                ],
+                'lt2_flow_switch' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 2 - Flow Switch',
+                ],
+                'lt3_smoke_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 3 - Smoke Detector',
+                ],
+                'lt3_heat_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 3 - Heat Detector',
+                ],
+                'lt3_flow_switch' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 3 - Flow Switch',
+                ],
+                'lt4_smoke_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 4 - Smoke Detector',
+                ],
+                'lt4_heat_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 4 - Heat Detector',
+                ],
+                'lt4_flow_switch' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 4 - Flow Switch',
+                ],
+                'hydrant_pillar' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Hydrant Pillar',
+                ],
+                'siamese_connection' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Siamese Connection',
+                ],
+                'lampu_dan_bell' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lampu & Bell',
+                ],
+                'break_glass' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Break Glass',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/firefighting')->withInput()->with('validation', $validation);
+            }
+
+            $dataUpdate = [
+                'id' => $id,
+                'type' => $this->request->getPost('type'),
+                'jumlah_zona' => $this->request->getPost('jumlah_zona'),
+                'mcfa_normal' => $this->request->getPost('mcfa_normal'),
+                'mcfa_alarm_silenced' => $this->request->getPost('mcfa_alarm_silenced'),
+                'mcfa_fire' => $this->request->getPost('mcfa_fire'),
+                'mcfa_trouble' => $this->request->getPost('mcfa_trouble'),
+                'lt1_smoke_detector' => $this->request->getPost('lt1_smoke_detector'),
+                'lt1_heat_detector' => $this->request->getPost('lt1_heat_detector'),
+                'lt1_flow_switch' => $this->request->getPost('lt1_flow_switch'),
+                'lt2_smoke_detector' => $this->request->getPost('lt2_smoke_detector'),
+                'lt2_heat_detector' => $this->request->getPost('lt2_heat_detector'),
+                'lt2_flow_switch' => $this->request->getPost('lt2_flow_switch'),
+                'lt3_smoke_detector' => $this->request->getPost('lt3_smoke_detector'),
+                'lt3_heat_detector' => $this->request->getPost('lt3_heat_detector'),
+                'lt3_flow_switch' => $this->request->getPost('lt3_flow_switch'),
+                'lt4_smoke_detector' => $this->request->getPost('lt4_smoke_detector'),
+                'lt4_heat_detector' => $this->request->getPost('lt4_heat_detector'),
+                'lt4_flow_switch' => $this->request->getPost('lt4_flow_switch'),
+                'hydrant_pillar' => $this->request->getPost('hydrant_pillar'),
+                'siamese_connection' => $this->request->getPost('siamese_connection'),
+                'lampu_dan_bell' => $this->request->getPost('lampu_dan_bell'),
+                'break_glass' => $this->request->getPost('break_glass'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $update = $this->mFireFight->save($dataUpdate);
+
+            if ($update) {
+                session()->setFlashdata('success', 'Fire Fighting Data has been edited');
+                return redirect()->to('/firefighting', 200);
+            }
+
+            session()->setFlashdata('error', 'Fire Fighting Data has not been edited');
+            return redirect()->to('/firefighting', 500);
+        }
+    }
+
+    public function deleteFireFighting()
+    {
+        $delete = $this->mFireFight->delete($this->request->getPost('id'));
+        if ($delete) {
+            $response = [
+                'success' => true,
+            ];
+            session()->setFlashdata('success', 'Fire Fighting Data has been deleted');
+        } else {
+            $response = [
+                'success' => false,
+            ];
+            session()->setFlashdata('error', 'Fire Fighting Data has not been deleted');
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function ajaxDataFireFighting()
+    {
+        $data = $this->mFireFight->ajaxDataFireFighting($this->request->getPost('id'));
         if ($data) {
             $response = [
                 'success' => true,

@@ -292,6 +292,17 @@ $routes->post('rollingdoor/deleteRollingDoor', 'CEquipment::deleteRollingDoor');
 $routes->get('rollingdoor/ajaxDataRollingDoor', 'CEquipment::ajaxDataRollingDoor');
 $routes->post('rollingdoor/ajaxDataRollingDoor', 'CEquipment::ajaxDataRollingDoor');
 
+//? Equipment Fire Fighting
+$routes->get('firefighting', 'CEquipment::firefighting');
+$routes->get('firefighting/saveFireFighting', 'CEquipment::saveFireFighting');
+$routes->post('firefighting/saveFireFighting', 'CEquipment::saveFireFighting');
+$routes->get('firefighting/updateFireFighting/(:num)', 'CEquipment::updateFireFighting/$1');
+$routes->post('firefighting/updateFireFighting/(:num)', 'CEquipment::updateFireFighting/$1');
+$routes->get('firefighting/deleteFireFighting', 'CEquipment::deleteFireFighting');
+$routes->post('firefighting/deleteFireFighting', 'CEquipment::deleteFireFighting');
+$routes->get('firefighting/ajaxDataFireFighting', 'CEquipment::ajaxDataFireFighting');
+$routes->post('firefighting/ajaxDataFireFighting', 'CEquipment::ajaxDataFireFighting');
+
 
 
 

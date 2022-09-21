@@ -416,7 +416,7 @@
                                                         <a class="dropdown-item " href="<?= base_url('rollingdoor')?>">
                                                             Rolling Door
                                                         </a>
-                                                        <a class="dropdown-item " href="./empty.html">
+                                                        <a class="dropdown-item " href="<?= base_url('firefighting')?>">
                                                             Fire Fighting
                                                         </a>
                                                         <a class="dropdown-item " href="./empty.html">
