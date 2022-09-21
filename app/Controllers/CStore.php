@@ -5,6 +5,7 @@ namespace App\Controllers;
 use CodeIgniter\Controller;
 use App\Models\MUser;
 use App\Models\MStore;
+use App\Models\MEquipment;
 use CodeIgniter\HTTP\Request;
 
 class CStore extends BaseController
@@ -13,6 +14,7 @@ class CStore extends BaseController
     {
         $this->mUser = new MUser();
         $this->mStore = new MStore();
+        $this->mEquipment = new MEquipment();
 
         // $this->request = new Request();
         helper(['form', 'url']);
@@ -48,13 +50,15 @@ class CStore extends BaseController
             $data['getKWHMeter2'] = $this->mStore->getKWHMeter2();
 
             $data['validation'] = \Config\Services::validation();
+
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            
             return view('vStore', $data);
             // echo " Hello STore";
         }
     }
 
-    public function saveStore()
-    {
+    public function saveStore() {
         session();
         $idUrl = $this->request->uri->getSegment(3);
         $data['url'] = $idUrl;
@@ -95,7 +99,7 @@ class CStore extends BaseController
                 $validation = \Config\Services::validation();
                 return redirect()->to('/store')->withInput()->with('validation', $validation);
             }
-            if ($this->request->getPost('kwhmeter1') == '') {
+            if ($this->request->getPost('kwhmeter1') == 0) {
                 session()->setFlashdata('errorkwhmeter1', 'Please fill KWH Meter 1');
                 $validation = \Config\Services::validation();
                 return redirect()->to('/store')->withInput()->with('validation', $validation);
@@ -142,8 +146,7 @@ class CStore extends BaseController
         }
     }
 
-    public function updateStore($id)
-    {
+    public function updateStore($id) {
         session();
         $idUrl = $this->request->uri->getSegment(3);
         $data['url'] = $idUrl;
@@ -152,95 +155,62 @@ class CStore extends BaseController
         if (!session()->get('isLoggedIn')) {
             return redirect()->to('/');
         } else {
+            if ($this->request->getPost('editstorecode') == '') {
+                if (!$this->validate([
+                    'editstorecode' => [
+                        'rules' => 'required',
+                        'errors' => [
+                            'required' => '{field} cannot be empty'
+                        ],
+                        'label' => 'Store Code'
+                    ],
+                ])) {
 
-            $StoreCode = $this->request->getPost('editstorecode');
-            $StoreName = $this->request->getPost('editstorename');
-            $kwhmeter1 = $this->request->getPost('editkwhmeter1');
-            $idpln1 = $this->request->getPost('editidpln1');
-            $kwhmeter2 = $this->request->getPost('editkwhmeter2');
-            $idpln2 = $this->request->getPost('editidpln2');
-            // dd($pln1);
-            if ($StoreCode == '') {
-                session()->setFlashdata('error', 'Please check Store Code!');
-                return redirect()->to('/store');
-            }
-
-            if ($StoreName == '') {
-                session()->setFlashdata('error', 'Please check Store name. Store name cannot be empty!');
-                return redirect()->to('/store');
-            }
-
-            if ($kwhmeter1 == '') {
-                session()->setFlashdata('error', 'Please fill KWH Meter 1');
-                return redirect()->to('/store');
-            }
-
-            if ($idpln1 == '') {
-                session()->setFlashdata('error', 'Please check Id PLN 1. Id PLN 1 cannot be empty!');
-                return redirect()->to('/store');
-            }
-
-            if (strlen($idpln1) <> 12) {
-                session()->setFlashdata('error', 'Id PLN 1 must be 12 character!');
-                return redirect()->to('/store');
-            }
-            // dd($kwhmeter2);
-            if ($kwhmeter2 == '') {
-                if ($idpln2 != '') {
-                    session()->setFlashdata('error', 'Please check KWH Meter 2. KWH Meter 2 must be selected if Id PLN 2 not empty !');
-                    return redirect()->to('/store');
-                }
-            } else if ($kwhmeter2 == '') {
-                if (strlen($idpln2) < 12 or strlen($idpln2) > 12) {
-                    session()->setFlashdata('error', 'Id PLN 2 must be 12 character cuy!');
-                    return redirect()->to('/store');
-                }
-            } else if ($kwhmeter2 != 0) {
-                if ($idpln2 == '') {
-                    session()->setFlashdata('error', 'Please check Id PLN 2. Id PLN 2 cannot be empty if KWH Meter 2 selected!');
-                    return redirect()->to('/store');
-                } else if (strlen($idpln2) <> 12) {
-                    session()->setFlashdata('error', 'Id PLN 2 must be 12 character!');
-                    return redirect()->to('/store');
+                    $validation = \Config\Services::validation();
+                    return redirect()->to('/store')->withInput()->with('validation', $validation);
                 }
             }
 
-            // return redirect()->to('/store');
+            if ($this->request->getPost('editstorename') == '') {
+                if (!$this->validate([
+                    'editstorename' => [
+                        'rules' => 'required',
+                        'errors' => [
+                            'required' => '{field} cannot be empty'
+                        ],
+                        'label' => 'Store Name'
+                    ],
+                ])) {
+                    // echo json_encode(array("status" => FALSE));
+                    $validation = \Config\Services::validation();
+                    //echo json_encode($validation);
 
-            // if ($this->request->getPost('editstorecode') == '') {
-            //     if (!$this->validate([
-            //         'editstorecode' => [
-            //             'rules' => 'required',
-            //             'errors' => [
-            //                 'required' => '{field} cannot be empty'
-            //             ],
-            //             'label' => 'Store Code'
-            //         ],
-            //     ])) {
-            //         $validation = \Config\Services::validation();
-            //         return redirect()->to('/store')->withInput()->with('validation', $validation);
-            //     }
-            // }
+                    session()->setFlashdata('error', 'store name cannot be empty');
+                    return redirect()->to('/store')->withInput()->with('validation', $validation);
+                    //return redirect()->to('/store');
+                }
+            }
 
-            // if ($this->request->getPost('editstorename') == '') {
-            //     if (!$this->validate([
-            //         'editstorename' => [
-            //             'rules' => 'required',
-            //             'errors' => [
-            //                 'required' => '{field} cannot be empty'
-            //             ],
-            //             'label' => 'Store Name'
-            //         ],
-            //     ])) {
-            //         $validation = \Config\Services::validation();
-            //         session()->setFlashdata('error', 'store name cannot be empty');
-            //         return redirect()->to('/store')->withInput()->with('validation', $validation);
-            //     }
-            // }
+            $idpln1 = $this->request->getPost('editidpln1', true);
+            if ($idpln1 == "") {
+                if (!$this->validate([
+                    'editidpln1' => [
+                        'rules' => 'required|min_length[12]|max_length[12]',
+                        'errors' => [
+                            'required' => '{field} cannot be empty',
+                            'min_length' => '{field} too short, min {param} characters.',
+                            'max_length' => '{field} must be {param} characters',
+                        ],
+                        'label' => 'ID PLN 1'
+                    ],
+                ])) {
+                    echo json_encode(array("status" => FALSE));
+                    $validation = \Config\Services::validation();
+                    return redirect()->to('/store')->withInput()->with('validation', $validation);
+                }
+            }
 
-
-            // $idpln1 = $this->request->getPost('editidpln1', true);
-            // if ($idpln1 == "") {
+            // if ($this->request->getPost('editidpln1') == ' ') {
             //     if (!$this->validate([
             //         'editidpln1' => [
             //             'rules' => 'required|min_length[12]|max_length[12]',
@@ -252,54 +222,73 @@ class CStore extends BaseController
             //             'label' => 'ID PLN 1'
             //         ],
             //     ])) {
-            //         echo json_encode(array("status" => FALSE));
             //         $validation = \Config\Services::validation();
             //         return redirect()->to('/store')->withInput()->with('validation', $validation);
             //     }
             // }
 
-            if ($kwhmeter2 == '' and $idpln2 == '') {
-                //     if ($this->request->getPost('editidpln2') == '') {
-                //         session()->setFlashdata('error', 'Please check Id PLN 2!');
-                //         return redirect()->to('/store');
-                //     } else {
-                //         $kwhmeter2 = $this->request->getVar('editkwhmeter2');
-                //         $idpln2 = $this->request->getVar('editidpln2');
-                //     }
-                $kwhmeter2 = 1;
-                $idpln2 = 0;
-            }
-            // else {
-            //     $kwhmeter2 = 1;
-            //     $idpln2 = 0;
 
+            // if (!$this->validate([
+            //     'modaleditstorecode' => [
+            //         'rules' => 'required',
+            //         'errors' => [
+            //             'required' => '{field} cannot be empty',
+            //             'max_length' => '{field} must be {param} characters or fewer'                      
+            //         ],
+            //         'label' => 'Store Code'
+            //     ],
+            //     'modaleditstorename' => [
+            //         'rules' => 'required',
+            //         'errors' => [
+            //             'required' => '{field} cannot be empty'
+            //         ],
+            //         'label' => 'Store Name'
+            //     ],
+            //     'modaleditidpln1' => [
+            //         'rules' => 'required|min_length[12]|max_length[12]',
+            //         'errors' => [
+            //             'required' => '{field} cannot be empty',
+            //             'min_length' => '{field} too short, min {param} characters.',
+            //             'max_length' => '{field} must be {param} characters or fewer'
+            //         ],
+            //         'label' => 'ID PLN 1'
+            //     ],
+            // ])) {
+            //     $validation = \Config\Services::validation();
+            //     return redirect()->to('/store')->withInput()->with('validation', $validation);
+            // }
+
+            // if ($this->request->getPost('modaleditkwhmeter1') == 0) {
+            //     session()->setFlashdata('errormodaleditkwhmeter1', 'Please fill KWH Meter 1');
+            //     $validation = \Config\Services::validation();
+            //     return redirect()->to('/store')->withInput()->with('validation', $validation);
             // }
 
             $data = [
-                'StoreName' => ucwords($this->request->getPost('editstorename')),
-                'StoreCode' => $this->request->getPost('editstorecode'),
-                'KWHMeter1' => $this->request->getPost('editkwhmeter1'),
-                'idPLN1' => $this->request->getPost('editidpln1'),
-                'KWHMeter2' => $kwhmeter2,
-                'idPLN2' => $idpln2,
+                'StoreName' => ucwords($this->request->getVar('editstorename')),
+                'StoreCode' => $this->request->getVar('editstorecode'),
+                'KWHMeter1' => $this->request->getVar('editkwhmeter1'),
+                'idPLN1' => $this->request->getVar('editidpln1'),
+                'KWHMeter2' => ($this->request->getVar('editkwhmeter2') == 0) ? 1 : $this->request->getVar('editkwhmeter2'),
+                'idPLN2' => ($this->request->getVar('editidpln2') == '') ? 0 : $this->request->getVar('editidpln2'),
                 'date_updated' => time(),
                 'status_deleted' => 0
             ];
-
             // dd($data);
 
             if ($this->mStore->update($idUrl, $data)) {
-                session()->setFlashdata("success", "Store " . ucwords($this->request->getPost('editstorename')) . " has been updated.");
+                //echo json_encode(array("status" => TRUE));
+                session()->setFlashdata("success", "Store " . ucwords($this->request->getVar('editstorename')) . " has been updated.");
                 return redirect()->to('/store');
             } else {
+                //echo json_encode(array("status" => FALSE));
                 session()->setFlashdata('error', 'Data not saved!');
                 return redirect()->to('/store');
             }
         }
     }
 
-    public function deleteStore($id = 0)
-    {
+    public function deleteStore($id = 0) {
         session();
         $idUrl = $this->request->uri->getSegment(3);
         $data['url'] = $idUrl;

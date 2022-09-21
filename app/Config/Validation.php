@@ -2,20 +2,12 @@
 
 namespace Config;
 
-//Add M.Adif :: start
-use App\Validation\Custom_validation;
-use App\Validation\customRules;
-//End
-
-//Add Elaine :: start
-use App\Controllers\CSchedule;
-//End
-
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Validation\CreditCardRules;
 use CodeIgniter\Validation\FileRules;
 use CodeIgniter\Validation\FormatRules;
 use CodeIgniter\Validation\Rules;
+use App\Controllers\CSchedule;
 
 class Validation extends BaseConfig
 {
@@ -34,8 +26,7 @@ class Validation extends BaseConfig
         FormatRules::class,
         FileRules::class,
         CreditCardRules::class,
-        Custom_validation::class,
-        CSchedule::class,
+        CSchedule::class
     ];
 
     /**

@@ -202,26 +202,19 @@ class MUser extends Model
 
     public function getDataRoleAdmin()
     {
-        $query = $this->db->query("SELECT * FROM tb_user_role where status_deleted = 0 and role_id NOT IN (99,1,2)");
+        $query = $this->db->query("SELECT * FROM tb_user_role");
         return $query->getResultArray();
     }
 
     public function getDataSuperiorName()
     {
-        // $query = $this->db->query("SELECT a.idSuperior, a.idSuperiorRole, b.role, a.SuperiorName, a.date_created, a.date_updated, a.status_deleted FROM tb_superior_name a inner join tb_user_role b on a.idSuperiorRole = b.role_id where a.status_deleted = 0 and b.role_id NOT IN (99,1,2)");
-        $query = $this->db->query("SELECT  id, nik, name as SuperiorName, role_id as idSuperior, superior_name_id FROM tb_user a where a.status_deleted = 0 and a.role_id NOT IN (99,1,2)");
+        $query = $this->db->query("SELECT a.idSuperior, a.idSuperiorRole, b.role, a.SuperiorName, a.date_created, a.date_updated, a.status_deleted FROM tb_superior_name a inner join tb_user_role b on a.idSuperiorRole = b.role_id where a.status_deleted = 0 and b.role_id NOT IN (99,1,2)");
         return $query->getResultArray();
     }
 
     public function getDataSuperiorName2($id)
     {
         $query = $this->db->query("SELECT * FROM tb_superior_name WHERE idSuperiorRole='$id'");
-        return $query->getResultArray();
-    }
-
-    public function getDataSuperiorNameFilter($id)
-    {
-        $query = $this->db->query("SELECT id, nik, name as SuperiorName, role_id as idSuperior FROM tb_user where role_id='$id'");
         return $query->getResultArray();
     }
 
@@ -284,28 +277,32 @@ class MUser extends Model
     {
         $session = session();
         if ($session->get('role_id') == 99) {
-            $hasil =  $this->db->query("SELECT a.id AS 'IdEmployee', a.`username` AS 'Username', a.`nik` AS 'NIK', a.name AS 'EmployeeName', a.`email` AS 'Email', a.`image` AS 'Image', a.`initial` AS 'Initial', a.`is_active` AS 'Is_Active', a.`role_id` AS `IdRoleEmployee`, b.`role` AS 'EmployeeRole', a.`superior_role_id` AS 'IdRoleSuperior', e.`SuperiorName` AS 'NameRoleSuperior', a.`superior_name_id` AS 'NikSuperiorName',
-            CASE WHEN a.superior_name_id = 0 THEN ' - ' ELSE f.name END AS 'SuperiorName',
-            a.`location` AS 'Location', c.`StoreName` AS 'StoreName', a.`level` AS 'IdLevel', d.`Level` AS 'LevelName'        
-            FROM tb_user a 
-            INNER JOIN tb_user_role b ON a.`role_id` = b.`role_id`
-            INNER JOIN tb_store c ON a.`location` = c.StoreCode
-            INNER JOIN tb_level d ON a.`level` = d.`idLevel`
-            INNER JOIN tb_superior_role AS e ON a.`superior_role_id` = e.`idSuperiorRole`	
-            LEFT JOIN tb_user AS f ON a.`superior_name_id` = f.`nik`																								
-            WHERE a.status_deleted = 0 AND a.role_id NOT IN (99,1,2)
+            $hasil =  $this->db->query("SELECT a.id, a.username, a.password, a.nik, a.name, a.email, a.image, a.initial, a.is_active, a.role_id, b.role AS 'roleuser', 
+            a.superior_role_id,  CASE WHEN r.`role` = 'None' THEN ' - ' ELSE r.role END AS 'rolesuperior', a.superior_name_id, CASE WHEN a.superior_role_id = 13 THEN ' - ' ELSE t.SuperiorName END AS 'SuperiorName', a.location, s.StoreCode, s.StoreName as 'storename', a.level, l.Level as 'levelname', a.date_created, a.date_updated, a.date_deleted, a.status_deleted 
+            FROM tb_user AS a
+            INNER JOIN tb_user_role AS b ON a.`role_id` = b.`role_id`
+            INNER JOIN tb_superior_name AS t ON a.`superior_name_id` = t.idSuperior
+            JOIN tb_user_role AS r ON a.`superior_role_id` = r.`role_id`
+            INNER JOIN tb_store AS s ON a.`location` = s.`idStore`
+            INNER JOIN tb_level AS l ON a.`level`= l.`idLevel`
             ORDER BY a.id ASC");
         } else {
-            $hasil = $this->db->query("SELECT a.id, a.`username`, a.`nik`, a.name AS EmployeeName, a.`email`, a.`image`, a.`initial`, a.`is_active`, a.`role_id` AS `IdRoleEmployee`, b.`role` AS 'EmployeeRole', a.`superior_role_id` AS 'IdRoleSuperior', e.`SuperiorName` AS 'NameRoleSuperior', a.`superior_name_id` AS 'NikSuperiorName',
-            CASE WHEN a.superior_name_id = 0 THEN ' - ' ELSE f.name END AS SuperiorName,
-            a.`location` AS 'Location', c.`StoreName` AS 'StoreName', a.`level` AS 'IdLevel', d.`Level`  AS 'LevelName'              
-            FROM tb_user a 
-            INNER JOIN tb_user_role b ON a.`role_id` = b.`role_id`
-            INNER JOIN tb_store c ON a.`location` = c.StoreCode
-            INNER JOIN tb_level d ON a.`level` = d.`idLevel`
-            INNER JOIN tb_superior_role AS e ON a.`superior_role_id` = e.`idSuperiorRole`	
-            LEFT JOIN tb_user AS f ON a.`superior_name_id` = f.`nik`																								
-            WHERE a.status_deleted = 0 AND a.role_id NOT IN (99,1,2)
+            $hasil = $this->db->query("SELECT a.id, a.username, a.password, a.nik, a.name, a.email, a.initial, a.image, a.is_active, a.role_id, b.role AS 'roleuser', 
+            a.superior_role_id, CASE WHEN r.`role` = 'None' THEN ' - ' ELSE r.role END AS 'rolesuperior', a.superior_name_id, CASE WHEN a.superior_role_id = 13 THEN ' - ' ELSE t.SuperiorName END AS 'SuperiorName', a.location, s.StoreCode, s.StoreName AS 'storename', a.level, l.Level AS 'levelname', a.date_created, a.date_updated, a.date_deleted, a.status_deleted 
+            FROM tb_user AS a            
+            INNER JOIN tb_user_role AS b ON a.`role_id` = b.`role_id`
+            /*INNER JOIN tb_superior_name AS t ON a.`superior_role_id` = t.idSuperior
+            JOIN tb_user_role AS r ON a.`superior_role_id` = r.`role_id`*/
+
+            
+            INNER JOIN tb_user_role AS r ON a.`superior_role_id` = r.`role_id`   
+            -- INNER JOIN tb_superior_name AS t ON a.`superior_name_id` = t.idSuperior
+
+            -- INNER JOIN tb_user_role AS r ON t.`idSuperiorRole` = r.`role_id`            
+            INNER JOIN tb_superior_name AS t ON a.`superior_name_id` = t.idSuperior
+            INNER JOIN tb_store AS s ON a.`location` = s.`idStore`
+            INNER JOIN tb_level AS l ON a.`level`= l.`idLevel`
+            WHERE a.`status_deleted` =0 AND a.role_id NOT IN (99,1,2)
             ORDER BY a.id ASC");
         }
         // $hasil = $this->db->query("SELECT * FROM tb_user where status_deleted = 0");
@@ -314,7 +311,9 @@ class MUser extends Model
 
     public function getDataRoleUser($roleId)
     {
-        return $this->db->query("SELECT role FROM tb_user_role WHERE role_id ='$roleId' and status_deleted = 0")->getFirstRow();
+        // return $this->where('nik', $nik)->first();
+        return $this->db->query("SELECT role FROM tb_user_role WHERE role_id='$roleId' and status_deleted = 0")->getFirstRow();
+        // return $query->getResultArray();
     }
 
     public function getLocationByUser($idLoc)
@@ -322,34 +321,6 @@ class MUser extends Model
         return $this->db->query("SELECT StoreName as location FROM tb_store WHERE idStore = '$idLoc' AND status_deleted = 0")->getFirstRow();
     }
 
-
-    public function getSuperiorRole($idRole = null)
-    {
-        if ($idRole !== null) {
-            $query = $this->db->query("SELECT * FROM tb_role WHERE idEmployeeRole = '$idRole'");
-        }
-        return $query->getResultArray();
-    }
-
-    public function getSuperiorName($idSuperiorName)
-    {
-        // if ($idSuperiorRole !== null) {
-        $query = $this->db->query("SELECT nik, superior_role_id as 'idSuperiorRole', superior_name_id as 'NikSuperiorName', name as 'SuperiorName' FROM tb_user WHERE role_id = '$idSuperiorName' and status_deleted = 0 and role_id NOT IN (99,1,2)");
-        // }
-        return $query->getResultArray();
-    }
-
-    public function getFilterSuperiorRoleByEmployeeRole($idFilterSuperiorRole = null)
-    {
-        $query = $this->db->query("SELECT * FROM tb_superior_role WHERE idSuperiorRole <> '$idFilterSuperiorRole' and status_deleted = 0 and idSuperiorRole NOT IN (99,1,2)");
-        return $query->getResultArray();
-    }
-
-    public function getDataSuperiorRole()
-    {
-        $query = $this->db->query("SELECT * FROM tb_superior_role where status_deleted = 0 and idSuperiorRole NOT IN (99,1,2)");
-        return $query->getResultArray();
-    }
     //------------------------------------------------------//
 
 

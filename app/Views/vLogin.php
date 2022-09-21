@@ -26,10 +26,6 @@
 
     <!-- CSS file Login -->
     <link rel="stylesheet" href="<?= base_url('css/login.css'); ?>">
-    <!-- <script src='https://www.google.com/recaptcha/api.js'></script> -->
-    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
-
-
 </head>
 
 <body>
@@ -56,25 +52,16 @@
                     </span>
                 </div>
                 <div class="form-group">
-                    <span class="text-danger" style="font-size: 2em;">
-                        <!-- <img src=""> -->
-                        <?php echo $captcha ?>
-                    </span>
+                    <?php echo $captcha ?>
                 </div>
                 <div class="form-group">
                     <i>*Masukan kode Captcha di atas</i>
                     <input type="text" id="captcha_real" name="captcha_real" required>
                     <input type="hidden" id="captcha" name="captcha" value="<?php echo $captcha ?>">
                 </div>
-                <!-- <div class="g-recaptcha-outer">
-                    <div class="g-recaptcha-inner"> -->
-                <!-- <div class="g-recaptcha captcha" data-sitekey="6LcGGbMhAAAAANxeauHodWOh8JnE6hLNH0qt-kgb"></div> -->
-                <!-- </div>
-                </div> -->
-                <!-- hcaptcha start -->
-                <!-- <div class="h-captcha" data-sitekey="30000000-ffff-ffff-ffff-000000000003"></div> -->
-                <!-- hcaptcha end -->
-                <br />
+                <!-- < ?php if (session()->getFlashdata('error')) : ?>
+                    <p class="text-danger font-weight-bold"> < ?= session()->getFlashdata('error') ?></p>
+                < ?php endif; ?> -->
                 <button type="submit">Log In</button>
             </form>
             <script type="text/javascript">
@@ -142,7 +129,6 @@
                         timer: 2000
                     })
                 <?php endif; ?>
-
                 <?php if (session()->getFlashdata('registersuccess')) : ?>
                     Swal.fire({
                         // position: 'center-top',

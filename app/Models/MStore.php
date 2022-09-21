@@ -35,7 +35,7 @@ class MStore extends Model
             ->where('status_deleted', 0)
             ->countAllResults();
         return $query;
-    }
+    }   
 
     public function getDataTableStore()
     {
@@ -47,13 +47,13 @@ class MStore extends Model
 
     public function getKWHMeter1()
     {
-        $query = "select idkwhmeter1, kwhmeter1 from tb_kwhmeter1 where status_deleted = 0 AND idkwhmeter1 != 1";
+        $query = "select idkwhmeter1, kwhmeter1 from tb_kwhmeter1 where status_deleted = 0";
         return $this->db->query($query)->getResultArray();
     }
 
     public function getKWHMeter2()
     {
-        $query = "select idkwhmeter2, kwhmeter2 from tb_kwhmeter2 where status_deleted = 0 AND idkwhmeter2 != 1";
+        $query = "select idkwhmeter2, kwhmeter2 from tb_kwhmeter2 where status_deleted = 0";
         return $this->db->query($query)->getResultArray();
     }
 

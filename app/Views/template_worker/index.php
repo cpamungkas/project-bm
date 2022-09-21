@@ -8,7 +8,6 @@
 </head>
 
 <body>
-    <div id="cover-spin"></div>
     <div class="page">
         <!-- Header Navbar -->
         <?= $this->include('template_worker/navbar'); ?>
@@ -32,7 +31,6 @@
     </div>
 
     <!-- /.main-container -->
-
 
     <!-- Footer -->
     <?= $this->include('template_worker/footer'); ?>

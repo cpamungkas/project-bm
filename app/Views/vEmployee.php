@@ -1,5 +1,69 @@
 <?= $this->extend('template_worker/index'); ?>
 <?= $this->section('page-content'); ?>
+
+<!-- <div class="container-xl"> -->
+<!-- Page title -->
+<!-- <div class="page-header d-print-none"> -->
+<!-- <div class="row g-2 align-items-center">
+            <div class="col"> -->
+<!-- <h2 class="page-title">
+                    Empty page
+                </h2> -->
+<!-- </div>
+        </div> -->
+<!-- <div class="row g-2 align-items-center"> -->
+<!-- <div class="col"> -->
+<!-- Page pre-title -->
+<!-- <div class="page-pretitle">
+                    Dashboard
+                </div>
+                <h2 class="page-title">
+                    <?= $roleuser; ?>
+                </h2> -->
+<!-- </div> -->
+<!-- Page title actions -->
+<!-- <div class="col-12 col-md-auto ms-auto d-print-none"> -->
+<!-- <div class="btn-list"> -->
+<!-- <span class="d-none d-sm-inline"> -->
+<!-- <a href="#" class="btn btn-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-viewfinder" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <circle cx="12" cy="12" r="9"></circle>
+                                <line x1="12" y1="3" x2="12" y2="7"></line>
+                                <line x1="12" y1="21" x2="12" y2="18"></line>
+                                <line x1="3" y1="12" x2="7" y2="12"></line>
+                                <line x1="21" y1="12" x2="18" y2="12"></line>
+                                <line x1="12" y1="12" x2="12" y2="12.01"></line>
+                            </svg>
+                            New view
+                        </a> -->
+<!-- <a href="#" class="btn" data-bs-toggle="modal" data-bs-target="#modal-report">
+                            Modal with form
+                        </a> -->
+<!-- </span> -->
+<!-- <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-create-store">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-building-store" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <line x1="3" y1="21" x2="21" y2="21"></line>
+                            <path d="M3 7v1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1h-18l2 -4h14l2 4"></path>
+                            <line x1="5" y1="21" x2="5" y2="10.85"></line>
+                            <line x1="19" y1="21" x2="19" y2="10.85"></line>
+                            <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4"></path>
+                        </svg>
+                        Create new store
+                    </a> -->
+<!-- <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                        </svg>
+                    </a> -->
+<!-- </div> -->
+<!-- </div> -->
+<!-- </div> -->
+<!-- </div> -->
+<!-- </div> -->
 <div class="page-body">
     <div class="container-xl">
         <div class="row row-deck row-cards">
@@ -80,10 +144,10 @@
                                 <div class="col-lg-6">
                                     <div class="mb-3">
                                         <label class="form-label">Name</label>
-                                        <input type="text" class="form-control <?= ($validation->hasError('nameworker')) ? 'is-invalid' : ''; ?>" name="nameworker" id="nameworker" placeholder="Name Worker" value="<?= old('nameworker'); ?>" required>
-                                        <?php if ($validation->hasError('nameworker')) : ?>
+                                        <input type="text" class="form-control <?= ($validation->hasError('name')) ? 'is-invalid' : ''; ?>" name="name" id="name" placeholder="Name" value="<?= old('name'); ?>" required>
+                                        <?php if ($validation->hasError('name')) : ?>
                                             <div class="invalid-feedback">
-                                                <?= $validation->getError('nameworker'); ?>
+                                                <?= $validation->getError('name'); ?>
                                             </div>
                                         <?php endif; ?>
                                     </div>
@@ -156,8 +220,49 @@
                             <div class="row">
                                 <div class="col-lg-3">
                                     <div class="mb-3">
+                                        <label class="form-label">Superior Role</label>
+                                        <select class="form-select superiorrole" id="superiorrole" name="superiorrole" value="<?= old('superiorrole'); ?>" required>
+                                            <option value="">Select Superior Role</option>
+                                            <?php foreach ($getDataRole as $pic) : ?>
+                                                <option value="<?= $pic['role_id']; ?>" <?php if (old('superiorrole') == $pic['role_id']) {
+                                                                                            echo 'selected';
+                                                                                        } ?>><?= $pic['role']; ?> </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <?php if (session('errorsuperiorrole')) { ?>
+                                            <div class="invalid-feedback">
+                                                <?= session("errorsuperiorrole") ?>
+                                            </div>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="mb-3">
+                                        <label class="form-label">Superior Name</label>
+                                        <select class="form-select superiorname" id="superiorname" name="superiorname" value="<?= old('superiorname'); ?>" required>
+                                            <option value="">Select Superior Name</option>
+                                            <?php if (old('superiorrole') != '') { ?>
+                                                <?php foreach ($getDataSuperiorName as $name) : ?>
+                                                    <option value="<?= $name['idSuperior']; ?>" <?php if (old('superiorname') == $name['idSuperior']) {
+                                                                                                    echo 'selected';
+                                                                                                } ?>><?= $name['SuperiorName']; ?> </option>
+                                                <?php endforeach; ?>
+                                            <?php } ?>
+                                        </select>
+                                        <?php if (session('errorsuperiorname')) { ?>
+                                            <div class="invalid-feedback">
+                                                <?= session("errorsuperiorname") ?>
+                                            </div>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                                <!-- </div>
+
+                            <div class="row"> -->
+                                <div class="col-lg-3">
+                                    <div class="mb-3">
                                         <label class="form-label">Employee Role</label>
-                                        <select class="form-select employeerole" id="employeerole" name="employeerole" value="<?= old('employeerole'); ?>" required>
+                                        <select class="form-select" id="employeerole" name="employeerole" value="<?= old('employeerole'); ?>" required>
                                             <option value="">Select the role</option>
                                             <?php foreach ($getDataRole as $role) : ?>
                                                 <option value="<?= $role['role_id']; ?>" <?php if (old('employeerole') == $role['role_id']) {
@@ -168,44 +273,6 @@
                                         <?php if (session('errorrole')) { ?>
                                             <div class="invalid-feedback">
                                                 <?= session("errorrole") ?>
-                                            </div>
-                                        <?php } ?>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="mb-3">
-                                        <label class="form-label">Superior Role</label>
-                                        <select class="form-select superiorrole <?= ($validation->hasError('superiorrole')) ? 'is-invalid' : ''; ?>" id="superiorrole" name="superiorrole" value="<?= old('superiorrole'); ?>" disabled required>
-                                            <option value="">Select Superior Role</option>
-                                            <?php foreach ($getDataSuperiorRole as $pic) : ?>
-                                                <option value="<?= $pic['idSuperiorRole']; ?>" <?php if (old('superiorrole') == $pic['idSuperiorRole']) {
-                                                                                                    echo 'selected';
-                                                                                                } ?>><?= $pic['SuperiorName']; ?> </option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                        <?php if ($validation->hasError('superiorrole')) : ?>
-                                            <div class="invalid-feedback">
-                                                <?= $validation->getError('superiorrole'); ?>
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="mb-3">
-                                        <label class="form-label">Superior Name</label>
-                                        <select class="form-select superiorname" id="superiorname" name="superiorname" value="<?= old('superiorname'); ?>" disabled required>
-                                            <option value="">Select Superior Name</option>
-                                            <!-- <?php if (old('superiorrole') != '') { ?> -->
-                                            <?php foreach ($getDataSuperiorName as $name) : ?>
-                                                <option value="<?= $name['nik']; ?>" <?php if (old('superiorname') == $name['nik']) {
-                                                                                            echo 'selected';
-                                                                                        } ?>><?= $name['SuperiorName']; ?> </option>
-                                            <?php endforeach; ?>
-                                            <!-- <?php } ?> -->
-                                        </select>
-                                        <?php if (session('errorsuperiorname')) { ?>
-                                            <div class="invalid-feedback">
-                                                <?= session("errorsuperiorname") ?>
                                             </div>
                                         <?php } ?>
                                     </div>
@@ -237,9 +304,9 @@
                                         <select class="form-select" id="location" name="location" value="<?= old('location'); ?>" required>
                                             <option value="">Select the location</option>
                                             <?php foreach ($getDataLocation as $loc) : ?>
-                                                <option value="<?= $loc['StoreCode']; ?>" <?php if (old('location') == $loc['StoreCode']) {
-                                                                                                echo 'selected';
-                                                                                            } ?>><?= $loc['StoreCode'] . ' - ' . $loc['StoreName']; ?> </option>
+                                                <option value="<?= $loc['idStore']; ?>" <?php if (old('location') == $loc['idStore']) {
+                                                                                            echo 'selected';
+                                                                                        } ?>><?= $loc['StoreCode'] . ' - ' . $loc['StoreName']; ?> </option>
                                             <?php endforeach; ?>
                                         </select>
                                         <?php if (session('errorlocation')) { ?>
@@ -288,104 +355,98 @@
                 </div>
 
             </div>
-            <div class="col-xxl">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Employee Table</h3>
-                        </div>
-                        <div class="clearfix">
-                            <div class="pull-right tableTools-container" style="width:100%"></div>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="dynamic-table" class="table card-table table-vcenter text-nowrap datatable" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <!-- <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all invoices"></th> -->
-                                        <th class="w-1">No
-                                            <!-- <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-sm text-dark icon-thick" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Employee Table</h3>
+                    </div>
+                    <div class="clearfix">
+                        <div class="pull-right tableTools-container"></div>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="dynamic-table" class="table card-table table-vcenter text-nowrap datatable" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <!-- <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all invoices"></th> -->
+                                    <th class="w-1">No
+                                        <!-- <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-sm text-dark icon-thick" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                             <polyline points="6 15 12 9 18 15" />
                                         </svg> -->
-                                        </th>
-                                        <th>NIK</th>
-                                        <th>Name</th>
-                                        <th>Username</th>
-                                        <th>Initial</th>
-                                        <th>Role</th>
-                                        <th>Superior Role</th>
-                                        <th>Superior Name</th>
-                                        <th>Level</th>
-                                        <th>Location</th>
-                                        <th>Action</th>
+                                    </th>
+                                    <th>NIK</th>
+                                    <th>Username</th>
+                                    <th>Initial</th>
+                                    <th>Role</th>
+                                    <th>Superior Role</th>
+                                    <th>Superior Name</th>
+                                    <th>Level</th>
+                                    <th>Location</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $i = 1; ?>
+                                <?php foreach ($getDataEmployee as $emp) : ?>
+                                    <tr>
+                                        <!-- <td><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select invoice"></td> -->
+                                        <td><?= $i; ?></td>
+                                        <td><?= $emp['nik']; ?></td>
+                                        <td><?= $emp['username']; ?></td>
+                                        <td><?= $emp['initial']; ?></td>
+                                        <td><?= $emp['roleuser']; ?></td>
+                                        <td><?= $emp['rolesuperior']; ?></td>
+                                        <td><?= $emp['SuperiorName']; ?></td>
+                                        <td><?= $emp['levelname']; ?></td>
+                                        <td><?= $emp['storename']; ?></td>
+                                        <td class="text-end">
+                                            <div class="row g-2 align-items-center mb-n3">
+                                                <div class="col-4 col-sm-4 col-md-2 col-lg-auto mb-3">
+                                                    <button href="#myModalView<?= $i; ?>" id="btnModalViewEmployee<?= $emp['id']; ?>" name="btnModalViewEmployee<?= $emp['id']; ?>" class="btn btn-outline-primary w-100 btn-icon btn-view-employee" data-id="<?= $emp['id']; ?>" data-nik="<?= $emp['nik']; ?>" data-name="<?= $emp['name']; ?>" data-username="<?= $emp['username']; ?>" data-initial="<?= $emp['initial']; ?>" data-email="<?= $emp['email']; ?>" data-roleuser="<?= $emp['roleuser']; ?>" data-rolesuperior="<?= $emp['rolesuperior']; ?>" data-superiorname="<?= $emp['SuperiorName']; ?>" data-level="<?= $emp['levelname']; ?>" data-location="<?= $emp['storename']; ?>" data-imguser="<?= $emp['image']; ?>">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-in" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <circle cx="10" cy="10" r="7"></circle>
+                                                            <line x1="7" y1="10" x2="13" y2="10"></line>
+                                                            <line x1="10" y1="7" x2="10" y2="13"></line>
+                                                            <line x1="21" y1="21" x2="15" y2="15"></line>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                                <div class="col-4 col-sm-4 col-md-2 col-lg-auto mb-3">
+                                                    <button href="#myModalEdit<?= $i; ?>" id="btnModalEditEmployee<?= $emp['id']; ?>" name="btnModalEditEmployee<?= $emp['id']; ?>" class="btn btn-outline-success w-100 btn-icon btn-edit-employee" data-id="<?= $emp['id']; ?>" data-nik="<?= $emp['nik']; ?>" data-name="<?= $emp['name']; ?>" data-username="<?= $emp['username']; ?>" data-initial="<?= $emp['initial']; ?>" data-email="<?= $emp['email']; ?>" data-roleuser="<?= $emp['role_id']; ?>" data-rolesuperior="<?= $emp['superior_role_id']; ?>" data-superiorname="<?= $emp['superior_name_id']; ?>" data-level="<?= $emp['level']; ?>" data-location="<?= $emp['location']; ?>">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
+                                                            <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
+                                                            <path d="M16 5l3 3"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                                <div class="col-4 col-sm-4 col-md-2 col-lg-auto mb-3">
+                                                    <button href="#myModalDelete<?= $i; ?>" id="btnModalDeleteEmployee<?= $emp['id']; ?>" name="btnModalDeleteEmployee<?= $emp['id']; ?>" class="btn btn-outline-danger w-100 btn-icon btn-delete-employee" data-id="<?= $emp['id']; ?>" data-nik="<?= $emp['nik']; ?>" data-name="<?= $emp['name']; ?>">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <line x1="4" y1="7" x2="20" y2="7"></line>
+                                                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                                                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    <?php $i = 1; ?>
-                                    <?php foreach ($getDataEmployee as $emp) : ?>
-                                        <tr>
-                                            <!-- <td><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select invoice"></td> -->
-                                            <td><?= $i; ?></td>
-                                            <td><?= $emp['NIK']; ?></td>
-                                            <td><?= $emp['EmployeeName']; ?></td>
-                                            <td><?= $emp['Username']; ?></td>
-                                            <td><?= $emp['Initial']; ?></td>
-                                            <td><?= $emp['EmployeeRole']; ?></td>
-                                            <td><?= $emp['NameRoleSuperior']; ?></td>
-                                            <td><?= $emp['SuperiorName']; ?></td>
-                                            <td><?= $emp['LevelName']; ?></td>
-                                            <td><?= $emp['StoreName']; ?></td>
-                                            <td>
-                                                <!-- <div class="row g-2 align-items-center mb-n3"> -->
-                                                <!-- <div class="col-4 col-sm-4 col-md-2 col-lg-auto mb-1"> -->
-                                                <a href="#view" id="btnModalViewEmployee<?= $emp['IdEmployee']; ?>" name="btnModalViewEmployee<?= $emp['IdEmployee']; ?>" class="btn-outline-primary btn-view-employee" data-id="<?= $emp['IdEmployee']; ?>" data-nik="<?= $emp['NIK']; ?>" data-name="<?= $emp['EmployeeName']; ?>" data-username="<?= $emp['Username']; ?>" data-initial="<?= $emp['Initial']; ?>" data-email="<?= $emp['Email']; ?>" data-roleuser="<?= $emp['EmployeeRole']; ?>" data-rolesuperior="<?= $emp['NameRoleSuperior']; ?>" data-superiorname="<?= $emp['SuperiorName']; ?>" data-level="<?= $emp['IdLevel']; ?>" data-location="<?= $emp['Location']; ?>" data-imguser="<?= $emp['Image']; ?>">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-in" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                        <circle cx="10" cy="10" r="7"></circle>
-                                                        <line x1="7" y1="10" x2="13" y2="10"></line>
-                                                        <line x1="10" y1="7" x2="10" y2="13"></line>
-                                                        <line x1="21" y1="21" x2="15" y2="15"></line>
-                                                    </svg>
-                                                </a>
-                                                <!-- </div>
-                                                <div class="col-4 col-sm-4 col-md-2 col-lg-auto mb-1"> -->
-                                                <a href="#edit" id="btnModalEditEmployee<?= $emp['IdEmployee']; ?>" name="btnModalEditEmployee<?= $emp['IdEmployee']; ?>" class="btn-outline-success btn-edit-employee" data-id="<?= $emp['IdEmployee']; ?>" data-nik="<?= $emp['NIK']; ?>" data-name="<?= $emp['EmployeeName']; ?>" data-username="<?= $emp['Username']; ?>" data-initial="<?= $emp['Initial']; ?>" data-email="<?= $emp['Email']; ?>" data-roleuser="<?= $emp['IdRoleEmployee']; ?>" data-rolesuperior="<?= $emp['IdRoleSuperior']; ?>" data-superiorname="<?= $emp['NikSuperiorName']; ?>" data-level="<?= $emp['IdLevel']; ?>" data-location="<?= $emp['Location']; ?>">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
-                                                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
-                                                        <path d="M16 5l3 3"></path>
-                                                    </svg>
-                                                </a>
-                                                <!-- </div>
-                                                <div class="col-4 col-sm-4 col-md-2 col-lg-auto mb-1"> -->
-                                                <a href="#delete" id="btnModalDeleteEmployee<?= $emp['IdEmployee']; ?>" name="btnModalDeleteEmployee<?= $emp['IdEmployee']; ?>" class="btn-outline-danger btn-delete-employee" data-id="<?= $emp['IdEmployee']; ?>" data-nik="<?= $emp['NIK']; ?>" data-name="<?= $emp['EmployeeName']; ?>">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                        <line x1="4" y1="7" x2="20" y2="7"></line>
-                                                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                                                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
-                                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
-                                                    </svg>
-                                                </a>
-                                                <!-- </div> -->
-                                                <!-- </div> -->
-
-
-                        </div>
-                        </td>
-                        </tr>
-                        <?php $i++; ?>
-                    <?php endforeach; ?>
-                    </tbody>
-                    </table>
+                                    <?php $i++; ?>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 
 
@@ -500,6 +561,8 @@
         </div>
     </div>
 </div> -->
+
+
 <!-- <div class="modal modal-blur fade" id="modal-view-employee" tabindex="-1" style="display: none;" aria-hidden="true" role="dialog">
     <div class="modal-dialog modal-full-width modal-dialog-centered">
         <div class="modal-content">
@@ -702,79 +765,6 @@
     </div>
 </div> -->
 
-<!--Modal: modalView-->
-<div class="modal modal-blur fade show" id="modal-view-employee" tabindex="-1" style="display: none; padding-right: 17px;" aria-modal="true" role="dialog">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <!--Content-->
-        <div class="modal-content">
-            <!--Header-->
-            <div class="modal-header">
-                <h5 class="modal-title">View Profile User</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                <div class="modal-status bg-success"></div>
-            </div>
-            <!--Body-->
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-3 text-center">
-                        <img id="imguser" src="https://mdbootstrap.com/img/Photos/Avatars/img%20(1).webp" alt="" class="img-fluid z-depth-1-half rounded-circle">
-                        <div style="height: 10px"></div>
-                    </div>
-
-                    <div class="col-9">
-                        <h4 class="m-t-0 m-b-0 detail_nikname"></h4>
-
-                        <span class="job_post"></span>
-                        <p class="location"></p>
-
-                        <span class="m-t-0 m-b-0"><strong><u>Superior</u></strong></span>
-                        <p class="superiorrole"></p>
-
-                        <div>
-                            <a class="btn btn-outline-primary btn-round waves-effect mailuser">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mail" width="36" height="36" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <rect x="3" y="5" width="18" height="14" rx="2"></rect>
-                                    <polyline points="3 7 12 13 21 7"></polyline>
-                                </svg>
-                                Mail
-                            </a>
-                            <button class="btn btn-outline-primary btn-round waves-effect">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-phone" width="36" height="36" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2"></path>
-                                </svg>
-                                Call
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--Footer-->
-            <div class="modal-footer">
-                <div class="row align-items-center">
-                    <div class="col"></div>
-                    <div class="col-auto">
-                        <a class="btn btn-outline-danger waves-effect ms-auto" id="btnCloseEmployee" name="btnCloseEmployee" data-bs-dismiss="modal" onclick="javascript:window.location.reload()">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-door-exit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M13 12v.01"></path>
-                                <path d="M3 21h18"></path>
-                                <path d="M5 21v-16a2 2 0 0 1 2 -2h7.5m2.5 10.5v7.5"></path>
-                                <path d="M14 7h7m-3 -3l3 3l-3 3"></path>
-                            </svg>
-                            Close
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--/.Content-->
-    </div>
-</div>
-<!--Modal: modalView-->
-
-<!--Modal: modalEdit-->
 <div class="modal modal-blur fade show" id="modal-edit-employee" tabindex="-1" style="display: none;" aria-hidden="true" role="dialog">
     <div class="modal-dialog modal-full-width modal-dialog-centered">
         <div class="modal-content">
@@ -855,12 +845,62 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control <?= ($validation->hasError('editconfirmpassword')) ? 'is-invalid' : ''; ?>" name="editconfirmpassword" id="editconfirmpassword" placeholder="Confirm Password" value="<?= old('editconfirmpassword'); ?>" required>
+                                <?php if ($validation->hasError('editconfirmpassword')) : ?>
+                                    <div class="invalid-feedback">
+                                        <?= $validation->getError('editconfirmpassword'); ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div> -->
                     </div>
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="mb-3">
+                                <label class="form-label">Superior Role</label>
+                                <select class="form-select superiorrole" id="editsuperiorrole" name="editsuperiorrole" required>
+                                    <option value="">Select Superior Role</option>
+                                    <?php foreach ($getDataRole as $pic) : ?>
+                                        <option value="<?= $pic['role_id']; ?>" <?php if (old('editsuperiorrole') == $pic['role_id']) {
+                                                                                    echo 'selected';
+                                                                                } ?>><?= $pic['role']; ?> </option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <?php if (session('erroreditsuperiorrole')) { ?>
+                                    <div class="invalid-feedback">
+                                        <?= session("erroreditsuperiorrole") ?>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="mb-3">
+                                <label class="form-label">Superior Name</label>
+                                <select class="form-select superiorname" id="editsuperiorname" name="editsuperiorname" required>
+                                    <option value="">Select Superior Name</option>
+                                    <?php if (old('superiorrole') != '') { ?>
+                                        <?php foreach ($getDataSuperiorName as $name) : ?>
+                                            <option value="<?= $name['idSuperior']; ?>" <?php if (old('editsuperiorname') == $name['idSuperior']) {
+                                                                                            echo 'selected';
+                                                                                        } ?>><?= $name['SuperiorName']; ?> </option>
+                                        <?php endforeach; ?>
+                                    <?php } ?>
+                                </select>
+                                <?php if (session('erroreditsuperiorname')) { ?>
+                                    <div class="invalid-feedback">
+                                        <?= session("erroreditsuperiorname") ?>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="mb-3">
                                 <label class="form-label">Employee Role</label>
-                                <select class="form-select employeerole" id="editemployeerole" name="editemployeerole" required>
+                                <select class="form-select" id="editemployeerole" name="editemployeerole" required>
                                     <option value="">Select the role</option>
                                     <?php foreach ($getDataRole as $role) : ?>
                                         <option value="<?= $role['role_id']; ?>" <?php if (old('editemployeerole') == $role['role_id']) {
@@ -875,39 +915,6 @@
                                 <?php } ?>
                             </div>
                         </div>
-                        <div class="col-lg-3">
-                            <div class="mb-3">
-                                <label class="form-label">Superior Role</label>
-                                <select class="form-select superiorrole" id="editsuperiorrole" name="editsuperiorrole" value="<?= old('editsuperiorrole'); ?>" required>
-                                    <option value="">Select Superior Role</option>
-                                    <?php foreach ($getDataRole as $pic) : ?>
-                                        <option value="<?= $pic['role_id']; ?>"><?= $pic['role']; ?> </option>
-                                    <?php endforeach; ?>
-                                </select>
-                                <?php if (session('erroreditsuperiorrole')) { ?>
-                                    <div class="invalid-feedback">
-                                        <?= session("erroreditsuperiorrole") ?>
-                                    </div>
-                                <?php } ?>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="mb-3">
-                                <label class="form-label">Superior Name</label>
-                                <select class="form-select superiorname" id="editsuperiorname" name="editsuperiorname" value='<?= old('editsuperiorname'); ?>' required>
-                                    <option value="">Select Superior Name</option>
-                                    <?php foreach ($getDataSuperiorName as $name) : ?>
-                                        <option value="<?= $name['nik']; ?>"><?= $name['SuperiorName']; ?> </option>
-                                    <?php endforeach; ?>
-                                </select>
-                                <?php if (session('erroreditsuperiorname')) { ?>
-                                    <div class="invalid-feedback">
-                                        <?= session("erroreditsuperiorname") ?>
-                                    </div>
-                                <?php } ?>
-                            </div>
-                        </div>
-
                         <div class="col-lg-3">
                             <div class="mb-3">
                                 <label class="form-label">Level</label>
@@ -935,9 +942,9 @@
                                 <select class="form-select" id="editlocation" name="editlocation" required>
                                     <option value="">Select the location</option>
                                     <?php foreach ($getDataLocation as $loc) : ?>
-                                        <option value="<?= $loc['StoreCode']; ?>" <?php if (old('editlocation') == $loc['StoreCode']) {
-                                                                                        echo 'selected';
-                                                                                    } ?>><?= $loc['StoreCode'] . ' - ' . $loc['StoreName']; ?> </option>
+                                        <option value="<?= $loc['idStore']; ?>" <?php if (old('editlocation') == $loc['idStore']) {
+                                                                                    echo 'selected';
+                                                                                } ?>><?= $loc['StoreCode'] . ' - ' . $loc['StoreName']; ?> </option>
                                     <?php endforeach; ?>
                                 </select>
                                 <?php if (session('erroreditlocation')) { ?>
@@ -961,7 +968,7 @@
                                 </svg>
                                 Update
                             </button>
-                            <a class="btn btn-outline-secondary ms-auto" id="btnCloseEmployee" name="btnCloseEmployee" data-bs-dismiss="modal" onclick="javascript:window.location.reload()">
+                            <a class="btn btn-outline-secondary ms-auto" id="btnCloseEmployee" name="btnCloseEmployee" data-bs-dismiss="modal">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-door-exit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                     <path d="M13 12v.01"></path>
@@ -978,7 +985,77 @@
         </div>
     </div>
 </div>
-<!--Modal: modalEdit-->
+
+<div class="modal modal-blur fade show" id="modal-view-employee" tabindex="-1" style="display: none; padding-right: 17px;" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <h5 class="modal-title">View Profile User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-status bg-success"></div>
+            </div>
+            <!--Body-->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-3 text-center">
+                        <img id="imguser" src="https://mdbootstrap.com/img/Photos/Avatars/img%20(1).webp" alt="" class="img-fluid z-depth-1-half rounded-circle">
+                        <div style="height: 10px"></div>
+                    </div>
+
+                    <div class="col-9">
+                        <h4 class="m-t-0 m-b-0 detail_nikname"></h4>
+
+                        <span class="job_post"></span>
+                        <p class="location"></p>
+
+                        <span class="m-t-0 m-b-0"><strong><u>Superior</u></strong></span>
+                        <p class="superiorrole"></p>
+
+                        <div>
+                            <a class="btn btn-outline-primary btn-round waves-effect mailuser">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mail" width="36" height="36" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                                    <polyline points="3 7 12 13 21 7"></polyline>
+                                </svg>
+                                Mail
+                            </a>
+                            <button class="btn btn-outline-primary btn-round waves-effect">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-phone" width="36" height="36" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2"></path>
+                                </svg>
+                                Call
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Footer-->
+            <div class="modal-footer">
+                <div class="row align-items-center">
+                    <div class="col"></div>
+                    <div class="col-auto">
+                        <a class="btn btn-outline-danger waves-effect ms-auto" id="btnCloseEmployee" name="btnCloseEmployee" data-bs-dismiss="modal" onclick="javascript:window.location.reload()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-door-exit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M13 12v.01"></path>
+                                <path d="M3 21h18"></path>
+                                <path d="M5 21v-16a2 2 0 0 1 2 -2h7.5m2.5 10.5v7.5"></path>
+                                <path d="M14 7h7m-3 -3l3 3l-3 3"></path>
+                            </svg>
+                            Close
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+
 
 <!--Modal: modalConfirmDelete-->
 <div class="modal modal-blur fade show" id="modalConfirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -1014,225 +1091,3 @@
 <!--Modal: modalConfirmDelete-->
 
 <?= $this->endSection(); ?>
-
-<?= $this->section("scripts") ?>
-<script>
-    $(document).ready(function() {
-
-        //todo load superior role when employee role change
-        // $('#employeerole').change(function() {
-        $('.employeerole').change(function() {
-            var idEmployeeRole = $(this).val();
-            // alert($(this).val());
-            let isiFormSuperiorRole = new FormData();
-            isiFormSuperiorRole.append("idSuperiorRole", $(this).val());
-            $.ajax({
-                url: "<?= base_url('employee/checkFilterSuperiorRoleByEmployeeRole'); ?>",
-                method: "POST",
-                data: isiFormSuperiorRole,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                processData: false,
-                contentType: false,
-                // async: false,
-                dataType: 'json',
-                success: function(data) {
-                    var html = '';
-                    var y;
-
-                    if (idEmployeeRole != 3) {
-                        // html += '<option value="" selected>Select Superior Role</option>';
-                        if (data.length > 0) {
-                            for (y = 0; y < data.length; y++) {
-                                if (idEmployeeRole == data[y].idSuperiorRole) {
-                                    html += '<option selected value="' + data[y].idSuperiorRole + '">' + data[y].SuperiorName + '</option>';
-                                } else {
-                                    html += '<option value="' + data[y].idSuperiorRole + '">' + data[y].SuperiorName + '</option>';
-                                }
-
-                            }
-                        } else {
-                            html += '<option value="0">None</option>';
-                        }
-                    } else {
-                        html += '<option value="0">None</option>';
-                    }
-
-                    $('#superiorrole').html(html);
-                    $('#superiorrole').attr('disabled', false);
-                    $('#superiorrole').trigger("change");
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    alert('Error adding / update data');
-                }
-            });
-        });
-
-        $('#superiorrole').change(function() {
-            var idSuperiorRole = $(this).val();
-            var idEmployeeRole = $('#employeerole').val();
-            var old_superiorname = "<?= old('superiorname') ?>";
-            // alert(idSuperiorRole);
-            let isiFormSuperiorName = new FormData();
-            isiFormSuperiorName.append("idSuperiorName", $(this).val());
-
-            $.ajax({
-                url: "<?= base_url('employee/checkSuperiorNameAjax'); ?>", //checkFilterSuperiorRoleByEmployeeRole
-                method: "POST",
-                data: isiFormSuperiorName,
-                // data: {
-                //     id: id
-                // },
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                processData: false,
-                contentType: false,
-                // async: false,
-                dataType: 'json',
-                success: function(data) {
-                    console.log(data);
-                    var html = '';
-                    var i;
-                    // if (idEmployeeRole != idSuperiorRole) {
-                    if (data.length > 0) {
-                        for (i = 0; i < data.length; i++) {
-                            if (data[i].nik == old_superiorname) {
-                                html += '<option selected value="' + data[i].nik + '">' + data[i].SuperiorName + '</option>';
-
-                            } else {
-                                html += '<option value="' + data[i].nik + '">' + data[i].SuperiorName + '</option>';
-                            }
-
-                        }
-                    } else {
-                        html += '<option value="0">None</option>';
-                    }
-
-                    // } else {
-                    //     html += '<option value="0">None</option>';
-                    // }
-                    $('#superiorname').html(html);
-                    $('#superiorname').attr('disabled', false);
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    alert('Error adding / update data');
-                }
-            });
-        });
-
-        //Button Action Employee Start
-        $('#dynamic-table').on('click', '.btn-view-employee', function(e) {
-            const modalviewid = $(this).data('id');
-            const modalviewnik = $(this).data('nik');
-            const modalviewname = $(this).data('name');
-            const modalviewinitial = $(this).data('initial');
-            const modalviewemail = $(this).data('email');
-            const modalviewusername = $(this).data('username');
-            const modalviewrolesuperior = $(this).data('rolesuperior');
-            const modalviewsuperiorname = $(this).data('superiorname');
-            const modalviewroleuser = $(this).data('roleuser');
-            const modalviewlevel = $(this).data('level');
-            const modalviewlocation = $(this).data('location');
-            const modalviewimageuser = $(this).data('imguser');
-            var detail_nikname = '';
-            var job_post = '';
-            var location = '';
-            var superior = '';
-            var image = '';
-            var email = '';
-
-            detail_nikname += '<strong>' + modalviewnik + ' - ' + modalviewname + '</strong>';
-            job_post += 'Position : ' + modalviewroleuser;
-            location += 'Location : ' + modalviewlocation;
-            superior += 'Superior Name : ' + modalviewsuperiorname + ' <br/> Superior Role : ' + modalviewrolesuperior;
-            image += modalviewimageuser;
-            email += modalviewemail
-
-            $('.detail_nikname').html(detail_nikname);
-            $('.job_post').html(job_post);
-            $('.location').html(location);
-            $('.superiorrole').html(superior);
-            $('#imguser').attr('src', '<?= base_url('static/avatars/'); ?>' + '/' + image);
-            $('.mailuser').attr('href', 'mailto:' + email)
-
-            $('.modal-title').text('View data ');
-            $('#modal-view-employee').modal('show');
-
-        });
-        $('#dynamic-table').on('click', '.btn-edit-employee', function(e) {
-            const modaleditid = $(this).data('id');
-            const modaleditnik = $(this).data('nik');
-            const modaleditname = $(this).data('name');
-            const modaleditemail = $(this).data('email');
-            const modaleditusername = $(this).data('username');
-            const modaleditinitial = $(this).data('initial');
-            const modaleditroleuser = $(this).data('roleuser');
-            const modaleditrolesuperior = $(this).data('rolesuperior');
-            const modaleditsuperiorname = $(this).data('superiorname');
-            const modaleditlevel = $(this).data('level');
-            const modaleditlocation = $(this).data('location');
-
-            // Set data to Form Edit
-            $('#editid').val(modaleditid);
-            $('#editnik').val(modaleditnik);
-            $('#editname').val(modaleditname);
-            $('#editinitial').val(modaleditinitial);
-            $('#editemail').val(modaleditemail);
-            $('#editusername').val(modaleditusername);
-            $('#editsuperiorrole').val(modaleditrolesuperior).trigger('change');
-            $('#editsuperiorname').val(modaleditsuperiorname).trigger('change');;
-            $('#editemployeerole').val(modaleditroleuser).trigger('change');
-            $('#editlevel').val(modaleditlevel).trigger('change');
-            $('#editlocation').val(modaleditlocation).trigger('change');
-
-            $('.modal-title').text('Edit data nik employee ' + modaleditnik);
-            $('#modal-edit-employee').modal('show');
-        });
-        $('#dynamic-table').on('click', '.btn-delete-employee', function(e) {
-            const modaldelid = $(this).data('id');
-            const modaldelnik = $(this).data('nik');
-            const modaldelname = $(this).data('name');
-
-            $('#modaldelid').val(modaldelid);
-            $('#modaldelnik').val(modaldelnik);
-            $('#modaldelname').val(modaldelname);
-
-            // $('.modal-title').text('View data nik employee ');
-            $('#modalConfirmDelete').modal('show');
-        });
-        $('#btnUpdateEmployee').on('click', function() {
-            var url;
-            //get Edit Employee
-            const modaleditid = $('#editid').val();
-            const modaleditnik = $('#editnik').val();
-            const modaleditname = $('#editname').val();
-            const modaleditemail = $('#editname').val();
-            const modaleditusername = $('#editusername').val();
-            const modaleditinitial = $('#editinitial').val();
-            const modaleditroleuser = $('#editemployeerole').val();
-            const modaleditrolesuperior = $('#editsuperiorrole').val();
-            const modaleditsuperiorname = $('#editsuperiorname').val();
-            const modaleditlevel = $('#editlevel').val();
-            const modaleditlocation = $('#editlocation').val();
-
-            url = "<?= base_url(); ?>/employee/updateEmployee/" + modaleditid;
-            $('#editemployeemodalForm').attr('action', url);
-            $('#editemployeemodalForm').attr('method', 'POST');
-        });
-        $('#btnDeleteYes').on('click', function() {
-            const modaldelid = $('#modaldelid').val();;
-            const modaldelnik = $('#modaldelnik').val();
-            const modaldelname = $('#modaldelname').val();
-
-
-            url = "<?= base_url(); ?>/employee/deleteEmployee/" + modaldelid;
-            $('#deleteemployeemodalForm').attr('action', url);
-            $('#deleteemployeemodalForm').attr('method', 'POST');
-        });
-
-
-    })
-</script>
-<?= $this->endSection() ?>

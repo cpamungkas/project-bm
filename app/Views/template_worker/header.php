@@ -22,7 +22,7 @@
         <link href="./css/tabler-flags.min.css" rel="stylesheet" />
         <link href="./css/tabler-payments.min.css" rel="stylesheet" />
     <?php } ?>
-    <?php if ($url == 'store' or $url = 'employee' or $url == 'techshift'  or $url == 'techjobout' or $url == 'techjobin' or $url == 'level' or $url == 'troubleshift' or $url == 'troublejobout' or $url == 'troublejobin') { ?>
+    <?php if ($url == 'store' or $url = 'employee' or $url == 'techshift' or $url == 'troubleshift' or $url == 'troublejobout' or $url == 'troublejobin' or $url == 'trafocubicle' or $url == 'kwhmeter' or $url == 'panellvmdp' or $url == 'panelcapacitorbank' or preg_match('/^genset[1-2]$/', $url) or $url == 'dieselhydrant' or $url == 'acchiller' or $url == 'accoolingtower' or $url == 'acahu' or $url == 'acsplitwallduckcassettevrv' or $url == 'temperature' or $url == 'lighting' or $url == 'escalator' or $url == 'elevator' or $url == 'dumbwaiter' or $url == 'sanitary') { ?>
         <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous"> -->
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
         <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.jqueryui.min.css" />
@@ -37,67 +37,12 @@
         <link rel="stylesheet" href="https://cdn.datatables.net/datetime/1.1.2/css/dataTables.dateTime.min.css" />
         <link rel="stylesheet" href="https://editor.datatables.net/extensions/Editor/css/editor.dataTables.min.css" />
         <!-- <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/4.1.0/css/fixedColumns.dataTables.min.css" /> -->
-        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css" /> -->
     <?php } ?>
 
     <!--Custom Sweetalert for this alert-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.10/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.10/dist/sweetalert2.css">
     <style>
-        .wrapper {
-            position: relative;
-            white-space: nowrap;
-        }
-
-        .wrapper .blurred-text,
-        .wrapper .scanner .scanned-text {
-            /* color: #ffffff; */
-            color: #000;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font: bold 65px Arial;
-        }
-
-        .wrapper .blurred-text {
-            filter: blur(2px);
-            opacity: .2;
-        }
-
-        .wrapper .scanner {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 120px;
-            clip: rect(0, 120px, 80px, 0);
-            background: linear-gradient(#000, #000 0) no-repeat,
-                linear-gradient(to right, #000, #000 0) no-repeat,
-                linear-gradient(to right, #000, #000 0) bottom left no-repeat,
-                linear-gradient(to right, #000, #000 0) bottom left no-repeat,
-                linear-gradient(to right, #000, #000 0) bottom right no-repeat,
-                linear-gradient(to right, #000, #000 0) bottom right no-repeat,
-                linear-gradient(to right, #000, #000 0) top right no-repeat,
-                linear-gradient(to right, #000, #000 0) top right no-repeat;
-            background-size: 10px 2px, 2px 10px;
-            animation: scanner 3.5s ease-in-out infinite alternate;
-        }
-
-        .wrapper .scanner .scanned-text {
-            animation: blurrer 3.5s ease-in-out infinite alternate;
-        }
-
-        @keyframes scanner {
-            to {
-                transform: translateX(820px);
-            }
-        }
-
-        @keyframes blurrer {
-            to {
-                transform: translateX(-820px);
-            }
-        }
-
-
         .animated {
             -webkit-animation-duration: 1s;
             animation-duration: 1s;
@@ -138,56 +83,8 @@
             animation-name: rotateIn;
         }
 
-        /* start backdrop spinner */
-        #cover-spin {
-            position: fixed;
-            width: 100%;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            background-color: rgba(255, 255, 255, 0.7);
-            z-index: 9999;
+        .blank {
             display: none;
         }
-
-        @-webkit-keyframes spin {
-            from {
-                -webkit-transform: rotate(0deg);
-            }
-
-            to {
-                -webkit-transform: rotate(360deg);
-            }
-        }
-
-        @keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        #cover-spin::after {
-            content: "";
-            display: block;
-            position: absolute;
-            left: 48%;
-            top: 40%;
-            width: 40px;
-            height: 40px;
-            border-style: solid;
-            border-color: black;
-            border-top-color: transparent;
-            border-width: 4px;
-            border-radius: 50%;
-            -webkit-animation: spin 0.8s linear infinite;
-            animation: spin 0.8s linear infinite;
-        }
-
-        /* end backdrop spinner */
     </style>
 </head>

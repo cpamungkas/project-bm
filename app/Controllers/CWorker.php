@@ -5,6 +5,7 @@ namespace App\Controllers;
 use CodeIgniter\Controller;
 use App\Models\MUser;
 use App\Models\MStore;
+use App\Models\MEquipment;
 use CodeIgniter\HTTP\Request;
 
 class CWorker extends BaseController
@@ -13,6 +14,7 @@ class CWorker extends BaseController
     {
         $this->mUser = new MUser();
         $this->mStore = new MStore();
+        $this->mEquipment = new MEquipment();
         // $this->request = new Request();
         helper(['form', 'url']);
     }
@@ -40,11 +42,13 @@ class CWorker extends BaseController
             $data['status_deleted'] = session()->get('status_deleted');
             $data['totalstore'] = $this->mStore->getTotalStore();
             $data['totaluser'] = $this->mUser->getTotalUser();
-            $data['totalequipment'] = 0; //$this->mStore->getTotalEquipment();
+            $data['totalequipment'] = count($this->mEquipment->getStoreEquipmentByStore(session()->get('idstore')));
             $data['totalmaintenance'] = 0; //$this->mStore->getTotalMaintenance();
             $data['totaloperational'] = 0; //$this->mStore->getTotalOperational();
             $data['totalcomplaint'] = 0; //$this->mStore->getTotalComplaint();
             $data['totalreport'] = 0; //$this->mStore->getTotalReport();
+
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
             return view('vWorker', $data);
         }
     }
@@ -79,10 +83,8 @@ class CWorker extends BaseController
 
             if ($data['level'] == 99) {
                 $data['getDataRole'] = (new mUser())->getDataRoleAdmin();
-                $data['getDataSuperiorRole'] = (new mUser())->getDataSuperiorRole();
             } else {
                 $data['getDataRole'] = (new mUser())->getDataRole();
-                $data['getDataSuperiorRole'] = (new mUser())->getDataSuperiorRole();
             }
             $data['getDataEmployee'] = (new mUser())->getDataEmployee();
             $data['getDataSuperiorName'] = (new mUser())->getDataSuperiorName();
@@ -90,6 +92,9 @@ class CWorker extends BaseController
             $data['getDataLocation'] = (new mUser())->getDataLocation();
 
             $data['validation'] = \Config\Services::validation();
+            
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            
             return view('vEmployee', $data);
         }
     }
@@ -115,11 +120,10 @@ class CWorker extends BaseController
                     ],
                     'label' => 'NIK'
                 ],
-                'nameworker' => [
-                    'rules' => 'required|min_length[3]',
+                'name' => [
+                    'rules' => 'required',
                     'errors' => [
-                        'required' => '{field} cannot be empty',
-                        'min_length' => '{field} too short. Min {param} characters'
+                        'required' => '{field} cannot be empty'
 
                     ],
                     'label' => 'Name'
@@ -130,7 +134,7 @@ class CWorker extends BaseController
                         'required' => '{field} cannot be empty'
 
                     ],
-                    'label' => 'Initial'
+                    'label' => 'Name'
                 ],
                 'email' => [
                     'rules' => 'required|valid_email|is_unique[tb_user.email]',
@@ -170,40 +174,39 @@ class CWorker extends BaseController
                     ],
                     'label' => 'Confirm Password'
                 ],
-                'employeerole' => [
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} cannot be empty',
-                    ],
-                    'label' => 'Employee Role'
-                ],
-                'superiorrole' => [
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} cannot be empty',
-                    ],
-                    'label' => 'Superior Role'
-                ],
-                'superiorname' => [
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} cannot be empty',
-                    ],
-                    'label' => 'Superior Name'
-                ]
-
-
 
             ])) {
                 $validation = \Config\Services::validation();
                 return redirect()->to('/employee')->withInput()->with('validation', $validation);
             }
 
-            // $superiorroleid = $this->request->getPost('superiorrole');
-            // if ($superiorroleid == '') {
-            //     session()->setFlashdata('warning', 'Superior role id is empty!');
+            // if ($this->request->getPost('SuperiorRole') == '') {
+            //     session()->setFlashdata("errorsuperiorrole", "Please select your Superior Role");
             //     return redirect()->to('/employee');
             // }
+
+            // if ($this->request->getPost('SuperiorName') == '') {
+            //     session()->setFlashdata("errorsuperiorname", "Please select your Superior Name");
+            //     return redirect()->to('/employee');
+            // }
+
+            // if ($this->request->getPost('role') == '') {
+            //     session()->setFlashdata("errorrole", "Please select your Role");
+            //     return redirect()->to('/employee');
+
+            // }
+
+            // if ($this->request->getPost('level') == '') {
+            //     session()->setFlashdata("errorlevel", "Please select your Level");
+            //     return redirect()->to('/employee');
+
+            // }
+
+            // if ($this->request->getPost('location') == '') {
+            //     session()->setFlashdata("errorlocation", "Please select your Location");
+            //     return redirect()->to('/employee');
+            // }
+
 
             $employeeModel = new MUser();
             if ($this->request->getPost('superiorrole') == 13) {
@@ -212,10 +215,10 @@ class CWorker extends BaseController
                 $superiornameid = $this->request->getPost('superiorname');
             }
             $data = [
-                'username' =>  $this->request->getPost('username'),
+                'username' => $this->request->getPost('username'),
                 'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT), // $this->request->getPost('password'),
                 'nik' => $this->request->getPost('nik'),
-                'name' => ucwords($this->request->getPost('nameworker')),
+                'name' => $this->request->getPost('name'),
                 'initial' => $this->request->getPost('initial'),
                 'email' => $this->request->getPost('email'),
                 'image' => 'default.jpg',
@@ -231,11 +234,9 @@ class CWorker extends BaseController
                 'status_deleted' => 0
             ];
 
-            // dd($data);
-
             if ($employeeModel->insert($data)) {
                 //$session->setFlashdata("success", "Success. " . "NIK : " . $this->request->getPost('nik') . " has be saved.");
-                session()->setFlashdata('success', 'Employee : ' . ucwords($this->request->getPost('nameworker')) . ' has been added');
+                session()->setFlashdata('success', 'Employee : ' . ucwords($this->request->getPost('name')) . ' has been added');
                 return redirect()->to('/employee');
             } else {
                 session()->setFlashdata('warning', 'Data not saved!');
@@ -255,26 +256,12 @@ class CWorker extends BaseController
             return view('vLogin', $data);
         } else {
             //validation           
-            $editId = $this->request->getPost('editid');
-            $editNIK = $this->request->getPost('editnik');
-            $editName = $this->request->getPost('editName');
-            $editInitial = $this->request->getPost('editinitial');
-            $editEmail = $this->request->getPost('editemail');
-            $editUsername = $this->request->getPost('editusername');
-            $editPassword = $this->request->getPost('editpassword');
-            $editSuperiorRole = $this->request->getPost('editsuperiorrole');
-            $editsuperiorname = $this->request->getPost('editsuperiorname');
-            $editemployeerole = $this->request->getPost('editemployeerole');
-            $editlevel = $this->request->getPost('editlevel');
-            $editlocation = $this->request->getPost('editlocation');
-
-            // dd($editsuperiorname);
 
             $employeeModel = new MUser();
             if ($this->request->getPost('editsuperiorrole') == 13) {
                 $superiornameid = 99;
             } else {
-                $superiornameid = $this->request->getPost('editsuperiorname');
+                $superiornameid = $this->request->getPost('editsuperiorrole');
             }
             $nik = $this->request->getPost('editnik');
             $password = $this->request->getPost('editpassword');
@@ -350,40 +337,10 @@ class CWorker extends BaseController
         $data = (new MUser())->getDataSuperiorName2($id);
         echo json_encode($data);
     }
-
-    function getDataSuperiorNameFilter()
-    {
-        $id = $this->request->getPost('id');
-        $data = (new MUser())->getDataSuperiorNameFilter($id);
-        // dd($data);
-        echo json_encode($data);
-    }
-
     function getDataemployeeById()
     {
         $id = $this->request->getPost('id');
         $data = (new MUser())->getDataemployeeById($id);
-        echo json_encode($data);
-    }
-
-    public function checkSuperiorRoleAjax()
-    {
-        $idRole = $this->request->getPost('employeerole');
-        $data = (new MUser())->getSuperiorRole($idRole);
-        echo json_encode($data);
-    }
-
-    public function checkSuperiorNameAjax()
-    {
-        $idSuperiorName = $this->request->getPost('idSuperiorName');
-        $data = (new MUser())->getSuperiorName($idSuperiorName);
-        echo json_encode($data);
-    }
-
-    public function checkFilterSuperiorRoleByEmployeeRole()
-    {
-        $idFilterSuperiorRole = $this->request->getPost('idSuperiorRole');
-        $data = (new MUser())->getFilterSuperiorRoleByEmployeeRole($idFilterSuperiorRole);
         echo json_encode($data);
     }
 }

@@ -19,6 +19,66 @@ class MShiftschedule extends Model
         'status_deleted'
     ];
 
+    public function getWorkerFreeShift($date, $idStore) {
+        $db = \Config\Database::connect();
+        $builder = $db->table('tb_user');
+
+        $builder->select([
+            "tb_user.id"
+        ]);
+        $builder->where([
+            "tb_shiftschedule.status_deleted !=" => 1,
+            "tb_shiftschedule.date" => $date,
+            "tb_user.location" => $idStore
+        ]);
+        $builder->join("tb_shiftschedule", "tb_shiftschedule.worker_id = tb_user.id", "LEFT");
+
+        $notFree = $builder->get()->getResultArray();
+
+        $builder->select([
+            "tb_user.id",
+            "tb_user.name"
+        ]);
+        if($notFree != NULL) {
+            foreach($notFree as $key => $value) {
+                $builder->where("id !=", $value['id']);
+            }
+        }
+        $builder->where("tb_user.location", $idStore);
+
+        return $builder->get()->getResultArray();
+    }
+
+    // public function getWorkerFreeShiftException($id, $date, $idStore) {
+    //     $db = \Config\Database::connect();
+    //     $builder = $db->table('tb_user');
+
+    //     $builder->select([
+    //         "tb_user.id"
+    //     ]);
+    //     $builder->where([
+    //         "tb_shiftschedule.idShiftSchedule !=" => $id,
+    //         "tb_shiftschedule.date" => $date,
+    //         "tb_user.location" => $idStore
+    //     ]);
+    //     $builder->join("tb_shiftschedule", "tb_shiftschedule.worker_id = tb_user.id", "LEFT");
+
+    //     $notFree = $builder->get()->getResultArray();
+
+    //     $builder->select([
+    //         "tb_user.id",
+    //         "tb_user.name",
+    //     ]);
+    //     if($notFree != NULL) {
+    //         foreach($notFree as $key => $value) {
+    //             $builder->where("id !=", $value['id']);
+    //         }
+    //     }
+    //     $builder->where("tb_user.location", $idStore);
+
+    //     return $builder->get()->getResultArray();
+    // }
+
     public function getShiftScheduleByStore($idStore) {
         $query = $this->db->query("SELECT s.idShiftSchedule AS id, s.date AS `date`, SUBSTRING(s.date, 7, 4) AS date_year, SUBSTRING(s.date, 4, 2) AS date_month, s.store AS `store_id`, t.StoreName AS `store_name`, s.worker_id AS `worker_id`, u.name AS `worker_name`, u.initial AS `worker_init`, s.shift AS `shift_id`, h.shift AS shift, h.description AS `shift_description`, s.description AS `description`
         FROM tb_shiftschedule AS s

@@ -1,6 +1,70 @@
 <?= $this->extend('template_worker/index'); ?>
 <?= $this->section('page-content'); ?>
 
+<div class="container-xl">
+    <!-- Page title -->
+    <div class="page-header d-print-none">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <!-- <h2 class="page-title">
+                    Empty page
+                </h2> -->
+            </div>
+        </div>
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <!-- Page pre-title -->
+                <!-- <div class="page-pretitle">
+                    Dashboard
+                </div>
+                <h2 class="page-title">
+                    <?= $roleuser; ?>
+                </h2> -->
+            </div>
+            <!-- Page title actions -->
+            <div class="col-12 col-md-auto ms-auto d-print-none">
+                <div class="btn-list">
+                    <span class="d-none d-sm-inline">
+                        <!-- <a href="#" class="btn btn-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-viewfinder" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <circle cx="12" cy="12" r="9"></circle>
+                                <line x1="12" y1="3" x2="12" y2="7"></line>
+                                <line x1="12" y1="21" x2="12" y2="18"></line>
+                                <line x1="3" y1="12" x2="7" y2="12"></line>
+                                <line x1="21" y1="12" x2="18" y2="12"></line>
+                                <line x1="12" y1="12" x2="12" y2="12.01"></line>
+                            </svg>
+                            New view
+                        </a> -->
+                        <!-- <a href="#" class="btn" data-bs-toggle="modal" data-bs-target="#modal-report">
+                            Modal with form
+                        </a> -->
+                    </span>
+                    <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-report">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <rect x="4" y="5" width="16" height="16" rx="2"></rect>
+                            <line x1="16" y1="3" x2="16" y2="7"></line>
+                            <line x1="8" y1="3" x2="8" y2="7"></line>
+                            <line x1="4" y1="11" x2="20" y2="11"></line>
+                            <line x1="10" y1="16" x2="14" y2="16"></line>
+                            <line x1="12" y1="14" x2="12" y2="18"></line>
+                        </svg>
+                        Create new shift
+                    </a>
+                    <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="page-body">
     <div class="container-xl">
         <div class="row row-deck row-cards">
@@ -36,7 +100,7 @@
                         <h3 class="card-title">New Shift</h3>
                     </div>
                     <div class="card-body">
-                        <form id="FormShift" action="<?= base_url('techshift/saveTechShift') ?>" method="post">
+                        <form>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group mb-3 row">
@@ -45,24 +109,19 @@
                                             <!-- <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email">
                                             <small class="form-hint">We'll never share your email with anyone else.</small> -->
                                             <div class="input-icon mb-2">
-                                                <input class="form-control <?= ($validation->hasError('date')) ? 'is-invalid' : ''; ?>" placeholder="Select a date" id="date" name="date" value="<?php echo old('date') !== null ? old('date') : date('d-m-Y'); ?>" required>
-                                                <?php if ($validation->hasError('date')) { ?>
-                                                    <div class="invalid-feedback">
-                                                        <?= $validation->getError('date'); ?>
-                                                    </div>
-                                                <?php } else { ?>
-                                                    <span class="input-icon-addon">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                            <rect x="4" y="5" width="16" height="16" rx="2"></rect>
-                                                            <line x1="16" y1="3" x2="16" y2="7"></line>
-                                                            <line x1="8" y1="3" x2="8" y2="7"></line>
-                                                            <line x1="4" y1="11" x2="20" y2="11"></line>
-                                                            <line x1="11" y1="15" x2="12" y2="15"></line>
-                                                            <line x1="12" y1="15" x2="12" y2="18"></line>
-                                                        </svg>
-                                                    </span>
-                                                <?php } ?>
+                                                <input class="form-control " placeholder="Select a date" id="datepicker-icon" value="<?= date('d-m-Y'); ?>" required>
+                                                <span class="input-icon-addon">
+                                                    <!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <rect x="4" y="5" width="16" height="16" rx="2"></rect>
+                                                        <line x1="16" y1="3" x2="16" y2="7"></line>
+                                                        <line x1="8" y1="3" x2="8" y2="7"></line>
+                                                        <line x1="4" y1="11" x2="20" y2="11"></line>
+                                                        <line x1="11" y1="15" x2="12" y2="15"></line>
+                                                        <line x1="12" y1="15" x2="12" y2="18"></line>
+                                                    </svg>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -76,15 +135,13 @@
                                         <label class="form-label col-3 col-form-label">Name</label>
                                         <div class="col">
                                             <div class="form-floating">
-                                                <select class="form-select <?= ($validation->hasError('name')) ? 'is-invalid' : ''; ?>" id="name" name="name" required>
-
+                                                <select class="form-select" id="floatingSelect" aria-label="Floating label select example" required>
+                                                    <option value="" selected="">Select the worker</option>
+                                                    <?php foreach ($getDataWorkerByStore as $worker) : ?>
+                                                        <?= '<option value="' . $worker['id'] . '">' . $worker['name'] . '</option>' ?>
+                                                    <?php endforeach; ?>
                                                 </select>
                                                 <label for="floatingSelect">Select the worker</label>
-                                                <?php if ($validation->hasError('name')) : ?>
-                                                    <div class="invalid-feedback">
-                                                        <?= $validation->getError('name'); ?>
-                                                    </div>
-                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
@@ -92,23 +149,13 @@
                                         <label class="form-label col-3 col-form-label pt-0">Shift</label>
                                         <div class="col">
                                             <div class="form-floating">
-                                                <select class="form-select <?= ($validation->hasError('select_shift')) ? 'is-invalid' : ''; ?>" id="select_shift" name="select_shift" aria-label="Floating label select example" required>
-                                                    <?= old('select_shift') !== NULL ?: '<option value="" selected="">Select the shift</option>'; ?>
-                                                    <?php foreach ($getDataShift as $shift) {
-                                                        if ($shift['idShift'] == old('select_shift')) {
-                                                            echo '<option selected value="' . $shift['idShift'] . '">' . $shift['shift'] . ' - ' . $shift['description'] . '</option>';
-                                                        } else {
-                                                            echo '<option value="' . $shift['idShift'] . '">' . $shift['shift'] . ' - ' . $shift['description'] . '</option>';
-                                                        }
-                                                    ?>
-                                                    <?php } ?>
+                                                <select class="form-select" id="floatingSelect" aria-label="Floating label select example" required>
+                                                    <option value="" selected="">Select the shift</option>
+                                                    <?php foreach ($getDataShift as $shift) : ?>
+                                                        <?= '<option value="' . $shift['idShift'] . '">' . $shift['shift'] . ' - ' . $shift['description'] . '</option>' ?>
+                                                    <?php endforeach; ?>
                                                 </select>
-                                                <label for="select_shift">Select the shift</label>
-                                                <?php if ($validation->hasError('select_shift')) : ?>
-                                                    <div class="invalid-feedback">
-                                                        <?= $validation->getError('select_shift'); ?>
-                                                    </div>
-                                                <?php endif; ?>
+                                                <label for="floatingSelect">Select the shift</label>
                                             </div>
                                         </div>
                                     </div>
@@ -117,12 +164,7 @@
                                 <div class="col-lg-6">
                                     <div class="mb-3">
                                         <label class="form-label">Description </label>
-                                        <textarea class="form-control <?= ($validation->hasError('description')) ? 'is-invalid' : ''; ?>" name="description" id="description" rows="6" placeholder="Description"><?= old('description') ?></textarea>
-                                        <?php if ($validation->hasError('description')) : ?>
-                                            <div class="invalid-feedback">
-                                                <?= $validation->getError('description'); ?>
-                                            </div>
-                                        <?php endif; ?>
+                                        <textarea class="form-control" name="example-textarea-input" rows="6" placeholder="Content.."></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -167,7 +209,7 @@
                         <table id="dynamic-table" class="table card-table table-vcenter text-nowrap datatable" style="width:100%">
                             <thead>
                                 <tr>
-                                    <!-- <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all invoices"></th> -->
+                                    <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all invoices"></th>
                                     <th class="w-1">No.
                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-sm text-dark icon-thick" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -180,34 +222,39 @@
                                     <?php
                                     $y = 1;
                                     for ($y = 1; $y <= 31; $y++) {
-                                        echo "<th style='width:150px;'> <input class='form-check-input m-0 align-middle' type='checkbox' aria-label='Select all'> " . $y . " Mei 2022</th>";
+                                        echo "<th style='width:150px;'> <input class='form-check-input m-0 align-middle' type='checkbox' aria-label='Select all invoices'> " . $y . " Mei 2022</th>";
                                     }
                                     ?>
-                                    <th>Description</th>
-                                    <th>Action</th>
+                                    <th class="text-end">Description</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php $i = 1; ?>
-                                <?php foreach ($getDataTableShift as $ts) : ?>
+                                <?php foreach ($getDataTableStore as $ts) : ?>
                                     <tr>
-                                        <!-- <td><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select invoice"></td> -->
+                                        <td><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select invoice"></td>
                                         <td><?= $i; ?></td>
-                                        <td><?= $ts['name']; ?></td>
-                                        <td><?= $ts['initial']; ?></td>
+                                        <td><?= $ts['StoreName']; ?></td>
+                                        <td><?= $ts['StoreCode']; ?></td>
                                         <td><?= $ts['StoreName']; ?></td>
                                         <?php
                                         $o = 1;
-                                        // TODO bikin fungsi buat output shift harianny
                                         for ($o = 1; $o <= 31; $o++) {
-                                            echo "<td class='text-center'>" . coloredShift($ts['shift']) . "</td>";
+                                            echo "<td>" . $ts['KWHMeter2'] . "</td>";
                                         }
                                         ?>
-                                        <td><?= $ts['description']; ?></td>
+
                                         <td class="text-end">
                                             <div class="row g-2 align-items-center mb-n3">
-                                                <div class="col-6 col-sm-4 col-md-2 col-xl-auto mb-1">
-                                                    <a class="btn-outline-primary" aria-label="ViewData" data-bs-toggle="modal" data-bs-target="#modal-viewdata<?= $i; ?>">
+                                                <div class="col-3 col-sm-2 col-md-2 col-xl-auto mb-2"><a href="#myModalView<?= $i; ?>" class="btn btn-outline-primary w-100 btn-icon" aria-label="ViewData" data-bs-toggle="modal" data-bs-target="#modal-viewdata<?= $i; ?>">link</a>
+                                                </div>
+                                                <div class="col-3 col-sm-2 col-md-2 col-xl-auto mb-2">
+                                                    <a href="#myModalEdit<?= $i; ?>" class="btn btn-outline-success w-100 btn-icon" aria-label="EditData" data-bs-toggle="modal" data-bs-target="#modal-editdata<?= $i; ?>">link</a>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="row g-2 align-items-center mb-n3">
+                                                <div class="col-6 col-sm-4 col-md-2 col-xl-auto mb-3">
+                                                    <a href="#myModalView<?= $i; ?>" class="btn btn-outline-primary w-100 btn-icon" aria-label="ViewData" data-bs-toggle="modal" data-bs-target="#modal-viewdata<?= $i; ?>">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                             <circle cx="10" cy="10" r="7"></circle>
@@ -216,10 +263,9 @@
                                                             <line x1="21" y1="21" x2="15" y2="15"></line>
                                                         </svg>
                                                     </a>
-                                                    <!-- </div>
-
-                                                <div class="col-6 col-sm-4 col-md-2 col-xl-auto mb-3"> -->
-                                                    <a class="btn-outline-success btn-edit" aria-label="EditData" data-bs-toggle="modal" data-bs-target="#modal-editTechShift<?= $i; ?>">
+                                                </div>
+                                                <div class="col-6 col-sm-4 col-md-2 col-xl-auto mb-3">
+                                                    <a href="#myModalEdit<?= $i; ?>" class="btn btn-outline-success w-100 btn-icon" aria-label="EditData" data-bs-toggle="modal" data-bs-target="#modal-editdata<?= $i; ?>">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                             <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
@@ -227,9 +273,9 @@
                                                             <path d="M16 5l3 3"></path>
                                                         </svg>
                                                     </a>
-                                                    <!-- </div>
-                                                <div class="col-6 col-sm-4 col-md-2 col-xl-auto mb-3"> -->
-                                                    <a class="btn-outline-danger" aria-label="DeleteData" data-bs-toggle="modal" data-bs-target="#modal-deletedata<?= $i; ?>">
+                                                </div>
+                                                <div class="col-6 col-sm-4 col-md-2 col-xl-auto mb-3">
+                                                    <a href="#myModalDelete<?= $i; ?>" class="btn btn-outline-danger w-100 btn-icon" aria-label="Delete" data-bs-toggle="modal" data-bs-target="#modal-deletedata<?= $i; ?>">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                             <line x1="4" y1="7" x2="20" y2="7"></line>
@@ -240,526 +286,134 @@
                                                         </svg>
                                                     </a>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </td>
                                     </tr>
+
+
+                                    <?php $i++; ?>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
                     </div>
-                    <!-- Modal view data -->
-                    <div class="modal modal-blur fade" id="modal-viewdata<?= $i; ?>" tabindex="-1" style="display: none;" aria-hidden="true">
-                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">View data Shift</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="form-group mb-3 row">
-                                                <label class="form-label col-3 col-form-label">Date</label>
-                                                <div class="col">
-
-                                                    <div class="input-icon mb-2">
-                                                        <input class="form-control " placeholder="Select a date" id="date" name="date" value="<?php echo convertDate($ts['date']); ?>" disabled>
-                                                        <span class="input-icon-addon">
-                                                            <!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                <rect x="4" y="5" width="16" height="16" rx="2"></rect>
-                                                                <line x1="16" y1="3" x2="16" y2="7"></line>
-                                                                <line x1="8" y1="3" x2="8" y2="7"></line>
-                                                                <line x1="4" y1="11" x2="20" y2="11"></line>
-                                                                <line x1="11" y1="15" x2="12" y2="15"></line>
-                                                                <line x1="12" y1="15" x2="12" y2="18"></line>
-                                                            </svg>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="form-group mb-3 row">
-                                                <label class="form-label col-3 col-form-label">Store</label>
-                                                <div class="col">
-                                                    <input type="text" class="form-control" id="store" name="store" placeholder="Store" value="<?= $location; ?>" readonly>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="form-group mb-3 row">
-                                                <label class="form-label col-3 col-form-label">Name</label>
-                                                <div class="col">
-                                                    <div class="form-floating">
-                                                        <select disabled class="form-select <?= ($validation->hasError('name')) ? 'is-invalid' : ''; ?>" id="name" name="name" required>
-                                                            <?= '<option value="' . $ts['id'] . '">' . $ts['name'] . '</option>' ?>
-                                                        </select>
-                                                        <label for="floatingSelect">Select the worker</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="form-group row">
-                                                <label class="form-label col-3 col-form-label pt-0">Shift</label>
-                                                <div class="col">
-                                                    <div class="form-floating">
-                                                        <select disabled class="form-select" id="select_shift" name="select_shift" aria-label="Floating label select example" required>
-                                                            <?= '<option value="' . $ts['idShift'] . '">' . $ts['shift'] . ' - ' . $ts['shiftDescription'] . '</option>' ?>
-                                                        </select>
-                                                        <label for="select_shift">Select the shift</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="mb-3">
-                                                <label class="form-label">Description </label>
-                                                <textarea disabled class="form-control" name="description" id="description" rows="6" placeholder="Description"><?= $ts['description']; ?></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="modal-footer">
-                                    <button class="btn btn-outline-primary ms-auto" id="btnClose" name="btnClose" data-bs-dismiss="modal">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-door-exit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <path d="M13 12v.01"></path>
-                                            <path d="M3 21h18"></path>
-                                            <path d="M5 21v-16a2 2 0 0 1 2 -2h7.5m2.5 10.5v7.5"></path>
-                                            <path d="M14 7h7m-3 -3l3 3l-3 3"></path>
-                                        </svg>
-                                        Close
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Modal Edit Data -->
-                    <div class="modal modal-blur fade" id="modal-editTechShift<?= $i; ?>" tabindex="-1" style="display: none;" aria-hidden="true">
-                        <form action="<?= base_url('techshift/editTechShift/' . $ts['id']) ?>" method="post">
-                            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Edit data Shift</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="form-group mb-3 row">
-                                                    <label class="form-label col-3 col-form-label">Date</label>
-                                                    <div class="col">
-
-                                                        <div class="input-icon mb-2">
-                                                            <input class="form-control <?= ($validation->hasError('date')) ? 'is-invalid' : ''; ?>" placeholder="Select a date" id="date" name="date" value="<?php echo old('date') !== null ? old('date') : convertDate($ts['date']); ?>" required>
-                                                            <?php if ($validation->hasError('date')) { ?>
-                                                                <div class="invalid-feedback">
-                                                                    <?= $validation->getError('date'); ?>
-                                                                </div>
-                                                            <?php } else { ?>
-                                                                <span class="input-icon-addon">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                        <rect x="4" y="5" width="16" height="16" rx="2"></rect>
-                                                                        <line x1="16" y1="3" x2="16" y2="7"></line>
-                                                                        <line x1="8" y1="3" x2="8" y2="7"></line>
-                                                                        <line x1="4" y1="11" x2="20" y2="11"></line>
-                                                                        <line x1="11" y1="15" x2="12" y2="15"></line>
-                                                                        <line x1="12" y1="15" x2="12" y2="18"></line>
-                                                                    </svg>
-                                                                </span>
-                                                            <?php } ?>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="form-group mb-3 row">
-                                                    <label class="form-label col-3 col-form-label">Store</label>
-                                                    <div class="col">
-                                                        <input type="text" class="form-control" id="store" name="store" placeholder="Store" value="<?= $location; ?>" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="form-group mb-3 row">
-                                                    <label class="form-label col-3 col-form-label">Name</label>
-                                                    <div class="col">
-                                                        <div class="form-floating">
-                                                            <!-- TODO -	Nama yang sudah dipilih, tidak akan muncul kembali dalam combobox dalam 1 tanggal yang sama -->
-                                                            <select class="form-select <?= ($validation->hasError('name')) ? 'is-invalid' : ''; ?>" id="name" name="name" required>
-                                                                <?php if (old('select_shift') !== null) { ?>
-                                                                    <?php foreach ($getDataWorkerByStore as $worker) {
-                                                                        if ($worker['id'] == old('name')) {
-                                                                            echo '<option selected value="' . $worker['id'] . '">' . $worker['name'] . '</option>';
-                                                                        } else {
-                                                                            echo '<option value="' . $worker['id'] . '">' . $worker['name'] . '</option>';
-                                                                        }
-                                                                    } ?>
-                                                                <?php } else { ?>
-                                                                    <?php foreach ($getDataWorkerByStore as $worker) : ?>
-                                                                        <?php
-                                                                        if ($worker['id'] == $ts['idUser']) {
-                                                                            echo '<option selected value="' . $worker['id'] . '">' . $worker['name'] . '</option>';
-                                                                        } else {
-                                                                            echo '<option value="' . $worker['id'] . '">' . $worker['name'] . '</option>';
-                                                                        }
-                                                                        ?>
-                                                                    <?php endforeach; ?>
-                                                                <?php } ?>
-                                                            </select>
-                                                            <label for="floatingSelect">Select the worker</label>
-                                                            <?php if ($validation->hasError('name')) : ?>
-                                                                <div class="invalid-feedback">
-                                                                    <?= $validation->getError('name'); ?>
-                                                                </div>
-                                                            <?php endif; ?>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="form-group row">
-                                                    <label class="form-label col-3 col-form-label pt-0">Shift</label>
-                                                    <div class="col">
-                                                        <div class="form-floating">
-                                                            <select class="form-select <?= ($validation->hasError('select_shift')) ? 'is-invalid' : ''; ?>" id="select_shift" name="select_shift" aria-label="Floating label select example" required>
-                                                                <?php if (old('select_shift') !== null) { ?>
-                                                                    <?php foreach ($getDataShift as $shift) {
-                                                                        if ($shift['idShift'] == old('select_shift')) {
-                                                                            echo '<option selected value="' . $shift['idShift'] . '">' . $shift['shift'] . ' - ' . $shift['description'] . '</option>';
-                                                                        } else {
-                                                                            echo '<option value="' . $shift['idShift'] . '">' . $shift['shift'] . ' - ' . $shift['description'] . '</option>';
-                                                                        }
-                                                                    } ?>
-                                                                <?php } else { ?>
-                                                                    <?php foreach ($getDataShift as $shift) : ?>
-                                                                        <?php
-                                                                        if ($shift['idShift'] == $ts['idShift']) {
-                                                                            echo '<option selected value="' . $shift['idShift'] . '">' . $shift['shift'] . ' - ' . $shift['description'] . '</option>';
-                                                                        } else {
-                                                                            echo '<option value="' . $shift['idShift'] . '">' . $shift['shift'] . ' - ' . $shift['description'] . '</option>';
-                                                                        }
-                                                                        ?>
-                                                                    <?php endforeach; ?>
-                                                                <?php } ?>
-                                                            </select>
-                                                            <label for="select_shift">Select the shift</label>
-                                                            <?php if ($validation->hasError('select_shift')) : ?>
-                                                                <div class="invalid-feedback">
-                                                                    <?= $validation->getError('select_shift'); ?>
-                                                                </div>
-                                                            <?php endif; ?>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Description </label>
-                                                    <textarea class="form-control <?= ($validation->hasError('description')) ? 'is-invalid' : ''; ?>" name="description" id="description" rows="6" placeholder="Description"><?php echo old('description') !== null ? old('description') : $ts['description']; ?></textarea>
-                                                    <?php if ($validation->hasError('description')) : ?>
-                                                        <div class="invalid-feedback">
-                                                            <?= $validation->getError('description'); ?>
-                                                        </div>
-                                                    <?php endif; ?>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <div class="row align-items-center">
-                                            <div class="col"></div>
-                                            <div class="col-auto">
-                                                <button type="submit" class="btn btn-outline-primary ms-auto" id="btnUpdate" name="btnUpdate" data-bs-dismiss="modal">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                        <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"></path>
-                                                        <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"></path>
-                                                    </svg>
-                                                    Update
-                                                </button>
-                                                <a class="btn btn-outline-secondary ms-auto" id="btnClose" name="btnClose" data-bs-dismiss="modal">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-door-exit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                        <path d="M13 12v.01"></path>
-                                                        <path d="M3 21h18"></path>
-                                                        <path d="M5 21v-16a2 2 0 0 1 2 -2h7.5m2.5 10.5v7.5"></path>
-                                                        <path d="M14 7h7m-3 -3l3 3l-3 3"></path>
-                                                    </svg>
-                                                    Close
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-
-                    <!-- Modal delete data -->
-                    <div class="modal modal-blur fade" id="modal-deletedata<?= $i; ?>" tabindex="-1" style="display: none;" aria-hidden="true">
-                        <form action="<?= base_url('techshift/deleteTechShift/' . $ts['id']) ?>" method="post">
-                            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Delete data Shift</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="form-group mb-3 row">
-                                                    <label class="form-label col-3 col-form-label">Date</label>
-                                                    <div class="col">
-
-                                                        <div class="input-icon mb-2">
-                                                            <input class="form-control " placeholder="Select a date" id="date" name="date" value="<?php echo convertDate($ts['date']); ?>" disabled>
-                                                            <span class="input-icon-addon">
-                                                                <!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                    <rect x="4" y="5" width="16" height="16" rx="2"></rect>
-                                                                    <line x1="16" y1="3" x2="16" y2="7"></line>
-                                                                    <line x1="8" y1="3" x2="8" y2="7"></line>
-                                                                    <line x1="4" y1="11" x2="20" y2="11"></line>
-                                                                    <line x1="11" y1="15" x2="12" y2="15"></line>
-                                                                    <line x1="12" y1="15" x2="12" y2="18"></line>
-                                                                </svg>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="form-group mb-3 row">
-                                                    <label class="form-label col-3 col-form-label">Store</label>
-                                                    <div class="col">
-                                                        <input type="text" class="form-control" id="store" name="store" placeholder="Store" value="<?= $location; ?>" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="form-group mb-3 row">
-                                                    <label class="form-label col-3 col-form-label">Name</label>
-                                                    <div class="col">
-                                                        <div class="form-floating">
-                                                            <select disabled class="form-select <?= ($validation->hasError('name')) ? 'is-invalid' : ''; ?>" id="name" name="name" required>
-                                                                <?= '<option value="' . $ts['id'] . '">' . $ts['name'] . '</option>' ?>
-                                                            </select>
-                                                            <label for="floatingSelect">Select the worker</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="form-group row">
-                                                    <label class="form-label col-3 col-form-label pt-0">Shift</label>
-                                                    <div class="col">
-                                                        <div class="form-floating">
-                                                            <select disabled class="form-select" id="select_shift" name="select_shift" aria-label="Floating label select example" required>
-                                                                <?= '<option value="' . $ts['idShift'] . '">' . $ts['shift'] . ' - ' . $ts['shiftDescription'] . '</option>' ?>
-                                                            </select>
-                                                            <label for="select_shift">Select the shift</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Description </label>
-                                                    <textarea disabled class="form-control" name="description" id="description" rows="6" placeholder="Description"><?= $ts['description']; ?></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <div class="row align-items-center">
-                                            <div class="col"></div>
-                                            <div class="col-auto">
-                                                <button type="submit" class="btn btn-outline-danger ms-auto" id="btnDelete" name="btnDelete" data-bs-dismiss="modal">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                        <line x1="4" y1="7" x2="20" y2="7"></line>
-                                                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                                                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
-                                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
-                                                    </svg>
-                                                    Delete
-                                                </button>
-                                                <a class="btn btn-outline-secondary ms-auto" id="btnClose" name="btnClose" data-bs-dismiss="modal">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-door-exit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                        <path d="M13 12v.01"></path>
-                                                        <path d="M3 21h18"></path>
-                                                        <path d="M5 21v-16a2 2 0 0 1 2 -2h7.5m2.5 10.5v7.5"></path>
-                                                        <path d="M14 7h7m-3 -3l3 3l-3 3"></path>
-                                                    </svg>
-                                                    Close
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-
-                    <?php $i++; ?>
-                <?php endforeach; ?>
-                </tbody>
-                </table>
-
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-
-<?= $this->endSection(); ?>
-
-<?= $this->section("scripts") ?>
-<script>
-    $(document).ready(function() {
-        var tanggal = $("#date");
-        var old_name = "<?= old('name') ?>";
-
-        // Litepicker for admins
-        const picker = new Litepicker({
-            element: document.getElementById('date'),
-            buttonText: {
-                previousMonth: `
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="15 6 9 12 15 18" /></svg>`,
-                nextMonth: `
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 6 15 12 9 18" /></svg>`,
-            },
-            format: 'DD-MM-YYYY'
-        });
-        // End of Litepicker for admins
-
-        form = new FormData();
-        form.append("date", tanggal.val());
-
-        //? data worker dinamis dg ajax 
-        $.ajax({
-            url: "<?= base_url('techshift/checkWorkerShiftAjax') ?>",
-            type: "POST",
-            data: form,
-            processData: false,
-            contentType: false,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            success: function(data) {
-                if (data != null) {
-                    $("#name").find("option").remove().end();
-
-                    if (old_name != null) {
-                        $("#name").append(
-                            '<option value="">Select the worker</option>'
-                        );
-                        data.worker.forEach(element => {
-                            if (element.id == old_name) {
-                                $("#name").append(
-                                    `<option selected value=` +
-                                    element.id +
-                                    `>` +
-                                    element.name +
-                                    `</option>`
-                                );
-                            } else {
-                                $("#name").append(
-                                    `<option value=` +
-                                    element.id +
-                                    `>` +
-                                    element.name +
-                                    `</option>`
-                                );
+<form id="storeForm" action="<?php echo base_url('store/saveStore'); ?>" method="post" class="needs-validation">
+    <div class="modal modal-blur fade" id="modal-report" tabindex="-1" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">New store</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Store code</label>
+                        <input type="text" class="form-control <?= ($validation->hasError('storecode')) ? 'is-invalid' : ''; ?>" name="storecode" id="storecode" placeholder="Store Code" size="10" maxlength="5" max="99999" onkeypress="return isNumeric(event)" oninput="maxLengthCheck(this)" value="<?= old('storecode'); ?>" required>
+                        <!-- Error -->
+                        <?php if ($validation->hasError('storecode')) : ?>
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('storecode'); ?>
+                            </div>
+                        <?php endif; ?>
+                        <script>
+                            function maxLengthCheck(object) {
+                                if (object.value.length > object.maxLength)
+                                    object.value = object.value.slice(0, object.maxLength)
                             }
-                        });
 
-                    } else {
-                        $("#name").append(
-                            '<option value="" selected>Select the worker</option>'
-                        );
-                        data.worker.forEach(element => {
-                            $("#name").append(
-                                `<option value=` +
-                                element.id +
-                                `>` +
-                                element.name +
-                                `</option>`
-                            );
-                        });
-                    }
-                }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                alert('Error loading worker data');
-            }
-        });
+                            function isNumeric(evt) {
+                                var theEvent = evt || window.event;
+                                var key = theEvent.keyCode || theEvent.which;
+                                key = String.fromCharCode(key);
+                                var regex = /[0-9]|\./;
+                                if (!regex.test(key)) {
+                                    theEvent.returnValue = false;
+                                    if (theEvent.preventDefault) theEvent.preventDefault();
+                                }
+                            }
+                        </script>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Store name</label>
+                        <input type="text" class="form-control <?= ($validation->hasError('storename')) ? 'is-invalid' : ''; ?>" name="storename" id="storename" placeholder="Store Name" value="<?= old('storename'); ?>" required>
+                        <!-- Error -->
+                        <?php if ($validation->hasError('storename')) : ?>
+                            <div class="invalid-feedback">
+                                <?= $validation->getError('storename'); ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">KWH Meter 1</label>
+                                <select class="form-select" id="kwhmeter1" name="kwhmeter1" required>
+                                    <option value="">Select KWH Meter 1</option>
+                                    <?php foreach ($getKWHMeter1 as $kwh1) : ?>
+                                        <?= '<option value="' . $kwh1['idkwhmeter1'] . '">' . $kwh1['kwhmeter1'] . ' KVA</option>' ?>
+                                    <?php endforeach; ?>
+                                </select>
+                                <?php if (session('errorkwhmeter1')) { ?>
+                                    <div class="invalid-feedback">
+                                        <?= session("errorkwhmeter1") ?>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">ID PLN 1</label>
+                                <input type="number" class="form-control <?= ($validation->hasError('idpln1')) ? 'is-invalid' : ''; ?>" name="idpln1" id="idpln1" placeholder="ID PLN 1" maxlength="12" max="999999999999" value="<?= old('idpln1'); ?>" required>
+                                <!-- Error -->
+                                <?php if ($validation->hasError('idpln1')) : ?>
+                                    <div class="invalid-feedback">
+                                        <?= $validation->getError('idpln1'); ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">KWH Meter 2</label>
+                                <select class="form-select" id="kwhmeter2" name="kwhmeter2">
+                                    <option value="0">Select KWH Meter 2</option>
+                                    <?php foreach ($getKWHMeter2 as $kwh2) : ?>
+                                        <?= '<option value="' . $kwh2['idkwhmeter2'] . '">' . $kwh2['kwhmeter2'] . ' KVA</option>' ?>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">ID PLN 2</label>
+                                <input type="number" class="form-control" name="idpln2" id="idpln2" placeholder="ID PLN 2" maxlength="12" max="999999999999" value="<?= old('idpln2'); ?>">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary ms-auto" id="btnSubmit" name="btnSubmit">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Add store
+                    </button>
 
-        picker.on('selected', function() {
-            let isiForm = new FormData();
-
-            isiForm.append("date", tanggal.val());
-            $.ajax({
-                url: "<?= base_url('techshift/checkWorkerShiftAjax') ?>",
-                type: "POST",
-                data: isiForm,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                // dataType: "JSON",
-                processData: false,
-                contentType: false,
-                success: function(data) {
-                    if (data != null) {
-                        $("#name").find("option").remove().end();
-                        $("#name").append(
-                            '<option value="" selected>Select the worker</option>'
-                        );
-                        data.worker.forEach(element => {
-                            $("#name").append(
-                                `<option value=` +
-                                element.id +
-                                `>` +
-                                element.name +
-                                `</option>`
-                            );
-                        });
-                    }
-
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    alert('Error adding / update data');
-                }
-            });
-        });
-    })
-</script>
-<?= $this->endSection() ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<?= $this->endSection(); ?>
