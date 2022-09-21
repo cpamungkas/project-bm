@@ -550,7 +550,7 @@
             </div>
             <div class="modal-body">
                 <form id="formEditData" action="<?= base_url('') ?>" method="post">
-                    <input type="text" hidden readonly id="idFormEdit" name="idFormEdit">
+                    <input value="<?= old('idFormEdit') ?>" type="text" hidden readonly id="idFormEdit" name="idFormEdit">
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group mb-3 row">

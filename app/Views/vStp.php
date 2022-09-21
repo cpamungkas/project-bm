@@ -845,7 +845,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="formEditData" action="<?= base_url('') ?>" method="post">
+                <form value="<?= old('idFormEdit') ?>" id="formEditData" action="<?= base_url('') ?>" method="post">
                     <input type="text" hidden readonly id="idFormEdit" name="idFormEdit">
                     <div class="row">
                         <div class="col-lg-6">
