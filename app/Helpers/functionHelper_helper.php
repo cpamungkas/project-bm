@@ -201,6 +201,44 @@ function fullKurang($hasil)
     }
 }
 
+function bersihKotor($hasil)
+{
+    switch ($hasil) {
+        case 0:
+            return "KOTOR";
+            break;
+
+        case 1:
+            return "BERSIH";
+            break;
+
+        default:
+            return "-";
+            break;
+    }
+}
+
+function yesNoIcon($hasil)
+{
+    switch ($hasil) {
+        case 0:
+            return '<span class="bg-danger text-white p-2 rounded">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </span>';
+            break;
+
+        case 1:
+            return '<span class="bg-success text-white p-2 rounded">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M5 12l5 5l10 -10"></path></svg>
+            </span>';
+            break;
+
+        default:
+            return "-";
+            break;
+    }
+}
+
 /**
  * timeCheck
  * mengecek jam checklist dengan wkt sekarang, checklist equipment, dan waktu inspeksi yg sudah dilakukan
@@ -226,4 +264,18 @@ function timeCheck($time, $data)
         }
     }
     return '';
+}
+
+// TODO lanjutin buat generate time checklist
+function generateChecklistTime($checklist, $time = null)
+{
+    if ($checklist == "MONTHLY") {
+        return '';
+    }
+    
+    echo '<div class="form-group mb-3 row">';
+    echo '<label class="form-label col-3 col-form-label">Jam Pengecekan</label>';
+    foreach ($time as $key => $value) {
+
+    }
 }

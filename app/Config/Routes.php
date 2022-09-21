@@ -314,6 +314,17 @@ $routes->post('telppabx/deleteTelpPabx', 'CEquipment::deleteTelpPabx');
 $routes->get('telppabx/ajaxDataTelpPabx', 'CEquipment::ajaxDataTelpPabx');
 $routes->post('telppabx/ajaxDataTelpPabx', 'CEquipment::ajaxDataTelpPabx');
 
+//? Equipment Housekeeping
+$routes->get('housekeeping', 'CEquipment::housekeeping');
+$routes->get('housekeeping/saveHousekeeping', 'CEquipment::saveHousekeeping');
+$routes->post('housekeeping/saveHousekeeping', 'CEquipment::saveHousekeeping');
+$routes->get('housekeeping/updateHousekeeping/(:num)', 'CEquipment::updateHousekeeping/$1');
+$routes->post('housekeeping/updateHousekeeping/(:num)', 'CEquipment::updateHousekeeping/$1');
+$routes->get('housekeeping/deleteHousekeeping', 'CEquipment::deleteHousekeeping');
+$routes->post('housekeeping/deleteHousekeeping', 'CEquipment::deleteHousekeeping');
+$routes->get('housekeeping/ajaxDataHousekeeping', 'CEquipment::ajaxDataHousekeeping');
+$routes->post('housekeeping/ajaxDataHousekeeping', 'CEquipment::ajaxDataHousekeeping');
+
 
 
 

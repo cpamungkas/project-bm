@@ -9,6 +9,7 @@ use App\Models\MEquipment;
 use App\Models\MFireFighting;
 use App\Models\MFoldingGate;
 use App\Models\MGasStation;
+use App\Models\MHousekeeping;
 use App\Models\MMeterSumber;
 use App\Models\MPintu;
 use App\Models\MPlumbing;
@@ -38,6 +39,7 @@ class CEquipment extends BaseController
         $this->mRollDoor = new MRollingDoor();
         $this->mFireFight = new MFireFighting();
         $this->mTelpPabx = new MTelephonePabx();
+        $this->mHouseKeep = new MHousekeeping();
         helper(['form', 'url', 'functionHelper']);
     }
 
@@ -3064,6 +3066,7 @@ class CEquipment extends BaseController
         }
         return $this->response->setJSON($response);
     }
+
     public function telppabx()
     {
         $data['url'] = $this->request->uri->getSegment(1);
@@ -3291,6 +3294,326 @@ class CEquipment extends BaseController
     public function ajaxDataTelpPabx()
     {
         $data = $this->mTelpPabx->ajaxDataTelpPabx($this->request->getPost('id'));
+        if ($data) {
+            $response = [
+                'success' => true,
+                'data' => $data,
+            ];
+        } else {
+            $response = [
+                'success' => false,
+            ];
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function housekeeping()
+    {
+        $data['url'] = $this->request->uri->getSegment(1);
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $data['title'] = 'Housekeeping | B.M Apps &copy; Gramedia ' . date('Y');
+            $data['isLoggedIn'] = session()->get('isLoggedIn');
+            $data['id'] = session()->get('id');
+            $data['username'] = session()->get('username');
+            $data['name'] = session()->get('name');
+            $data['email'] = session()->get('email');
+            $data['image'] = session()->get('image');
+            $data['is_active'] = session()->get('is_active');
+            $data['role_id'] = session()->get('role_id');
+            $data['roleuser'] = session()->get('roleuser');
+            $data['superior_role_id'] = session()->get('superior_role_id');
+            $data['location'] = session()->get('location');
+            $data['level'] = session()->get('level');
+            $data['status_deleted'] = session()->get('status_deleted');
+            $data['validation'] = \Config\Services::validation();
+
+            $data['getDataTableHousekeeping'] = $this->mHouseKeep->getDataTableHousekeeping();
+            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_housekeeping");
+            $data['checkInspection'] = $this->mEquip->checkInspection('tb_housekeeping', $checklist['checklist']);
+            $data['defaultChecklist'] = $checklist;
+            
+            return view('vHousekeeping', $data);
+        }
+    }
+
+    public function saveHousekeeping()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'equipment_checklist' => [
+                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
+                    'label' => 'Checklist',
+                ],
+                'ruang' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Ruang',
+                ],
+                'lantai' => [
+                    'rules' => 'required|max_length[3]',
+                    'label' => 'Lantai',
+                ],
+                'kloset' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kloset',
+                ],
+                'urinoir' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Urinoir',
+                ],
+                'washtafel' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Washtafel',
+                ],
+                'grease_trap' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Grease Trap',
+                ],
+                'diffuser' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Diffuser',
+                ],
+                'kebersihan_lantai' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai',
+                ],
+                'dinding' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Dinding',
+                ],
+                'cermin' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kaca / Cermin',
+                ],
+                'tempat_sampah' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Tempat Sampah',
+                ],
+                'floor_drainage' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Floor Drainage',
+                ],
+                'kap_lampu' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kap Lampu',
+                ],
+                'hand_dryer' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Hand Dryer',
+                ],
+                'exhaust_fan' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Exhaust Fan',
+                ],
+                'air_curtain' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Air Curtain',
+                ],
+                'plafond' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Plafond',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/housekeeping')->withInput()->with('validation', $validation);
+            }
+
+            $dataInput = [
+                'location' => session()->get('idstore'),
+                'time' => $this->request->getPost('time'),
+                'date' => date('Y-m-d'),
+                'worker' => session()->get('id'),
+                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
+                'ruang' => $this->request->getPost('ruang'),
+                'lantai' => $this->request->getPost('lantai'),
+                'kloset' => $this->request->getPost('kloset'),
+                'urinoir' => $this->request->getPost('urinoir'),
+                'washtafel' => $this->request->getPost('washtafel'),
+                'grease_trap' => $this->request->getPost('grease_trap'),
+                'diffuser' => $this->request->getPost('diffuser'),
+                'kebersihan_lantai' => $this->request->getPost('kebersihan_lantai'),
+                'dinding' => $this->request->getPost('dinding'),
+                'cermin' => $this->request->getPost('cermin'),
+                'tempat_sampah' => $this->request->getPost('tempat_sampah'),
+                'floor_drainage' => $this->request->getPost('floor_drainage'),
+                'kap_lampu' => $this->request->getPost('kap_lampu'),
+                'hand_dryer' => $this->request->getPost('hand_dryer'),
+                'exhaust_fan' => $this->request->getPost('exhaust_fan'),
+                'air_curtain' => $this->request->getPost('air_curtain'),
+                'plafond' => $this->request->getPost('plafond'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $input = $this->mHouseKeep->save($dataInput);
+
+            if ($input) {
+                session()->setFlashdata('success', 'Housekeeping Data has been added');
+                return redirect()->to('/housekeeping', 201);
+            }
+
+            session()->setFlashdata('error', 'Housekeeping Data has not been added');
+            return redirect()->to('/housekeeping', 500);
+        }
+    }
+
+    public function updateHousekeeping($id)
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'ruang' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Ruang',
+                ],
+                'lantai' => [
+                    'rules' => 'required|max_length[3]',
+                    'label' => 'Lantai',
+                ],
+                'kloset' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kloset',
+                ],
+                'urinoir' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Urinoir',
+                ],
+                'washtafel' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Washtafel',
+                ],
+                'grease_trap' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Grease Trap',
+                ],
+                'diffuser' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Diffuser',
+                ],
+                'kebersihan_lantai' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai',
+                ],
+                'dinding' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Dinding',
+                ],
+                'cermin' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kaca / Cermin',
+                ],
+                'tempat_sampah' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Tempat Sampah',
+                ],
+                'floor_drainage' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Floor Drainage',
+                ],
+                'kap_lampu' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kap Lampu',
+                ],
+                'hand_dryer' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Hand Dryer',
+                ],
+                'exhaust_fan' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Exhaust Fan',
+                ],
+                'air_curtain' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Air Curtain',
+                ],
+                'plafond' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Plafond',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/housekeeping')->withInput()->with('validation', $validation);
+            }
+
+            $dataUpdate = [
+                'id' => $id,
+                'ruang' => $this->request->getPost('ruang'),
+                'lantai' => $this->request->getPost('lantai'),
+                'kloset' => $this->request->getPost('kloset'),
+                'urinoir' => $this->request->getPost('urinoir'),
+                'washtafel' => $this->request->getPost('washtafel'),
+                'grease_trap' => $this->request->getPost('grease_trap'),
+                'diffuser' => $this->request->getPost('diffuser'),
+                'kebersihan_lantai' => $this->request->getPost('kebersihan_lantai'),
+                'dinding' => $this->request->getPost('dinding'),
+                'cermin' => $this->request->getPost('cermin'),
+                'tempat_sampah' => $this->request->getPost('tempat_sampah'),
+                'floor_drainage' => $this->request->getPost('floor_drainage'),
+                'kap_lampu' => $this->request->getPost('kap_lampu'),
+                'hand_dryer' => $this->request->getPost('hand_dryer'),
+                'exhaust_fan' => $this->request->getPost('exhaust_fan'),
+                'air_curtain' => $this->request->getPost('air_curtain'),
+                'plafond' => $this->request->getPost('plafond'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $update = $this->mHouseKeep->save($dataUpdate);
+
+            if ($update) {
+                session()->setFlashdata('success', 'Housekeeping Data has been edited');
+                return redirect()->to('/housekeeping', 200);
+            }
+
+            session()->setFlashdata('error', 'Housekeeping Data has not been edited');
+            return redirect()->to('/housekeeping', 500);
+        }
+    }
+
+    public function deleteHousekeeping()
+    {
+        $delete = $this->mHouseKeep->delete($this->request->getPost('id'));
+        if ($delete) {
+            $response = [
+                'success' => true,
+            ];
+            session()->setFlashdata('success', 'Housekeeping Data has been deleted');
+        } else {
+            $response = [
+                'success' => false,
+            ];
+            session()->setFlashdata('error', 'Housekeeping Data has not been deleted');
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function ajaxDataHousekeeping()
+    {
+        $data = $this->mHouseKeep->ajaxDataHousekeeping($this->request->getPost('id'));
         if ($data) {
             $response = [
                 'success' => true,

@@ -422,6 +422,9 @@
                                                         <a class="dropdown-item " href="<?= base_url('telppabx')?>">
                                                             Telephone &amp; PABX
                                                         </a>
+                                                        <a class="dropdown-item " href="<?= base_url('housekeeping')?>">
+                                                            Housekeeping
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
