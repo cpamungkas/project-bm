@@ -1030,7 +1030,6 @@
             </div>
             <div class="modal-body">
                 <form id="formEditData" action="<?= base_url('') ?>" method="post">
-                <!-- TODO implement fix bug form edit tambahin olf value -->
                     <input value="<?= old('idFormEdit') ?>" type="text" hidden readonly id="idFormEdit" name="idFormEdit">
                     <div class="row">
                         <div class="col-lg-6">

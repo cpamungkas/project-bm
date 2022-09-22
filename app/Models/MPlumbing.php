@@ -127,7 +127,6 @@ class MPlumbing extends Model
                 break;
 
             case 'WEEKLY':
-                // TODO optimalisasi dg tanggal ambil -7 day to +7 day
                 $builder->where("DATE_FORMAT(date, '%Y-%m')", convertDate($date, 'Y-m'));
                 $arrTanggal = $builder->get()->getResultArray();
 

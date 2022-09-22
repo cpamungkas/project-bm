@@ -464,7 +464,6 @@
                                         </div>
                                     <?php endif; ?>
                                 </div>
-                                <!-- TODO sesuain class tambahin edit di belakang -->
                                 <script>
                                     function jamCheck(b) {
                                         var x = document.getElementsByClassName('jamCheck');
@@ -534,13 +533,13 @@
                                         <div style="padding-top: 10px; padding-bottom: 5px;">
                                             <input <?php if (old('meter_pdam_floating_valve') == "1") {
                                                         echo ("checked");
-                                                    } ?> id="meter_pdam_floating_valve" name="meter_pdam_floating_valve" type="checkbox" class="checkmeter_pdam_floating_valve <?= ($validation->hasError('meter_pdam_floating_valve')) ? 'is-invalid' : ''; ?>" onclick="checkmeter_pdam_floating_valve(this.value);" value="1">
+                                                    } ?> id="meter_pdam_floating_valve" name="meter_pdam_floating_valve" type="checkbox" class="checkmeter_pdam_floating_valveEdit <?= ($validation->hasError('meter_pdam_floating_valve')) ? 'is-invalid' : ''; ?>" onclick="checkmeter_pdam_floating_valveEdit(this.value);" value="1">
                                             Baik<br>
                                         </div>
                                         <div style="padding-top: 5px; padding-bottom: 10px;">
                                             <input <?php if (old('meter_pdam_floating_valve') == "0") {
                                                         echo ("checked");
-                                                    } ?> id="meter_pdam_floating_valve" name="meter_pdam_floating_valve" type="checkbox" class="checkmeter_pdam_floating_valve <?= ($validation->hasError('meter_pdam_floating_valve')) ? 'is-invalid' : ''; ?>" onclick="checkmeter_pdam_floating_valve(this.value);" value="0">
+                                                    } ?> id="meter_pdam_floating_valve" name="meter_pdam_floating_valve" type="checkbox" class="checkmeter_pdam_floating_valveEdit <?= ($validation->hasError('meter_pdam_floating_valve')) ? 'is-invalid' : ''; ?>" onclick="checkmeter_pdam_floating_valveEdit(this.value);" value="0">
                                             Rusak
                                         </div>
                                         <?php if ($validation->hasError('meter_pdam_floating_valve')) : ?>
@@ -550,8 +549,8 @@
                                         <?php endif; ?>
                                     </td>
                                     <script>
-                                        function checkmeter_pdam_floating_valve(b) {
-                                            var x = document.getElementsByClassName('checkmeter_pdam_floating_valve');
+                                        function checkmeter_pdam_floating_valveEdit(b) {
+                                            var x = document.getElementsByClassName('checkmeter_pdam_floating_valveEdit');
                                             var i;
 
                                             for (i = 0; i < x.length; i++) {
