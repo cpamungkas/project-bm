@@ -28,7 +28,7 @@ class CEquipment extends BaseController
     {
         $this->mUser = new MUser();
         $this->mStore = new MStore();
-        $this->mEquip = new MEquipment();
+        $this->mEquipment = new MEquipment();
         $this->mUps = new MUps();
         $this->mGas = new MGasStation();
         $this->mStp = new MStp();
@@ -69,12 +69,14 @@ class CEquipment extends BaseController
             $data['status_deleted'] = session()->get('status_deleted');
             $data['validation'] = \Config\Services::validation();
 
-            $data['getStore'] = $this->mEquip->getStoreDropdown();
-            $data['getDataTableStoreEquip'] = $this->mEquip->getDataTableStoreEquip();
+            $data['getStore'] = $this->mEquipment->getStoreDropdown();
+            $data['getDataTableStoreEquip'] = $this->mEquipment->getDataTableStoreEquip();
 
-            $equipment = $this->mEquip->getEquipment();
+            $equipment = $this->mEquipment->getEquipment();
             $data['getEquipment'] = $equipment;
             $data['equipBox'] = array_chunk($equipment, 11);
+
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
 
             return view('vStoreEquipment', $data);
         }
@@ -85,7 +87,7 @@ class CEquipment extends BaseController
         if (!session()->get('isLoggedIn')) {
             return redirect()->to('/');
         } else {
-            $equipment = $this->mEquip->getEquipment();
+            $equipment = $this->mEquipment->getEquipment();
             $rules = [
                 'storeName' => [
                     'rules' => 'required|numeric',
@@ -128,7 +130,7 @@ class CEquipment extends BaseController
                 }
             }
 
-            $input = $this->mEquip->inputStoreEquipSetup($dataInput);
+            $input = $this->mEquipment->inputStoreEquipSetup($dataInput);
 
             if ($input) {
                 session()->setFlashdata('success', 'Store Equipment has been added');
@@ -145,7 +147,7 @@ class CEquipment extends BaseController
         if (!session()->get('isLoggedIn')) {
             return redirect()->to('/');
         } else {
-            $equipment = $this->mEquip->getEquipment();
+            $equipment = $this->mEquipment->getEquipment();
             $rules = [
                 'storeName' => [
                     'rules' => 'required|numeric',
@@ -188,7 +190,7 @@ class CEquipment extends BaseController
                 }
             }
 
-            $edit = $this->mEquip->editStoreEquipSetup($dataEdit, $post['storeName']);
+            $edit = $this->mEquipment->editStoreEquipSetup($dataEdit, $post['storeName']);
 
             if ($edit) {
                 session()->setFlashdata('success', 'Store Equipment has been edited');
@@ -202,7 +204,7 @@ class CEquipment extends BaseController
 
     public function deleteStoreEquipment()
     {
-        $delete = $this->mEquip->deleteStoreEquipment($this->request->getPost('idStore'));
+        $delete = $this->mEquipment->deleteStoreEquipment($this->request->getPost('idStore'));
         if ($delete) {
             $response = [
                 'success' => true,
@@ -219,8 +221,8 @@ class CEquipment extends BaseController
 
     public function ajaxDataStoreEquipment()
     {
-        $equip = $this->mEquip->getEquipment();
-        $data = $this->mEquip->ajaxDataStoreEquipment($this->request->getPost('idStore'));
+        $equip = $this->mEquipment->getEquipment();
+        $data = $this->mEquipment->ajaxDataStoreEquipment($this->request->getPost('idStore'));
         if ($data) {
             $response = [
                 'success' => true,
@@ -258,11 +260,19 @@ class CEquipment extends BaseController
             $data['validation'] = \Config\Services::validation();
 
             $data['getDataTableUps'] = $this->mUps->getDataTableUps();
-            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_ups");
-            $data['checkInspection'] = $this->mEquip->checkInspection('tb_ups', $checklist['checklist']);
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_ups");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_ups', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
 
-            return view('vUps', $data);
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 18);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vUps', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
         }
     }
 
@@ -584,11 +594,19 @@ class CEquipment extends BaseController
             $data['validation'] = \Config\Services::validation();
 
             $data['getDataTableGasStation'] = $this->mGas->getDataTableGasStation();
-            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_gasstation");
-            $data['checkInspection'] = $this->mEquip->checkInspection('tb_gas_station', $checklist['checklist']);
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_gasstation");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_gas_station', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
 
-            return view('vGasStation', $data);
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 32);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vGasStation', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
         }
     }
 
@@ -774,11 +792,19 @@ class CEquipment extends BaseController
             $data['validation'] = \Config\Services::validation();
 
             $data['getDataTableStp'] = $this->mStp->getDataTableStp();
-            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_stp");
-            $data['checkInspection'] = $this->mEquip->checkInspection('tb_stp', $checklist['checklist']);
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_stp");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_stp', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
 
-            return view('vStp', $data);
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 19);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vStp', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
         }
     }
 
@@ -1094,11 +1120,19 @@ class CEquipment extends BaseController
             $data['validation'] = \Config\Services::validation();
 
             $data['getDataTableCctv'] = $this->mCctv->getDataTableCctv();
-            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_cctv");
-            $data['checkInspection'] = $this->mEquip->checkInspection('tb_cctv', $checklist['checklist']);
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_cctv");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_cctv', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
 
-            return view('vCctv', $data);
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 20);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vCctv', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
         }
     }
 
@@ -1333,11 +1367,19 @@ class CEquipment extends BaseController
             $data['validation'] = \Config\Services::validation();
 
             $data['getDataTablePlumbing'] = $this->mPlumbing->getDataTablePlumbing();
-            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_plumbing");
-            $data['checkInspection'] = $this->mEquip->checkInspection('tb_plumbing', $checklist['checklist']);
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_plumbing");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_plumbing', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
             
-            return view('vPlumbing', $data);
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 21);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vPlumbing', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
         }
     }
 
@@ -1609,11 +1651,19 @@ class CEquipment extends BaseController
             $data['validation'] = \Config\Services::validation();
 
             $data['getDataTableMeterSumber'] = $this->mMeterSumber->getDataTableMeterSumber();
-            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_metersumber");
-            $data['checkInspection'] = $this->mEquip->checkInspection('tb_meter_sumber_dan_air_olahan', $checklist['checklist']);
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_metersumber");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_meter_sumber_dan_air_olahan', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
             
-            return view('vMeterSumber', $data);
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 22);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vMeterSumber', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
         }
     }
 
@@ -1811,11 +1861,19 @@ class CEquipment extends BaseController
             $data['validation'] = \Config\Services::validation();
 
             $data['getDataTableDindingPartisi'] = $this->mDinding->getDataTableDindingPartisi();
-            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_dindingpartisi");
-            $data['checkInspection'] = $this->mEquip->checkInspection('tb_dinding_partisi', $checklist['checklist']);
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_dindingpartisi");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_dinding_partisi', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
             
-            return view('vDindingPartisi', $data);
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 23);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vDindingPartisi', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
         }
     }
 
@@ -2021,11 +2079,19 @@ class CEquipment extends BaseController
             $data['validation'] = \Config\Services::validation();
 
             $data['getDataTablePintu'] = $this->mPintu->getDataTablePintu();
-            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_pintu");
-            $data['checkInspection'] = $this->mEquip->checkInspection('tb_pintu', $checklist['checklist']);
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_pintu");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_pintu', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
             
-            return view('vPintu', $data);
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 24);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vPintu', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
         }
     }
 
@@ -2241,11 +2307,19 @@ class CEquipment extends BaseController
             $data['validation'] = \Config\Services::validation();
 
             $data['getDataTableFoldingGate'] = $this->mGate->getDataTableFoldingGate();
-            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_foldinggate");
-            $data['checkInspection'] = $this->mEquip->checkInspection('tb_folding_gate', $checklist['checklist']);
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_foldinggate");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_folding_gate', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
             
-            return view('vFoldingGate', $data);
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 25);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vFoldingGate', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
         }
     }
 
@@ -2481,11 +2555,19 @@ class CEquipment extends BaseController
             $data['validation'] = \Config\Services::validation();
 
             $data['getDataTableRollingDoor'] = $this->mRollDoor->getDataTableRollingDoor();
-            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_rollingdoor");
-            $data['checkInspection'] = $this->mEquip->checkInspection('tb_rolling_door', $checklist['checklist']);
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_rollingdoor");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_rolling_door', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
             
-            return view('vRollingDoor', $data);
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 26);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vRollingDoor', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
         }
     }
 
@@ -2721,11 +2803,19 @@ class CEquipment extends BaseController
             $data['validation'] = \Config\Services::validation();
 
             $data['getDataTableFireFighting'] = $this->mFireFight->getDataTableFireFighting();
-            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_firefighting");
-            $data['checkInspection'] = $this->mEquip->checkInspection('tb_fire_fighting', $checklist['checklist']);
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_firefighting");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_fire_fighting', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
             
-            return view('vFireFighting', $data);
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 27);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vFireFighting', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
         }
     }
 
@@ -3091,11 +3181,19 @@ class CEquipment extends BaseController
             $data['validation'] = \Config\Services::validation();
 
             $data['getDataTableTelpPabx'] = $this->mTelpPabx->getDataTableTelpPabx();
-            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_telephonepabx");
-            $data['checkInspection'] = $this->mEquip->checkInspection('tb_telephone_pabx', $checklist['checklist']);
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_telephonepabx");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_telephone_pabx', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
             
-            return view('vTelephoneDanPABX', $data);
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 28);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vTelephoneDanPABX', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
         }
     }
 
@@ -3331,11 +3429,19 @@ class CEquipment extends BaseController
             $data['validation'] = \Config\Services::validation();
 
             $data['getDataTableHousekeeping'] = $this->mHouseKeep->getDataTableHousekeeping();
-            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_housekeeping");
-            $data['checkInspection'] = $this->mEquip->checkInspection('tb_housekeeping', $checklist['checklist']);
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_housekeeping");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_housekeeping', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
             
-            return view('vHousekeeping', $data);
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 29);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vHousekeeping', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
         }
     }
 
@@ -3655,11 +3761,19 @@ class CEquipment extends BaseController
             $data['validation'] = \Config\Services::validation();
 
             $data['getDataTableGondola'] = $this->mGondola->getDataTableGondola();
-            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_gondola");
-            $data['checkInspection'] = $this->mEquip->checkInspection('tb_gondola', $checklist['checklist']);
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_gondola");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_gondola', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
             
-            return view('vGondola', $data);
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 30);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vGondola', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
         }
     }
 
@@ -3669,7 +3783,6 @@ class CEquipment extends BaseController
             return redirect()->to('/');
         } else {
             $rules = [
-                // TODO cek validasi time di bbrp modul sebelumnya
                 'time' => [
                     'rules' => 'required|in_list[10:00:00]',
                     'label' => 'Jam Pengecekan',
@@ -3980,11 +4093,19 @@ class CEquipment extends BaseController
             $data['validation'] = \Config\Services::validation();
 
             $data['getDataTableSoundSystem'] = $this->mSoundSystem->getDataTableSoundSystem();
-            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_soundsystem");
-            $data['checkInspection'] = $this->mEquip->checkInspection('tb_sound_system', $checklist['checklist']);
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_soundsystem");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_sound_system', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
             
-            return view('vSoundSystem', $data);
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 31);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vSoundSystem', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
         }
     }
 

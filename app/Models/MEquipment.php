@@ -339,4 +339,31 @@ class MEquipment extends Model
                 break;
         }
     }
+
+    public function getStoreEquipmentByStore($idStore) {
+        $query = $this->db->query("
+            SELECT
+            s.id AS id, s.idStore AS idStore, s.status_deleted AS status_deleted, s.idEquipment AS idEquipment,
+            e.url AS url
+            FROM tb_store_equipment as s
+            JOIN tb_equipment AS e ON s.idEquipment = e.id
+            WHERE s.idStore = $idStore
+            AND s.status_deleted = '0'
+            ORDER BY s.idEquipment ASC
+        ");
+
+        return $query->getResultArray();
+    }
+
+    public function getStoreEquipmentByStoreEquipment($idStore, $idEquipment) {
+        $query = $this->db->query("
+            SELECT *
+            FROM tb_store_equipment
+            WHERE idStore = $idStore
+            AND idEquipment = $idEquipment
+            AND status_deleted = '0'
+        ");
+
+        return $query->getResultArray();
+    }
 }
