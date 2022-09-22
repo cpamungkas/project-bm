@@ -74,6 +74,8 @@ class MRollingDoor extends Model
         $builder->join("tb_store", "tb_store.idStore = tb_rolling_door.location", "LEFT");
         $builder->join("tb_user", "tb_user.id = tb_rolling_door.worker", "LEFT");
 
+        $builder->orderBy("created_at","DESC");
+
         return $builder->get()->getResultArray();
     }
 

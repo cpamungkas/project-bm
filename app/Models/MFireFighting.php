@@ -87,6 +87,8 @@ class MFireFighting extends Model
         $builder->join("tb_store", "tb_store.idStore = tb_fire_fighting.location", "LEFT");
         $builder->join("tb_user", "tb_user.id = tb_fire_fighting.worker", "LEFT");
 
+        $builder->orderBy("created_at","DESC");
+
         return $builder->get()->getResultArray();
     }
 
