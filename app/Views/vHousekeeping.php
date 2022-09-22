@@ -704,6 +704,7 @@
                                 <tr>
                                     <th class="w-1">No.</th>
                                     <th>Location</th>
+                                    <th>Jam Pengecekan</th>
                                     <th>Time Stamp</th>
                                     <th>PIC</th>
                                     <th>Lantai</th>
@@ -711,18 +712,18 @@
                                     <th>Closet</th>
                                     <th>Urinoir</th>
                                     <th>Washtafel</th>
-                                    <th>Grease<br>Trap</th>
+                                    <th class="text-center">Grease<br>Trap</th>
                                     <th>Diffuser</th>
-                                    <th>Kebersihan<br>Lantai</th>
+                                    <th class="text-center">Kebersihan<br>Lantai</th>
                                     <th>Dinding</th>
-                                    <th>Kaca/<br>Cermin</th>
+                                    <th class="text-center">Kaca/<br>Cermin</th>
                                     <th>Plafond</th>
-                                    <th>Tempat<br>Sampah</th>
-                                    <th>Floor<br>Drainage</th>
-                                    <th>Kap<br>Lampu</th>
-                                    <th>Hand<br>Dryer</th>
-                                    <th>Exhaust<br>Fan</th>
-                                    <th>Air<br>Curtain</th>
+                                    <th class="text-center">Tempat<br>Sampah</th>
+                                    <th class="text-center">Floor<br>Drainage</th>
+                                    <th class="text-center">Kap<br>Lampu</th>
+                                    <th class="text-center">Hand<br>Dryer</th>
+                                    <th class="text-center">Exhaust<br>Fan</th>
+                                    <th class="text-center">Air<br>Curtain</th>
                                     <th>Jumlah Temuan</th>
                                     <th>Penjelasan</th>
                                     <th class="text-end">Action</th>
@@ -735,6 +736,7 @@
                                     <tr>
                                         <td><?= $i ?></td>
                                         <td><?= $ts['storeName']; ?></td>
+                                        <td><?= $ts['time']; ?></td>
                                         <td><?= dateView($ts['date']); ?></td>
                                         <td><?= $ts['initial']; ?></td>
                                         <td><?= $ts['lantai']; ?></td>

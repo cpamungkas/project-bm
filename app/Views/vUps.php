@@ -990,7 +990,6 @@
     var site_url = `<?= base_url() ?>`;
     $(document).ready(function() {
 
-        // TODO fix bug klo buat monthly gmn ngeceknya
         let validateChecklist = `<?= $defaultChecklist['checklist'] ?>`;
         let dataChecklist = `<?= isset($checkInspection['data']) ? json_encode($checkInspection['data']) : '' ?>`;
 

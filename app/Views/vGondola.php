@@ -780,25 +780,25 @@
                                     <th>Jam Pengecekan</th>
                                     <th>Time Stamp</th>
                                     <th>PIC</th>
-                                    <th>Paket<br>Kontrol</th>
-                                    <th>Motor<br>Gerak<br>Rail</th>
-                                    <th>Motor<br>Gerak<br>Putar</th>
-                                    <th>Motor<br>Gerak<br>Arm</th>
-                                    <th>Motor<br>Gerak<br>Keranjang</th>
-                                    <th>Wire<br>Rope</th>
-                                    <th>Safety<br>Block</th>
-                                    <th>Gear<br>Box</th>
+                                    <th class="text-center">Paket<br>Kontrol</th>
+                                    <th class="text-center">Motor<br>Gerak<br>Rail</th>
+                                    <th class="text-center">Motor<br>Gerak<br>Putar</th>
+                                    <th class="text-center">Motor<br>Gerak<br>Arm</th>
+                                    <th class="text-center">Motor<br>Gerak<br>Keranjang</th>
+                                    <th class="text-center">Wire<br>Rope</th>
+                                    <th class="text-center">Safety<br>Block</th>
+                                    <th class="text-center">Gear<br>Box</th>
                                     <th>Noise</th>
                                     <th>Vibrasi</th>
                                     <th>Pelumasan</th>
                                     <th>Seragam</th>
                                     <th>ID Card</th>
                                     <th>Helmet</th>
-                                    <th>Safety<br>Glasses</th>
-                                    <th>Full<br>Body<br>Hornetz</th>
-                                    <th>Auto<br>Stop/<br>Gerigi</th>
+                                    <th class="text-center">Safety<br>Glasses</th>
+                                    <th class="text-center">Full<br>Body<br>Hornetz</th>
+                                    <th class="text-center">Auto<br>Stop/<br>Gerigi</th>
                                     <th>Carbiner</th>
-                                    <th>Sarung<br>Tangan</th>
+                                    <th class="text-center">Sarung<br>Tangan</th>
                                     <th class="text-end">Action</th>
                                 </tr>
                             </thead>

@@ -498,7 +498,6 @@ class CEquipment extends BaseController
 
             $dataUpdate = [
                 'id' => $id,
-                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
                 'merk' => $this->request->getPost('merk'),
                 'type' => $this->request->getPost('type'),
                 'serial_number' => $this->request->getPost('serial_number'),
@@ -700,7 +699,6 @@ class CEquipment extends BaseController
 
             $dataUpdate = [
                 'id' => $id,
-                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
                 'pressure' => $this->request->getPost('pressure'),
                 'selenoid_valve' => $this->request->getPost('selenoid_valve'),
                 'detector' => $this->request->getPost('detector'),
@@ -1008,7 +1006,6 @@ class CEquipment extends BaseController
 
             $dataUpdate = [
                 'id' => $id,
-                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
                 'blower1' => $this->request->getPost('blower1'),
                 'blower2' => $this->request->getPost('blower2'),
                 'transfer_pump1' => $this->request->getPost('transfer_pump1'),
@@ -3348,6 +3345,10 @@ class CEquipment extends BaseController
             return redirect()->to('/');
         } else {
             $rules = [
+                'time' => [
+                    'rules' => 'required|in_list[13:00:00]',
+                    'label' => 'Jam Pengecekan',
+                ],
                 'equipment_checklist' => [
                     'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
                     'label' => 'Checklist',
