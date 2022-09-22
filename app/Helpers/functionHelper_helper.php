@@ -218,6 +218,57 @@ function bersihKotor($hasil)
     }
 }
 
+function berfungsiTidak($hasil)
+{
+    switch ($hasil) {
+        case 0:
+            return "TIDAK";
+            break;
+
+        case 1:
+            return "BERFUNGSI";
+            break;
+
+        default:
+            return "-";
+            break;
+    }
+}
+
+function yaTidak($hasil)
+{
+    switch ($hasil) {
+        case 0:
+            return "TIDAK";
+            break;
+
+        case 1:
+            return "YA";
+            break;
+
+        default:
+            return "-";
+            break;
+    }
+}
+
+function lengkapTidak($hasil)
+{
+    switch ($hasil) {
+        case 0:
+            return "TIDAK";
+            break;
+
+        case 1:
+            return "LENGKAP";
+            break;
+
+        default:
+            return "-";
+            break;
+    }
+}
+
 function yesNoIcon($hasil)
 {
     switch ($hasil) {

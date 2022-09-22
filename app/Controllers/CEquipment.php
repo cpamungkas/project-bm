@@ -9,6 +9,7 @@ use App\Models\MEquipment;
 use App\Models\MFireFighting;
 use App\Models\MFoldingGate;
 use App\Models\MGasStation;
+use App\Models\MGondola;
 use App\Models\MHousekeeping;
 use App\Models\MMeterSumber;
 use App\Models\MPintu;
@@ -40,6 +41,7 @@ class CEquipment extends BaseController
         $this->mFireFight = new MFireFighting();
         $this->mTelpPabx = new MTelephonePabx();
         $this->mHouseKeep = new MHousekeeping();
+        $this->mGondola = new MGondola();
         helper(['form', 'url', 'functionHelper']);
     }
 
@@ -3614,6 +3616,331 @@ class CEquipment extends BaseController
     public function ajaxDataHousekeeping()
     {
         $data = $this->mHouseKeep->ajaxDataHousekeeping($this->request->getPost('id'));
+        if ($data) {
+            $response = [
+                'success' => true,
+                'data' => $data,
+            ];
+        } else {
+            $response = [
+                'success' => false,
+            ];
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function gondola()
+    {
+        $data['url'] = $this->request->uri->getSegment(1);
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $data['title'] = 'Gondola | B.M Apps &copy; Gramedia ' . date('Y');
+            $data['isLoggedIn'] = session()->get('isLoggedIn');
+            $data['id'] = session()->get('id');
+            $data['username'] = session()->get('username');
+            $data['name'] = session()->get('name');
+            $data['email'] = session()->get('email');
+            $data['image'] = session()->get('image');
+            $data['is_active'] = session()->get('is_active');
+            $data['role_id'] = session()->get('role_id');
+            $data['roleuser'] = session()->get('roleuser');
+            $data['superior_role_id'] = session()->get('superior_role_id');
+            $data['location'] = session()->get('location');
+            $data['level'] = session()->get('level');
+            $data['status_deleted'] = session()->get('status_deleted');
+            $data['validation'] = \Config\Services::validation();
+
+            $data['getDataTableGondola'] = $this->mGondola->getDataTableGondola();
+            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_gondola");
+            $data['checkInspection'] = $this->mEquip->checkInspection('tb_gondola', $checklist['checklist']);
+            $data['defaultChecklist'] = $checklist;
+            
+            return view('vGondola', $data);
+        }
+    }
+
+    public function saveGondola()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                // TODO cek validasi time di bbrp modul sebelumnya
+                'time' => [
+                    'rules' => 'required|in_list[10:00:00]',
+                    'label' => 'Jam Pengecekan',
+                ],
+                'equipment_checklist' => [
+                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
+                    'label' => 'Checklist',
+                ],
+                'paket_kontrol' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Paket Kontrol',
+                ],
+                'motor_gerak_rail' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Motor Gerak Rail',
+                ],
+                'motor_gerak_putar' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Motor Gerak Putar',
+                ],
+                'motor_gerak_arm' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Motor Gerak Arm',
+                ],
+                'motor_gerak_keranjang' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Motor Gerak Keranjang',
+                ],
+                'wire_rope' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Wire Rope',
+                ],
+                'safety_block' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Safety Block',
+                ],
+                'gear_box' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Gear Box',
+                ],
+                'noise' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Noise',
+                ],
+                'vibrasi' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Vibrasi',
+                ],
+                'pelumasan' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Pelumasan',
+                ],
+                'seragam' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Seragam',
+                ],
+                'id_card' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'ID Card',
+                ],
+                'helmet' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Helmet',
+                ],
+                'safety_glasses' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Safety Glasses',
+                ],
+                'full_body_harnetz' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Full Body Harnetz',
+                ],
+                'auto_stop' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Auto Stop / Gerigi',
+                ],
+                'carbiner' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Carbiner',
+                ],
+                'sarung_tangan' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Sarung Tangan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/gondola')->withInput()->with('validation', $validation);
+            }
+
+            $dataInput = [
+                'location' => session()->get('idstore'),
+                'time' => $this->request->getPost('time'),
+                'date' => date('Y-m-d'),
+                'worker' => session()->get('id'),
+                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
+                'paket_kontrol' => $this->request->getPost('paket_kontrol'),
+                'motor_gerak_rail' => $this->request->getPost('motor_gerak_rail'),
+                'motor_gerak_putar' => $this->request->getPost('motor_gerak_putar'),
+                'motor_gerak_arm' => $this->request->getPost('motor_gerak_arm'),
+                'motor_gerak_keranjang' => $this->request->getPost('motor_gerak_keranjang'),
+                'wire_rope' => $this->request->getPost('wire_rope'),
+                'safety_block' => $this->request->getPost('safety_block'),
+                'gear_box' => $this->request->getPost('gear_box'),
+                'noise' => $this->request->getPost('noise'),
+                'vibrasi' => $this->request->getPost('vibrasi'),
+                'pelumasan' => $this->request->getPost('pelumasan'),
+                'seragam' => $this->request->getPost('seragam'),
+                'id_card' => $this->request->getPost('id_card'),
+                'helmet' => $this->request->getPost('helmet'),
+                'safety_glasses' => $this->request->getPost('safety_glasses'),
+                'full_body_harnetz' => $this->request->getPost('full_body_harnetz'),
+                'auto_stop' => $this->request->getPost('auto_stop'),
+                'carbiner' => $this->request->getPost('carbiner'),
+                'sarung_tangan' => $this->request->getPost('sarung_tangan'),
+            ];
+
+            $input = $this->mGondola->save($dataInput);
+
+            if ($input) {
+                session()->setFlashdata('success', 'Gondola Data has been added');
+                return redirect()->to('/gondola', 201);
+            }
+
+            session()->setFlashdata('error', 'Gondola Data has not been added');
+            return redirect()->to('/gondola', 500);
+        }
+    }
+
+    public function updateGondola($id)
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'paket_kontrol' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Paket Kontrol',
+                ],
+                'motor_gerak_rail' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Motor Gerak Rail',
+                ],
+                'motor_gerak_putar' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Motor Gerak Putar',
+                ],
+                'motor_gerak_arm' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Motor Gerak Arm',
+                ],
+                'motor_gerak_keranjang' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Motor Gerak Keranjang',
+                ],
+                'wire_rope' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Wire Rope',
+                ],
+                'safety_block' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Safety Block',
+                ],
+                'gear_box' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Gear Box',
+                ],
+                'noise' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Noise',
+                ],
+                'vibrasi' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Vibrasi',
+                ],
+                'pelumasan' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Pelumasan',
+                ],
+                'seragam' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Seragam',
+                ],
+                'id_card' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'ID Card',
+                ],
+                'helmet' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Helmet',
+                ],
+                'safety_glasses' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Safety Glasses',
+                ],
+                'full_body_harnetz' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Full Body Harnetz',
+                ],
+                'auto_stop' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Auto Stop / Gerigi',
+                ],
+                'carbiner' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Carbiner',
+                ],
+                'sarung_tangan' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Sarung Tangan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/gondola')->withInput()->with('validation', $validation);
+            }
+
+            $dataUpdate = [
+                'id' => $id,
+                'paket_kontrol' => $this->request->getPost('paket_kontrol'),
+                'motor_gerak_rail' => $this->request->getPost('motor_gerak_rail'),
+                'motor_gerak_putar' => $this->request->getPost('motor_gerak_putar'),
+                'motor_gerak_arm' => $this->request->getPost('motor_gerak_arm'),
+                'motor_gerak_keranjang' => $this->request->getPost('motor_gerak_keranjang'),
+                'wire_rope' => $this->request->getPost('wire_rope'),
+                'safety_block' => $this->request->getPost('safety_block'),
+                'gear_box' => $this->request->getPost('gear_box'),
+                'noise' => $this->request->getPost('noise'),
+                'vibrasi' => $this->request->getPost('vibrasi'),
+                'pelumasan' => $this->request->getPost('pelumasan'),
+                'seragam' => $this->request->getPost('seragam'),
+                'id_card' => $this->request->getPost('id_card'),
+                'helmet' => $this->request->getPost('helmet'),
+                'safety_glasses' => $this->request->getPost('safety_glasses'),
+                'full_body_harnetz' => $this->request->getPost('full_body_harnetz'),
+                'auto_stop' => $this->request->getPost('auto_stop'),
+                'carbiner' => $this->request->getPost('carbiner'),
+                'sarung_tangan' => $this->request->getPost('sarung_tangan'),
+            ];
+
+            $update = $this->mGondola->save($dataUpdate);
+
+            if ($update) {
+                session()->setFlashdata('success', 'Gondola Data has been edited');
+                return redirect()->to('/gondola', 200);
+            }
+
+            session()->setFlashdata('error', 'Gondola Data has not been edited');
+            return redirect()->to('/gondola', 500);
+        }
+    }
+
+    public function deleteGondola()
+    {
+        $delete = $this->mGondola->delete($this->request->getPost('id'));
+        if ($delete) {
+            $response = [
+                'success' => true,
+            ];
+            session()->setFlashdata('success', 'Gondola Data has been deleted');
+        } else {
+            $response = [
+                'success' => false,
+            ];
+            session()->setFlashdata('error', 'Gondola Data has not been deleted');
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function ajaxDataGondola()
+    {
+        $data = $this->mGondola->ajaxDataGondola($this->request->getPost('id'));
         if ($data) {
             $response = [
                 'success' => true,

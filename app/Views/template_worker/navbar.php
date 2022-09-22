@@ -384,6 +384,9 @@
                                                         <a class="dropdown-item " href="./empty.html">
                                                             Sanitary
                                                         </a>
+                                                        <a class="dropdown-item " href="<?= base_url('gondola')?>">
+                                                            Gondola
+                                                        </a>
                                                     </div>
                                                     <div class="dropdown-menu-column">
                                                     <a class="dropdown-item " href="<?= base_url('ups')?>">

@@ -325,6 +325,17 @@ $routes->post('housekeeping/deleteHousekeeping', 'CEquipment::deleteHousekeeping
 $routes->get('housekeeping/ajaxDataHousekeeping', 'CEquipment::ajaxDataHousekeeping');
 $routes->post('housekeeping/ajaxDataHousekeeping', 'CEquipment::ajaxDataHousekeeping');
 
+//? Equipment Gondola
+$routes->get('gondola', 'CEquipment::gondola');
+$routes->get('gondola/saveGondola', 'CEquipment::saveGondola');
+$routes->post('gondola/saveGondola', 'CEquipment::saveGondola');
+$routes->get('gondola/updateGondola/(:num)', 'CEquipment::updateGondola/$1');
+$routes->post('gondola/updateGondola/(:num)', 'CEquipment::updateGondola/$1');
+$routes->get('gondola/deleteGondola', 'CEquipment::deleteGondola');
+$routes->post('gondola/deleteGondola', 'CEquipment::deleteGondola');
+$routes->get('gondola/ajaxDataGondola', 'CEquipment::ajaxDataGondola');
+$routes->post('gondola/ajaxDataGondola', 'CEquipment::ajaxDataGondola');
+
 
 
 
