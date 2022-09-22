@@ -15,6 +15,7 @@ use App\Models\MMeterSumber;
 use App\Models\MPintu;
 use App\Models\MPlumbing;
 use App\Models\MRollingDoor;
+use App\Models\MSoundSystem;
 use App\Models\MStore;
 use App\Models\MStp;
 use App\Models\MTelephonePabx;
@@ -42,6 +43,7 @@ class CEquipment extends BaseController
         $this->mTelpPabx = new MTelephonePabx();
         $this->mHouseKeep = new MHousekeeping();
         $this->mGondola = new MGondola();
+        $this->mSoundSystem = new MSoundSystem();
         helper(['form', 'url', 'functionHelper']);
     }
 
@@ -3941,6 +3943,246 @@ class CEquipment extends BaseController
     public function ajaxDataGondola()
     {
         $data = $this->mGondola->ajaxDataGondola($this->request->getPost('id'));
+        if ($data) {
+            $response = [
+                'success' => true,
+                'data' => $data,
+            ];
+        } else {
+            $response = [
+                'success' => false,
+            ];
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function soundsystem()
+    {
+        $data['url'] = $this->request->uri->getSegment(1);
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $data['title'] = 'Sound System | B.M Apps &copy; Gramedia ' . date('Y');
+            $data['isLoggedIn'] = session()->get('isLoggedIn');
+            $data['id'] = session()->get('id');
+            $data['username'] = session()->get('username');
+            $data['name'] = session()->get('name');
+            $data['email'] = session()->get('email');
+            $data['image'] = session()->get('image');
+            $data['is_active'] = session()->get('is_active');
+            $data['role_id'] = session()->get('role_id');
+            $data['roleuser'] = session()->get('roleuser');
+            $data['superior_role_id'] = session()->get('superior_role_id');
+            $data['location'] = session()->get('location');
+            $data['level'] = session()->get('level');
+            $data['status_deleted'] = session()->get('status_deleted');
+            $data['validation'] = \Config\Services::validation();
+
+            $data['getDataTableSoundSystem'] = $this->mSoundSystem->getDataTableSoundSystem();
+            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_soundsystem");
+            $data['checkInspection'] = $this->mEquip->checkInspection('tb_sound_system', $checklist['checklist']);
+            $data['defaultChecklist'] = $checklist;
+            
+            return view('vSoundSystem', $data);
+        }
+    }
+
+    public function saveSoundSystem()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'equipment_checklist' => [
+                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
+                    'label' => 'Checklist',
+                ],
+                'amplifier' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Mains Utility - Amplifier',
+                ],
+                'mixer' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Mains Utility - Mixer',
+                ],
+                'radio_fm' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Mains Utility - Radio FM',
+                ],
+                'cd_mp3_player' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Mains Utility - CD/MP3 Player',
+                ],
+                'switch_zone' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Mains Utility - Switch Zone',
+                ],
+                'mic_announcer' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Mains Utility - Mic Announcer',
+                ],
+                'speaker_jumlah' => [
+                    'rules' => 'required|is_natural|max_length[10]',
+                    'label' => 'Speaker - Jumlah',
+                ],
+                'speaker_keterangan' => [
+                    'rules' => 'required|max_length[500]',
+                    'label' => 'Speaker - Keterangan',
+                ],
+                'car_call' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Features - Car Call',
+                ],
+                'emergency_evac_system' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Features - Emergency Evac System',
+                ],
+                'keterangan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Keterangan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/soundsystem')->withInput()->with('validation', $validation);
+            }
+
+            $dataInput = [
+                'location' => session()->get('idstore'),
+                'time' => $this->request->getPost('time'),
+                'date' => date('Y-m-d'),
+                'worker' => session()->get('id'),
+                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
+                'amplifier' => $this->request->getPost('amplifier'),
+                'mixer' => $this->request->getPost('mixer'),
+                'radio_fm' => $this->request->getPost('radio_fm'),
+                'cd_mp3_player' => $this->request->getPost('cd_mp3_player'),
+                'switch_zone' => $this->request->getPost('switch_zone'),
+                'mic_announcer' => $this->request->getPost('mic_announcer'),
+                'speaker_jumlah' => $this->request->getPost('speaker_jumlah'),
+                'speaker_keterangan' => $this->request->getPost('speaker_keterangan'),
+                'car_call' => $this->request->getPost('car_call'),
+                'emergency_evac_system' => $this->request->getPost('emergency_evac_system'),
+                'keterangan' => $this->request->getPost('keterangan'),
+            ];
+
+            $input = $this->mSoundSystem->save($dataInput);
+
+            if ($input) {
+                session()->setFlashdata('success', 'Sound System Data has been added');
+                return redirect()->to('/soundsystem', 201);
+            }
+
+            session()->setFlashdata('error', 'Sound System Data has not been added');
+            return redirect()->to('/soundsystem', 500);
+        }
+    }
+
+    public function updateSoundSystem($id)
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'amplifier' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Mains Utility - Amplifier',
+                ],
+                'mixer' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Mains Utility - Mixer',
+                ],
+                'radio_fm' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Mains Utility - Radio FM',
+                ],
+                'cd_mp3_player' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Mains Utility - CD/MP3 Player',
+                ],
+                'switch_zone' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Mains Utility - Switch Zone',
+                ],
+                'mic_announcer' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Mains Utility - Mic Announcer',
+                ],
+                'speaker_jumlah' => [
+                    'rules' => 'required|is_natural|max_length[10]',
+                    'label' => 'Speaker - Jumlah',
+                ],
+                'speaker_keterangan' => [
+                    'rules' => 'required|max_length[500]',
+                    'label' => 'Speaker - Keterangan',
+                ],
+                'car_call' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Features - Car Call',
+                ],
+                'emergency_evac_system' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Features - Emergency Evac System',
+                ],
+                'keterangan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Keterangan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/soundsystem')->withInput()->with('validation', $validation);
+            }
+
+            $dataUpdate = [
+                'id' => $id,
+                'amplifier' => $this->request->getPost('amplifier'),
+                'mixer' => $this->request->getPost('mixer'),
+                'radio_fm' => $this->request->getPost('radio_fm'),
+                'cd_mp3_player' => $this->request->getPost('cd_mp3_player'),
+                'switch_zone' => $this->request->getPost('switch_zone'),
+                'mic_announcer' => $this->request->getPost('mic_announcer'),
+                'speaker_jumlah' => $this->request->getPost('speaker_jumlah'),
+                'speaker_keterangan' => $this->request->getPost('speaker_keterangan'),
+                'car_call' => $this->request->getPost('car_call'),
+                'emergency_evac_system' => $this->request->getPost('emergency_evac_system'),
+                'keterangan' => $this->request->getPost('keterangan'),
+            ];
+
+            $update = $this->mSoundSystem->save($dataUpdate);
+
+            if ($update) {
+                session()->setFlashdata('success', 'Sound System Data has been edited');
+                return redirect()->to('/soundsystem', 200);
+            }
+
+            session()->setFlashdata('error', 'Sound System Data has not been edited');
+            return redirect()->to('/soundsystem', 500);
+        }
+    }
+
+    public function deleteSoundSystem()
+    {
+        $delete = $this->mSoundSystem->delete($this->request->getPost('id'));
+        if ($delete) {
+            $response = [
+                'success' => true,
+            ];
+            session()->setFlashdata('success', 'Sound System Data has been deleted');
+        } else {
+            $response = [
+                'success' => false,
+            ];
+            session()->setFlashdata('error', 'Sound System Data has not been deleted');
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function ajaxDataSoundSystem()
+    {
+        $data = $this->mSoundSystem->ajaxDataSoundSystem($this->request->getPost('id'));
         if ($data) {
             $response = [
                 'success' => true,

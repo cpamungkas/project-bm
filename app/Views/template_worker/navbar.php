@@ -387,6 +387,9 @@
                                                         <a class="dropdown-item " href="<?= base_url('gondola')?>">
                                                             Gondola
                                                         </a>
+                                                        <a class="dropdown-item " href="<?= base_url('soundsystem')?>">
+                                                            Sound System
+                                                        </a>
                                                     </div>
                                                     <div class="dropdown-menu-column">
                                                     <a class="dropdown-item " href="<?= base_url('ups')?>">

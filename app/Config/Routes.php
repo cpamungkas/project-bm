@@ -336,6 +336,17 @@ $routes->post('gondola/deleteGondola', 'CEquipment::deleteGondola');
 $routes->get('gondola/ajaxDataGondola', 'CEquipment::ajaxDataGondola');
 $routes->post('gondola/ajaxDataGondola', 'CEquipment::ajaxDataGondola');
 
+//? Equipment Sound System
+$routes->get('soundsystem', 'CEquipment::soundsystem');
+$routes->get('soundsystem/saveSoundSystem', 'CEquipment::saveSoundSystem');
+$routes->post('soundsystem/saveSoundSystem', 'CEquipment::saveSoundSystem');
+$routes->get('soundsystem/updateSoundSystem/(:num)', 'CEquipment::updateSoundSystem/$1');
+$routes->post('soundsystem/updateSoundSystem/(:num)', 'CEquipment::updateSoundSystem/$1');
+$routes->get('soundsystem/deleteSoundSystem', 'CEquipment::deleteSoundSystem');
+$routes->post('soundsystem/deleteSoundSystem', 'CEquipment::deleteSoundSystem');
+$routes->get('soundsystem/ajaxDataSoundSystem', 'CEquipment::ajaxDataSoundSystem');
+$routes->post('soundsystem/ajaxDataSoundSystem', 'CEquipment::ajaxDataSoundSystem');
+
 
 
 
