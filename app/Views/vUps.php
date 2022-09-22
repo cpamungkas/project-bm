@@ -551,6 +551,31 @@
                     </div>
                 </div>
             </div>
+            <?php if(count($getStoreEquipmentByStore) > 1): ?>
+                <div class="col-12">
+                    <a
+                        href="<?php
+                            $i = 1;
+                            foreach($getStoreEquipmentByStore as $s) {
+                                if($s['idEquipment'] > $defaultChecklist['idEq']) {
+                                    echo($s['url']);
+                                    break;
+                                }
+                                
+                                if($i == count($getStoreEquipmentByStore)){
+                                    echo($getStoreEquipmentByStore[0]['url']);
+                                    break;
+                                }
+
+                                $i++;
+                            }
+                        ?>"
+                        class="btn btn-outline-primary ms-auto"
+                    >
+                        Next
+                    </a>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>

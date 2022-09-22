@@ -234,139 +234,139 @@
                                         </a>
 
                                         <?php
-                                            $isTrafoCubicleFound = 0;
-                                            $isKwhMeterFound = 0;
-                                            $isPanelLvmdpFound = 0;
-                                            $isPanelCapacitorBankFound = 0;
-                                            $isGensetFound = 0;
-                                            $isDieselHydrantFound = 0;
-                                            $isAcChillerFound = 0;
-                                            $isAcCoolingTowerFound = 0;
-                                            $isAcAhuFound = 0;
-                                            $isAcSplitwallFound = 0;
-                                            $isSuhuFound = 0;
-                                            $isLightingFound = 0;
-                                            $isEscalatorFound = 0;
-                                            $isElevatorFound = 0;
-                                            $isDumbwaiterFound = 0;
-                                            $isSanitaryFound = 0;
+                                        $isTrafoCubicleFound = 0;
+                                        $isKwhMeterFound = 0;
+                                        $isPanelLvmdpFound = 0;
+                                        $isPanelCapacitorBankFound = 0;
+                                        $isGensetFound = 0;
+                                        $isDieselHydrantFound = 0;
+                                        $isAcChillerFound = 0;
+                                        $isAcCoolingTowerFound = 0;
+                                        $isAcAhuFound = 0;
+                                        $isAcSplitwallFound = 0;
+                                        $isSuhuFound = 0;
+                                        $isLightingFound = 0;
+                                        $isEscalatorFound = 0;
+                                        $isElevatorFound = 0;
+                                        $isDumbwaiterFound = 0;
+                                        $isSanitaryFound = 0;
 
-                                            $isUpsFound = 0;
-                                            $isGasStationFound = 0;
-                                            $isStpFound = 0;
-                                            $isCctvFound = 0;
-                                            $isPlumbingFound = 0;
-                                            $isMeterSumberFound = 0;
-                                            $isDindingFound = 0;
-                                            $isPintuFound = 0;
-                                            $isFoldingFound = 0;
-                                            $isRollingFound = 0;
-                                            $isFireFightingFound = 0;
-                                            $isTelephoneFound = 0;
-                                            $isHousekeepFound = 0;
-                                            $isGondolaFound = 0;
-                                            $isSoundSystemFound = 0;
+                                        $isUpsFound = 0;
+                                        $isGasStationFound = 0;
+                                        $isStpFound = 0;
+                                        $isCctvFound = 0;
+                                        $isPlumbingFound = 0;
+                                        $isMeterSumberFound = 0;
+                                        $isDindingFound = 0;
+                                        $isPintuFound = 0;
+                                        $isFoldingFound = 0;
+                                        $isRollingFound = 0;
+                                        $isFireFightingFound = 0;
+                                        $isTelephoneFound = 0;
+                                        $isHousekeepFound = 0;
+                                        $isGondolaFound = 0;
+                                        $isSoundSystemFound = 0;
 
-                                            $rowcount = 0;
+                                        $rowcount = 0;
                                         ?>
-                                        <?php if($getStoreEquipmentByStore): ?>
+                                        <?php if ($getStoreEquipmentByStore) : ?>
                                             <?php
-                                                foreach($getStoreEquipmentByStore as $s) {
-                                                    if($s['idEquipment'] == 1) {
-                                                        $isTrafoCubicleFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 2) {
-                                                        $isKwhMeterFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 4) {
-                                                        $isPanelLvmdpFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 5) {
-                                                        $isPanelCapacitorBankFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 6) {
-                                                        $isGensetFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 7) {
-                                                        $isDieselHydrantFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 8) {
-                                                        $isAcChillerFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 9) {
-                                                        $isAcCoolingTowerFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 10) {
-                                                        $isAcAhuFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 11) {
-                                                        $isAcSplitwallFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 12) {
-                                                        $isSuhuFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 13) {
-                                                        $isLightingFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 14) {
-                                                        $isEscalatorFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 15) {
-                                                        $isElevatorFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 16) {
-                                                        $isDumbwaiterFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 17) {
-                                                        $isSanitaryFound = 1;
-                                                    }
-
-                                                    if($s['idEquipment'] == 18) {
-                                                        $isUpsFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 19) {
-                                                        $isStpFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 20) {
-                                                        $isCctvFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 21) {
-                                                        $isPlumbingFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 22) {
-                                                        $isMeterSumberFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 23) {
-                                                        $isDindingFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 24) {
-                                                        $isPintuFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 25) {
-                                                        $isFoldingFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 26) {
-                                                        $isRollingFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 27) {
-                                                        $isFireFightingFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 28) {
-                                                        $isTelephoneFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 29) {
-                                                        $isHousekeepFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 30) {
-                                                        $isGondolaFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 31) {
-                                                        $isSoundSystemFound = 1;
-                                                    }
-                                                    if($s['idEquipment'] == 32) {
-                                                        $isGasStationFound = 1;
-                                                    }
+                                            foreach ($getStoreEquipmentByStore as $s) {
+                                                if ($s['idEquipment'] == 1) {
+                                                    $isTrafoCubicleFound = 1;
                                                 }
+                                                if ($s['idEquipment'] == 2) {
+                                                    $isKwhMeterFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 4) {
+                                                    $isPanelLvmdpFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 5) {
+                                                    $isPanelCapacitorBankFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 6) {
+                                                    $isGensetFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 7) {
+                                                    $isDieselHydrantFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 8) {
+                                                    $isAcChillerFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 9) {
+                                                    $isAcCoolingTowerFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 10) {
+                                                    $isAcAhuFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 11) {
+                                                    $isAcSplitwallFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 12) {
+                                                    $isSuhuFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 13) {
+                                                    $isLightingFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 14) {
+                                                    $isEscalatorFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 15) {
+                                                    $isElevatorFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 16) {
+                                                    $isDumbwaiterFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 17) {
+                                                    $isSanitaryFound = 1;
+                                                }
+
+                                                if ($s['idEquipment'] == 18) {
+                                                    $isUpsFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 19) {
+                                                    $isStpFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 20) {
+                                                    $isCctvFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 21) {
+                                                    $isPlumbingFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 22) {
+                                                    $isMeterSumberFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 23) {
+                                                    $isDindingFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 24) {
+                                                    $isPintuFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 25) {
+                                                    $isFoldingFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 26) {
+                                                    $isRollingFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 27) {
+                                                    $isFireFightingFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 28) {
+                                                    $isTelephoneFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 29) {
+                                                    $isHousekeepFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 30) {
+                                                    $isGondolaFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 31) {
+                                                    $isSoundSystemFound = 1;
+                                                }
+                                                if ($s['idEquipment'] == 32) {
+                                                    $isGasStationFound = 1;
+                                                }
+                                            }
                                             ?>
                                             <div class="dropend">
                                                 <a class="dropdown-item dropdown-toggle" href="#sidebar-cards" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
@@ -386,35 +386,35 @@
                                                 <div class="dropdown-menu">
                                                     <div class="dropdown-menu-columns">
                                                         <div class="dropdown-menu-column">
-                                                            <?php if($isTrafoCubicleFound): ?>
+                                                            <?php if ($isTrafoCubicleFound) : ?>
                                                                 <a class="dropdown-item" href="trafocubicle">
                                                                     Trafo &amp; Cubicle
                                                                 </a>
                                                                 <?php $rowcount++; ?>
                                                             <?php endif; ?>
 
-                                                            <?php if($isKwhMeterFound): ?>
+                                                            <?php if ($isKwhMeterFound) : ?>
                                                                 <a class="dropdown-item " href="kwhmeter">
                                                                     KWH Meter
                                                                 </a>
                                                                 <?php $rowcount++; ?>
                                                             <?php endif; ?>
 
-                                                            <?php if($isPanelLvmdpFound): ?>
+                                                            <?php if ($isPanelLvmdpFound) : ?>
                                                                 <a class="dropdown-item " href="panellvmdp">
                                                                     Panel LVMDP
                                                                 </a>
                                                                 <?php $rowcount++; ?>
                                                             <?php endif; ?>
 
-                                                            <?php if($isPanelCapacitorBankFound): ?>
+                                                            <?php if ($isPanelCapacitorBankFound) : ?>
                                                                 <a class="dropdown-item" href="panelcapacitorbank">
                                                                     Panel Capacitor Bank
                                                                 </a>
                                                                 <?php $rowcount++; ?>
                                                             <?php endif; ?>
 
-                                                            <?php if($isGensetFound): ?>
+                                                            <?php if ($isGensetFound) : ?>
                                                                 <div class="dropend">
                                                                     <a class="dropdown-item dropdown-toggle" href="#sidebar-cards" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
                                                                         Genset
@@ -431,35 +431,35 @@
                                                                 <?php $rowcount++; ?>
                                                             <?php endif; ?>
 
-                                                            <?php if($isDieselHydrantFound): ?>
+                                                            <?php if ($isDieselHydrantFound) : ?>
                                                                 <a class="dropdown-item " href="dieselhydrant">
                                                                     Diesel Hydrant
                                                                 </a>
                                                                 <?php $rowcount++; ?>
                                                             <?php endif; ?>
 
-                                                            <?php if($isAcChillerFound || $isAcCoolingTowerFound || $isAcAhuFound || $isAcSplitwallFound): ?>
+                                                            <?php if ($isAcChillerFound || $isAcCoolingTowerFound || $isAcAhuFound || $isAcSplitwallFound) : ?>
                                                                 <div class="dropend">
                                                                     <a class="dropdown-item dropdown-toggle" href="#sidebar-cards" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
                                                                         AC
                                                                     </a>
                                                                     <div class="dropdown-menu">
-                                                                        <?php if($isAcChillerFound): ?>
+                                                                        <?php if ($isAcChillerFound) : ?>
                                                                             <a href="acchiller" class="dropdown-item">
                                                                                 AC Chiller
                                                                             </a>
                                                                         <?php endif; ?>
-                                                                        <?php if($isAcCoolingTowerFound): ?>
+                                                                        <?php if ($isAcCoolingTowerFound) : ?>
                                                                             <a href="accoolingtower" class="dropdown-item">
                                                                                 AC Cooling Tower
                                                                             </a>
                                                                         <?php endif; ?>
-                                                                        <?php if($isAcAhuFound): ?>
+                                                                        <?php if ($isAcAhuFound) : ?>
                                                                             <a href="acahu" class="dropdown-item">
                                                                                 AC AHU
                                                                             </a>
                                                                         <?php endif; ?>
-                                                                        <?php if($isAcSplitwallFound): ?>
+                                                                        <?php if ($isAcSplitwallFound) : ?>
                                                                             <a href="acsplitwallduckcassettevrv" class="dropdown-item">
                                                                                 AC Splitwall, Duck, Cassette, VRV
                                                                             </a>
@@ -469,250 +469,268 @@
                                                                 <?php $rowcount++; ?>
                                                             <?php endif; ?>
 
-                                                            <?php if($isSuhuFound): ?>
+                                                            <?php if ($isSuhuFound) : ?>
                                                                 <a class="dropdown-item " href="temperature">
                                                                     Suhu
                                                                 </a>
                                                                 <?php $rowcount++; ?>
                                                             <?php endif; ?>
 
-                                                            <?php if($isLightingFound): ?>
+                                                            <?php if ($isLightingFound) : ?>
                                                                 <a class="dropdown-item " href="lighting">
                                                                     Ligthing
                                                                 </a>
                                                                 <?php $rowcount++; ?>
                                                             <?php endif; ?>
 
-                                                            <?php if($rowcount == 9): ?>
-                                                                </div><div class="dropdown-menu-column dropdown-menu-column-eq">
-                                                                <?php $rowcount = 0; ?>
-                                                            <?php endif; ?>
+                                                            <?php if ($rowcount == 9) : ?>
+                                                        </div>
+                                                        <div class="dropdown-menu-column dropdown-menu-column-eq">
+                                                            <?php $rowcount = 0; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($isEscalatorFound || $isElevatorFound): ?>
-                                                                <div class="dropend">
-                                                                    <a class="dropdown-item dropdown-toggle" href="#sidebar-cards" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                                                        Stair
-                                                                    </a>
-                                                                    <div class="dropdown-menu">
-                                                                        <?php if($isEscalatorFound): ?>
-                                                                            <a href="escalator" class="dropdown-item">
-                                                                                Escalator
-                                                                            </a>
-                                                                        <?php endif; ?>
+                                                        <?php if ($isEscalatorFound || $isElevatorFound) : ?>
+                                                            <div class="dropend">
+                                                                <a class="dropdown-item dropdown-toggle" href="#sidebar-cards" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                                                    Stair
+                                                                </a>
+                                                                <div class="dropdown-menu">
+                                                                    <?php if ($isEscalatorFound) : ?>
+                                                                        <a href="escalator" class="dropdown-item">
+                                                                            Escalator
+                                                                        </a>
+                                                                    <?php endif; ?>
 
-                                                                        <?php if($isElevatorFound): ?>
-                                                                            <a href="elevator" class="dropdown-item">
-                                                                                Elevator
-                                                                            </a>
-                                                                        <?php endif; ?>
-                                                                    </div>
+                                                                    <?php if ($isElevatorFound) : ?>
+                                                                        <a href="elevator" class="dropdown-item">
+                                                                            Elevator
+                                                                        </a>
+                                                                    <?php endif; ?>
                                                                 </div>
-                                                                <?php $rowcount++; ?>
-                                                            <?php endif; ?>
+                                                            </div>
+                                                            <?php $rowcount++; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($rowcount == 9): ?>
-                                                                </div><div class="dropdown-menu-column dropdown-menu-column-eq">
-                                                                <?php $rowcount = 0; ?>
-                                                            <?php endif; ?>
-                                                            
-                                                            <?php if($isDumbwaiterFound): ?>
-                                                                <a class="dropdown-item " href="dumbwaiter">
-                                                                    Dumbwaiter
-                                                                </a>
-                                                                <?php $rowcount++; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($rowcount == 9) : ?>
+                                                        </div>
+                                                        <div class="dropdown-menu-column dropdown-menu-column-eq">
+                                                            <?php $rowcount = 0; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($rowcount == 9): ?>
-                                                                </div><div class="dropdown-menu-column dropdown-menu-column-eq">
-                                                                <?php $rowcount = 0; ?>
-                                                            <?php endif; ?>
-                                                            
-                                                            <?php if($isSanitaryFound): ?>
-                                                                <a class="dropdown-item " href="sanitary">
-                                                                    Sanitary
-                                                                </a>
-                                                                <?php $rowcount++; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($isDumbwaiterFound) : ?>
+                                                            <a class="dropdown-item " href="dumbwaiter">
+                                                                Dumbwaiter
+                                                            </a>
+                                                            <?php $rowcount++; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($rowcount == 9): ?>
-                                                                </div><div class="dropdown-menu-column dropdown-menu-column-eq">
-                                                                <?php $rowcount = 0; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($rowcount == 9) : ?>
+                                                        </div>
+                                                        <div class="dropdown-menu-column dropdown-menu-column-eq">
+                                                            <?php $rowcount = 0; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($isUpsFound): ?>
-                                                                <a class="dropdown-item " href="ups">
-                                                                    UPS
-                                                                </a>
-                                                                <?php $rowcount++; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($isSanitaryFound) : ?>
+                                                            <a class="dropdown-item " href="sanitary">
+                                                                Sanitary
+                                                            </a>
+                                                            <?php $rowcount++; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($rowcount == 9): ?>
-                                                                </div><div class="dropdown-menu-column dropdown-menu-column-eq">
-                                                                <?php $rowcount = 0; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($rowcount == 9) : ?>
+                                                        </div>
+                                                        <div class="dropdown-menu-column dropdown-menu-column-eq">
+                                                            <?php $rowcount = 0; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($isGasStationFound): ?>
-                                                                <a class="dropdown-item " href="gasstation">
-                                                                    Gas Station
-                                                                </a>
-                                                                <?php $rowcount++; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($isUpsFound) : ?>
+                                                            <a class="dropdown-item " href="ups">
+                                                                UPS
+                                                            </a>
+                                                            <?php $rowcount++; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($rowcount == 9): ?>
-                                                                </div><div class="dropdown-menu-column dropdown-menu-column-eq">
-                                                                <?php $rowcount = 0; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($rowcount == 9) : ?>
+                                                        </div>
+                                                        <div class="dropdown-menu-column dropdown-menu-column-eq">
+                                                            <?php $rowcount = 0; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($isStpFound): ?>
-                                                                <a class="dropdown-item " href="stp">
-                                                                    STP
-                                                                </a>
-                                                                <?php $rowcount++; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($isStpFound) : ?>
+                                                            <a class="dropdown-item " href="stp">
+                                                                STP
+                                                            </a>
+                                                            <?php $rowcount++; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($rowcount == 9): ?>
-                                                                </div><div class="dropdown-menu-column dropdown-menu-column-eq">
-                                                                <?php $rowcount = 0; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($rowcount == 9) : ?>
+                                                        </div>
+                                                        <div class="dropdown-menu-column dropdown-menu-column-eq">
+                                                            <?php $rowcount = 0; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($isCctvFound): ?>
-                                                                <a class="dropdown-item " href="cctv">
-                                                                    CCTV
-                                                                </a>
-                                                                <?php $rowcount++; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($isCctvFound) : ?>
+                                                            <a class="dropdown-item " href="cctv">
+                                                                CCTV
+                                                            </a>
+                                                            <?php $rowcount++; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($rowcount == 9): ?>
-                                                                </div><div class="dropdown-menu-column dropdown-menu-column-eq">
-                                                                <?php $rowcount = 0; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($rowcount == 9) : ?>
+                                                        </div>
+                                                        <div class="dropdown-menu-column dropdown-menu-column-eq">
+                                                            <?php $rowcount = 0; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($isPlumbingFound): ?>
-                                                                <a class="dropdown-item " href="plumbing">
-                                                                    Plumbing
-                                                                </a>
-                                                                <?php $rowcount++; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($isPlumbingFound) : ?>
+                                                            <a class="dropdown-item " href="plumbing">
+                                                                Plumbing
+                                                            </a>
+                                                            <?php $rowcount++; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($rowcount == 9): ?>
-                                                                </div><div class="dropdown-menu-column dropdown-menu-column-eq">
-                                                                <?php $rowcount = 0; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($rowcount == 9) : ?>
+                                                        </div>
+                                                        <div class="dropdown-menu-column dropdown-menu-column-eq">
+                                                            <?php $rowcount = 0; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($isMeterSumberFound): ?>
-                                                                <a class="dropdown-item " href="metersumber">
-                                                                    Meter Sumber &amp; Air Olahan
-                                                                </a>
-                                                                <?php $rowcount++; ?>
-                                                            <?php endif; ?>
-                                                            
-                                                            <?php if($rowcount == 9): ?>
-                                                                </div><div class="dropdown-menu-column dropdown-menu-column-eq">
-                                                                <?php $rowcount = 0; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($isMeterSumberFound) : ?>
+                                                            <a class="dropdown-item " href="metersumber">
+                                                                Meter Sumber &amp; Air Olahan
+                                                            </a>
+                                                            <?php $rowcount++; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($isDindingFound): ?>
-                                                                <a class="dropdown-item " href="dindingpartisi">
-                                                                    Dinding Partisi
-                                                                </a>
-                                                                <?php $rowcount++; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($rowcount == 9) : ?>
+                                                        </div>
+                                                        <div class="dropdown-menu-column dropdown-menu-column-eq">
+                                                            <?php $rowcount = 0; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($rowcount == 9): ?>
-                                                                </div><div class="dropdown-menu-column dropdown-menu-column-eq">
-                                                                <?php $rowcount = 0; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($isDindingFound) : ?>
+                                                            <a class="dropdown-item " href="dindingpartisi">
+                                                                Dinding Partisi
+                                                            </a>
+                                                            <?php $rowcount++; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($isPintuFound): ?>
-                                                                <a class="dropdown-item " href="pintu">
-                                                                    Pintu
-                                                                </a>
-                                                                <?php $rowcount++; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($rowcount == 9) : ?>
+                                                        </div>
+                                                        <div class="dropdown-menu-column dropdown-menu-column-eq">
+                                                            <?php $rowcount = 0; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($rowcount == 9): ?>
-                                                                </div><div class="dropdown-menu-column dropdown-menu-column-eq">
-                                                                <?php $rowcount = 0; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($isPintuFound) : ?>
+                                                            <a class="dropdown-item " href="pintu">
+                                                                Pintu
+                                                            </a>
+                                                            <?php $rowcount++; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($isFoldingFound): ?>
-                                                                <a class="dropdown-item " href="foldinggate">
-                                                                    Folding Gate
-                                                                </a>
-                                                                <?php $rowcount++; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($rowcount == 9) : ?>
+                                                        </div>
+                                                        <div class="dropdown-menu-column dropdown-menu-column-eq">
+                                                            <?php $rowcount = 0; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($rowcount == 9): ?>
-                                                                </div><div class="dropdown-menu-column dropdown-menu-column-eq">
-                                                                <?php $rowcount = 0; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($isFoldingFound) : ?>
+                                                            <a class="dropdown-item " href="foldinggate">
+                                                                Folding Gate
+                                                            </a>
+                                                            <?php $rowcount++; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($isRollingFound): ?>
-                                                                <a class="dropdown-item " href="rollingdoor">
-                                                                    Rolling Door
-                                                                </a>
-                                                                <?php $rowcount++; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($rowcount == 9) : ?>
+                                                        </div>
+                                                        <div class="dropdown-menu-column dropdown-menu-column-eq">
+                                                            <?php $rowcount = 0; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($rowcount == 9): ?>
-                                                                </div><div class="dropdown-menu-column dropdown-menu-column-eq">
-                                                                <?php $rowcount = 0; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($isRollingFound) : ?>
+                                                            <a class="dropdown-item " href="rollingdoor">
+                                                                Rolling Door
+                                                            </a>
+                                                            <?php $rowcount++; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($isFireFightingFound): ?>
-                                                                <a class="dropdown-item " href="firefighting">
-                                                                    Fire Fighting
-                                                                </a>
-                                                                <?php $rowcount++; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($rowcount == 9) : ?>
+                                                        </div>
+                                                        <div class="dropdown-menu-column dropdown-menu-column-eq">
+                                                            <?php $rowcount = 0; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($rowcount == 9): ?>
-                                                                </div><div class="dropdown-menu-column dropdown-menu-column-eq">
-                                                                <?php $rowcount = 0; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($isFireFightingFound) : ?>
+                                                            <a class="dropdown-item " href="firefighting">
+                                                                Fire Fighting
+                                                            </a>
+                                                            <?php $rowcount++; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($isTelephoneFound): ?>
-                                                                <a class="dropdown-item " href="telppabx">
-                                                                    Telephone &amp; PABX
-                                                                </a>
-                                                                <?php $rowcount++; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($rowcount == 9) : ?>
+                                                        </div>
+                                                        <div class="dropdown-menu-column dropdown-menu-column-eq">
+                                                            <?php $rowcount = 0; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($rowcount == 9): ?>
-                                                                </div><div class="dropdown-menu-column dropdown-menu-column-eq">
-                                                                <?php $rowcount = 0; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($isTelephoneFound) : ?>
+                                                            <a class="dropdown-item " href="telppabx">
+                                                                Telephone &amp; PABX
+                                                            </a>
+                                                            <?php $rowcount++; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($isHousekeepFound): ?>
-                                                                <a class="dropdown-item " href="housekeeping">
-                                                                    Housekeeping
-                                                                </a>
-                                                                <?php $rowcount++; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($rowcount == 9) : ?>
+                                                        </div>
+                                                        <div class="dropdown-menu-column dropdown-menu-column-eq">
+                                                            <?php $rowcount = 0; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($rowcount == 9): ?>
-                                                                </div><div class="dropdown-menu-column dropdown-menu-column-eq">
-                                                                <?php $rowcount = 0; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($isHousekeepFound) : ?>
+                                                            <a class="dropdown-item " href="housekeeping">
+                                                                Housekeeping
+                                                            </a>
+                                                            <?php $rowcount++; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($isGondolaFound): ?>
-                                                                <a class="dropdown-item " href="gondola">
-                                                                    Gondola
-                                                                </a>
-                                                                <?php $rowcount++; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($rowcount == 9) : ?>
+                                                        </div>
+                                                        <div class="dropdown-menu-column dropdown-menu-column-eq">
+                                                            <?php $rowcount = 0; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($rowcount == 9): ?>
-                                                                </div><div class="dropdown-menu-column dropdown-menu-column-eq">
-                                                                <?php $rowcount = 0; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($isGondolaFound) : ?>
+                                                            <a class="dropdown-item " href="gondola">
+                                                                Gondola
+                                                            </a>
+                                                            <?php $rowcount++; ?>
+                                                        <?php endif; ?>
 
-                                                            <?php if($isSoundSystemFound): ?>
-                                                                <a class="dropdown-item " href="soundsystem">
-                                                                    Sound System
-                                                                </a>
-                                                                <?php $rowcount++; ?>
-                                                            <?php endif; ?>
+                                                        <?php if ($rowcount == 9) : ?>
+                                                        </div>
+                                                        <div class="dropdown-menu-column dropdown-menu-column-eq">
+                                                            <?php $rowcount = 0; ?>
+                                                        <?php endif; ?>
+
+                                                        <?php if ($isSoundSystemFound) : ?>
+                                                            <a class="dropdown-item " href="soundsystem">
+                                                                Sound System
+                                                            </a>
+                                                            <?php $rowcount++; ?>
+                                                        <?php endif; ?>
+
+                                                        <?php if ($rowcount == 9) : ?>
+                                                        </div>
+                                                        <div class="dropdown-menu-column dropdown-menu-column-eq">
+                                                            <?php $rowcount = 0; ?>
+                                                        <?php endif; ?>
+
+                                                        <?php if ($isGasStationFound) : ?>
+                                                            <a class="dropdown-item " href="gasstation">
+                                                                Gas Station
+                                                            </a>
+                                                            <?php $rowcount++; ?>
+                                                        <?php endif; ?>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -753,7 +771,7 @@
                                                         <a href="techjobout" class="dropdown-item">
                                                             Job Assigment OUT
                                                         </a>
-                                                        <?php if($role_id == 99): ?>
+                                                        <?php if ($role_id == 99) : ?>
                                                             <a href="techjobin" class="dropdown-item">
                                                                 Job Assigment IN
                                                             </a>
@@ -783,10 +801,10 @@
                                                         <a href="troublejobout" class="dropdown-item">
                                                             Job Assignment OUT
                                                         </a>
-                                                        <?php if($role_id == 99): ?>
-                                                        <a href="troublejobin" class="dropdown-item">
-                                                            Job Assignment IN
-                                                        </a>
+                                                        <?php if ($role_id == 99) : ?>
+                                                            <a href="troublejobin" class="dropdown-item">
+                                                                Job Assignment IN
+                                                            </a>
                                                         <?php endif; ?>
                                                     </div>
                                                 </div>

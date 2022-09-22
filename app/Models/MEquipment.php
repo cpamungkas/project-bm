@@ -235,7 +235,10 @@ class MEquipment extends Model
     {
         $builder = $this->db->table('tb_store_equipment');
 
-        $builder->select('tb_store_equipment.checklist');
+        $builder->select([
+            'tb_store_equipment.checklist',
+            'tb_equipment.id as idEq'
+        ]);
         
         $builder->join("tb_equipment", "tb_equipment.id = tb_store_equipment.idEquipment", "LEFT");
         
@@ -253,7 +256,10 @@ class MEquipment extends Model
 
             $builder = $this->db->table('tb_equipment');
 
-            $builder->select('tb_equipment.default_checklist AS checklist');
+            $builder->select([
+                'tb_equipment.default_checklist AS checklist',
+                'tb_equipment.id as idEq'
+            ]);
 
             $builder->where([
                 'equipment' => $equipment,
