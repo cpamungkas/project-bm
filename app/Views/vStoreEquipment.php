@@ -336,7 +336,7 @@
                                         <div class="form-floating">
                                             <select disabled class="form-select <?= ($validation->hasError('storeName')) ? 'is-invalid' : ''; ?>" id="storeNameDisplay" name="storeNameDisplay">
                                                 <?php if (old('storeName') != null) { ?>
-                                                    <?php foreach ($getStore as $store => $value) {
+                                                    <?php foreach ($getAllStore as $store => $value) {
                                                         if ($value['idStore'] == old('storeName')) {
                                                             echo '<option selected value="' . $value['idStore'] . '">' . $value['StoreName'] . '</option>';
                                                         } else {
@@ -345,7 +345,7 @@
                                                     } ?>
                                                 <?php } else { ?>
                                                 <?php
-                                                    foreach ($getStore as $store => $value) {
+                                                    foreach ($getAllStore as $store => $value) {
                                                         echo '<option value="' . $value['idStore'] . '">' . $value['StoreName'] . '</option>';
                                                     }
                                                 }

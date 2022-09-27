@@ -70,6 +70,7 @@ class CEquipment extends BaseController
             $data['validation'] = \Config\Services::validation();
 
             $data['getStore'] = $this->mEquipment->getStoreDropdown();
+            $data['getAllStore'] = $this->mEquipment->getStoreDropdown(FALSE);
             $data['getDataTableStoreEquip'] = $this->mEquipment->getDataTableStoreEquip();
 
             $equipment = $this->mEquipment->getEquipment();
@@ -1654,6 +1655,8 @@ class CEquipment extends BaseController
             $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_metersumber");
             $data['checkInspection'] = $this->mEquipment->checkInspection('tb_meter_sumber_dan_air_olahan', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
+            // TODO implement ke semua
+            $data['equipmentDefaultChecklist'] = $this->mEquipment->equipmentDefaultChecklist("equipment_metersumber");;
             
             $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
             $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 22);
@@ -1672,9 +1675,14 @@ class CEquipment extends BaseController
         if (!session()->get('isLoggedIn')) {
             return redirect()->to('/');
         } else {
+            // TODO implement time ke semua
             $rules = [
                 'time' => [
-                    'rules' => 'required|in_list[08:00:00,13:00:00,19:00:00]',
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
                     'label' => 'Jam Pengecekan',
                 ],
                 'equipment_checklist' => [

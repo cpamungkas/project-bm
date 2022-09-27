@@ -318,15 +318,62 @@ function timeCheck($time, $data)
 }
 
 // TODO lanjutin buat generate time checklist
-function generateChecklistTime($checklist, $time = null)
+function generateChecklistTime($checklist, $checkInspection, $time = null)
 {
     if ($checklist == "MONTHLY") {
         return '';
     }
-    
+
+    $validation = \Config\Services::validation();
+
     echo '<div class="form-group mb-3 row">';
     echo '<label class="form-label col-3 col-form-label">Jam Pengecekan</label>';
-    foreach ($time as $key => $value) {
+    echo '<div class="col">';
 
+    if ($time == null) {
+        switch ($checklist) {
+            case 'DAILY':
+                $time = ['08:00:00','10:00:00','13:00:00','19:00:00'];
+                break;
+    
+            case 'WEEKLY':
+                $time = ['10:00:00', '19:00:00'];
+                break;
+            
+            default:
+                return '';
+                break;
+        }
     }
+
+    foreach ($time as $key => $value) {
+        echo '<div class="form-check">';
+        echo '<input ' . timeCheck($value, $checkInspection) . (old("time") == $value ? ' checked' : ' ');
+        echo ' value="'. $value .'" id="time" name="time" class="jamCheck form-check-input ' . ($validation->hasError("time") ? " is-invalid" : " ") . '"';
+        echo 'type="checkbox" onclick="jamCheck(this.value)">
+                <span class="form-check-label">';
+        $jam = explode(":", $value);
+        echo $jam[0] . ':' . $jam[1];
+        echo '</span>
+            </div>';
+    }
+    
+    if ($validation->hasError('time')) {
+        echo '<div style="font-size: 85.71428571%; color: #d63939;">' . 
+            $validation->getError('time') . 
+        '</div>';
+    }
+
+    echo "</div>
+            <script>
+                function jamCheck(b) {
+                    var x = document.getElementsByClassName('jamCheck');
+                    var i;
+
+                    for (i = 0; i < x.length; i++) {
+                        if (x[i].value != b) x[i].checked = false;
+                    }
+                }
+            </script>
+        </div>";
 }

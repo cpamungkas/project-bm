@@ -46,7 +46,17 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group mb-3 row">
+                                    <!-- TODO ambil actualDefault yg isinya default checklist dari tb_equipment -->
+                                    <!-- TODO sesuain buat validasi time ny juga -->
+                                    <!-- TODO implement time ke semua -->
+                                    <?php 
+                                    if ($equipmentDefaultChecklist['checklist'] === $defaultChecklist['checklist']) {
+                                        generateChecklistTime($defaultChecklist['checklist'], $checkInspection, ["08:00:00", "13:00:00", "19:00:00"]);
+                                    } else {
+                                        generateChecklistTime($defaultChecklist['checklist'], $checkInspection);
+                                    }
+                                    ?>
+                                    <!-- <div class="form-group mb-3 row">
                                         <label class="form-label col-3 col-form-label">Jam Pengecekan</label>
                                         <div class="col">
                                             <div class="form-check">
@@ -83,7 +93,7 @@
                                                 }
                                             }
                                         </script>
-                                    </div>
+                                    </div> -->
                                     <div class="form-group mb-3 row">
                                         <label class="form-label col-3 col-form-label">Date</label>
                                         <div class="col">

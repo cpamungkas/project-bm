@@ -372,4 +372,20 @@ class MEquipment extends Model
 
         return $query->getResultArray();
     }
+
+    public function equipmentDefaultChecklist($equipment)
+    {
+        $builder = $this->db->table('tb_equipment');
+
+        $builder->select([
+            'tb_equipment.default_checklist AS checklist',
+            'tb_equipment.id as idEq'
+        ]);
+
+        $builder->where([
+            'equipment' => $equipment,
+            'status_deleted' => '0'
+        ]);
+        return $builder->get()->getRowArray();
+    }
 }
