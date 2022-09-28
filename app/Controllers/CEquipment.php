@@ -53,7 +53,7 @@ class CEquipment extends BaseController
         if (!session()->get('isLoggedIn')) {
             return redirect()->to('/');
         } else {
-            $data['title'] = 'Schedule | B.M Apps &copy; Gramedia ' . date('Y');
+            $data['title'] = 'Store Equipment | B.M Apps &copy; Gramedia ' . date('Y');
             $data['isLoggedIn'] = session()->get('isLoggedIn');
             $data['id'] = session()->get('id');
             $data['username'] = session()->get('username');
@@ -284,6 +284,14 @@ class CEquipment extends BaseController
             return redirect()->to('/');
         } else {
             $rules = [
+                'time' => [
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
+                    'label' => 'Jam Pengecekan',
+                ],
                 'equipment_checklist' => [
                     'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
                     'label' => 'Checklist',
@@ -379,6 +387,7 @@ class CEquipment extends BaseController
 
             $dataInput = [
                 'location' => session()->get('idstore'),
+                'time' => $this->request->getPost('time'),
                 'date' => date('Y-m-d'),
                 'worker' => session()->get('id'),
                 'equipment_checklist' => $this->request->getPost('equipment_checklist'),
@@ -598,6 +607,7 @@ class CEquipment extends BaseController
             $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_gasstation");
             $data['checkInspection'] = $this->mEquipment->checkInspection('tb_gas_station', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
+            $data['equipmentDefaultChecklist'] = $this->mEquipment->equipmentDefaultChecklist("equipment_gasstation");
 
             $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
             $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 32);
@@ -618,7 +628,11 @@ class CEquipment extends BaseController
         } else {
             $rules = [
                 'time' => [
-                    'rules' => 'required|in_list[08:00:00,13:00:00,19:00:00]',
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
                     'label' => 'Jam Pengecekan',
                 ],
                 'equipment_checklist' => [
@@ -796,6 +810,7 @@ class CEquipment extends BaseController
             $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_stp");
             $data['checkInspection'] = $this->mEquipment->checkInspection('tb_stp', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
+            $data['equipmentDefaultChecklist'] = $this->mEquipment->equipmentDefaultChecklist("equipment_stp");
 
             $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
             $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 19);
@@ -816,7 +831,11 @@ class CEquipment extends BaseController
         } else {
             $rules = [
                 'time' => [
-                    'rules' => 'required|in_list[13:00:00]',
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
                     'label' => 'Jam Pengecekan',
                 ],
                 'equipment_checklist' => [
@@ -1124,6 +1143,7 @@ class CEquipment extends BaseController
             $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_cctv");
             $data['checkInspection'] = $this->mEquipment->checkInspection('tb_cctv', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
+            $data['equipmentDefaultChecklist'] = $this->mEquipment->equipmentDefaultChecklist("equipment_cctv");
 
             $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
             $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 20);
@@ -1144,7 +1164,11 @@ class CEquipment extends BaseController
         } else {
             $rules = [
                 'time' => [
-                    'rules' => 'required|in_list[10:00:00]',
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
                     'label' => 'Jam Pengecekan',
                 ],
                 'equipment_checklist' => [
@@ -1371,6 +1395,7 @@ class CEquipment extends BaseController
             $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_plumbing");
             $data['checkInspection'] = $this->mEquipment->checkInspection('tb_plumbing', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
+            $data['equipmentDefaultChecklist'] = $this->mEquipment->equipmentDefaultChecklist("equipment_plumbing");
             
             $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
             $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 21);
@@ -1391,7 +1416,11 @@ class CEquipment extends BaseController
         } else {
             $rules = [
                 'time' => [
-                    'rules' => 'required|in_list[08:00:00]',
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
                     'label' => 'Jam Pengecekan',
                 ],
                 'equipment_checklist' => [
@@ -1656,7 +1685,7 @@ class CEquipment extends BaseController
             $data['checkInspection'] = $this->mEquipment->checkInspection('tb_meter_sumber_dan_air_olahan', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
             // TODO implement ke semua
-            $data['equipmentDefaultChecklist'] = $this->mEquipment->equipmentDefaultChecklist("equipment_metersumber");;
+            $data['equipmentDefaultChecklist'] = $this->mEquipment->equipmentDefaultChecklist("equipment_metersumber");
             
             $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
             $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 22);
@@ -1891,6 +1920,14 @@ class CEquipment extends BaseController
             return redirect()->to('/');
         } else {
             $rules = [
+                'time' => [
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
+                    'label' => 'Jam Pengecekan',
+                ],
                 'equipment_checklist' => [
                     'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
                     'label' => 'Checklist',
@@ -1920,7 +1957,7 @@ class CEquipment extends BaseController
                     'label' => 'Wallpaper',
                 ],
                 'jumlah_temuan' => [
-                    'rules' => 'required|max_length[10]',
+                    'rules' => 'required|max_length[10]|is_natural',
                     'label' => 'Jumlah Temuan',
                 ],
                 'penjelasan' => [
@@ -1993,7 +2030,7 @@ class CEquipment extends BaseController
                     'label' => 'Wallpaper',
                 ],
                 'jumlah_temuan' => [
-                    'rules' => 'required|max_length[10]',
+                    'rules' => 'required|max_length[10]|is_natural',
                     'label' => 'Jumlah Temuan',
                 ],
                 'penjelasan' => [
@@ -2109,6 +2146,14 @@ class CEquipment extends BaseController
             return redirect()->to('/');
         } else {
             $rules = [
+                'time' => [
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
+                    'label' => 'Jam Pengecekan',
+                ],
                 'equipment_checklist' => [
                     'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
                     'label' => 'Checklist',
@@ -2142,7 +2187,7 @@ class CEquipment extends BaseController
                     'label' => 'Engsel',
                 ],
                 'jumlah_temuan' => [
-                    'rules' => 'required|max_length[10]',
+                    'rules' => 'required|max_length[10]|is_natural',
                     'label' => 'Jumlah Temuan',
                 ],
                 'penjelasan' => [
@@ -2220,7 +2265,7 @@ class CEquipment extends BaseController
                     'label' => 'Engsel',
                 ],
                 'jumlah_temuan' => [
-                    'rules' => 'required|max_length[10]',
+                    'rules' => 'required|max_length[10]|is_natural',
                     'label' => 'Jumlah Temuan',
                 ],
                 'penjelasan' => [
@@ -2337,6 +2382,14 @@ class CEquipment extends BaseController
             return redirect()->to('/');
         } else {
             $rules = [
+                'time' => [
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
+                    'label' => 'Jam Pengecekan',
+                ],
                 'equipment_checklist' => [
                     'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
                     'label' => 'Checklist',
@@ -2378,7 +2431,7 @@ class CEquipment extends BaseController
                     'label' => 'Rel',
                 ],
                 'jumlah_temuan' => [
-                    'rules' => 'required|max_length[10]',
+                    'rules' => 'required|max_length[10]|is_natural',
                     'label' => 'Jumlah Temuan',
                 ],
                 'penjelasan' => [
@@ -2466,7 +2519,7 @@ class CEquipment extends BaseController
                     'label' => 'Rel',
                 ],
                 'jumlah_temuan' => [
-                    'rules' => 'required|max_length[10]',
+                    'rules' => 'required|max_length[10]|is_natural',
                     'label' => 'Jumlah Temuan',
                 ],
                 'penjelasan' => [
@@ -2585,6 +2638,14 @@ class CEquipment extends BaseController
             return redirect()->to('/');
         } else {
             $rules = [
+                'time' => [
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
+                    'label' => 'Jam Pengecekan',
+                ],
                 'equipment_checklist' => [
                     'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
                     'label' => 'Checklist',
@@ -2626,7 +2687,7 @@ class CEquipment extends BaseController
                     'label' => 'Pillar Rel',
                 ],
                 'jumlah_temuan' => [
-                    'rules' => 'required|max_length[10]',
+                    'rules' => 'required|max_length[10]|is_natural',
                     'label' => 'Jumlah Temuan',
                 ],
                 'penjelasan' => [
@@ -2714,7 +2775,7 @@ class CEquipment extends BaseController
                     'label' => 'Pillar Rel',
                 ],
                 'jumlah_temuan' => [
-                    'rules' => 'required|max_length[10]',
+                    'rules' => 'required|max_length[10]|is_natural',
                     'label' => 'Jumlah Temuan',
                 ],
                 'penjelasan' => [
@@ -2833,6 +2894,14 @@ class CEquipment extends BaseController
             return redirect()->to('/');
         } else {
             $rules = [
+                'time' => [
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
+                    'label' => 'Jam Pengecekan',
+                ],
                 'equipment_checklist' => [
                     'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
                     'label' => 'Checklist',
@@ -2926,7 +2995,7 @@ class CEquipment extends BaseController
                     'label' => 'Break Glass',
                 ],
                 'jumlah_temuan' => [
-                    'rules' => 'required|max_length[10]',
+                    'rules' => 'required|max_length[10]|is_natural',
                     'label' => 'Jumlah Temuan',
                 ],
                 'penjelasan' => [
@@ -3079,7 +3148,7 @@ class CEquipment extends BaseController
                     'label' => 'Break Glass',
                 ],
                 'jumlah_temuan' => [
-                    'rules' => 'required|max_length[10]',
+                    'rules' => 'required|max_length[10]|is_natural',
                     'label' => 'Jumlah Temuan',
                 ],
                 'penjelasan' => [
@@ -3211,6 +3280,14 @@ class CEquipment extends BaseController
             return redirect()->to('/');
         } else {
             $rules = [
+                'time' => [
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
+                    'label' => 'Jam Pengecekan',
+                ],
                 'equipment_checklist' => [
                     'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
                     'label' => 'Checklist',
@@ -3252,7 +3329,7 @@ class CEquipment extends BaseController
                     'label' => 'Roset',
                 ],
                 'jumlah_temuan' => [
-                    'rules' => 'required|max_length[10]',
+                    'rules' => 'required|max_length[10]|is_natural',
                     'label' => 'Jumlah Temuan',
                 ],
                 'penjelasan' => [
@@ -3340,7 +3417,7 @@ class CEquipment extends BaseController
                     'label' => 'Roset',
                 ],
                 'jumlah_temuan' => [
-                    'rules' => 'required|max_length[10]',
+                    'rules' => 'required|max_length[10]|is_natural',
                     'label' => 'Jumlah Temuan',
                 ],
                 'penjelasan' => [
@@ -3440,6 +3517,7 @@ class CEquipment extends BaseController
             $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_housekeeping");
             $data['checkInspection'] = $this->mEquipment->checkInspection('tb_housekeeping', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
+            $data['equipmentDefaultChecklist'] = $this->mEquipment->equipmentDefaultChecklist("equipment_housekeeping");
             
             $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
             $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 29);
@@ -3460,7 +3538,11 @@ class CEquipment extends BaseController
         } else {
             $rules = [
                 'time' => [
-                    'rules' => 'required|in_list[13:00:00]',
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
                     'label' => 'Jam Pengecekan',
                 ],
                 'equipment_checklist' => [
@@ -3536,7 +3618,7 @@ class CEquipment extends BaseController
                     'label' => 'Plafond',
                 ],
                 'jumlah_temuan' => [
-                    'rules' => 'required|max_length[10]',
+                    'rules' => 'required|max_length[10]|is_natural',
                     'label' => 'Jumlah Temuan',
                 ],
                 'penjelasan' => [
@@ -3664,7 +3746,7 @@ class CEquipment extends BaseController
                     'label' => 'Plafond',
                 ],
                 'jumlah_temuan' => [
-                    'rules' => 'required|max_length[10]',
+                    'rules' => 'required|max_length[10]|is_natural',
                     'label' => 'Jumlah Temuan',
                 ],
                 'penjelasan' => [
@@ -3772,6 +3854,7 @@ class CEquipment extends BaseController
             $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_gondola");
             $data['checkInspection'] = $this->mEquipment->checkInspection('tb_gondola', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
+            $data['equipmentDefaultChecklist'] = $this->mEquipment->equipmentDefaultChecklist("equipment_gondola");
             
             $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
             $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 30);
@@ -3792,7 +3875,11 @@ class CEquipment extends BaseController
         } else {
             $rules = [
                 'time' => [
-                    'rules' => 'required|in_list[10:00:00]',
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
                     'label' => 'Jam Pengecekan',
                 ],
                 'equipment_checklist' => [
@@ -4123,6 +4210,14 @@ class CEquipment extends BaseController
             return redirect()->to('/');
         } else {
             $rules = [
+                'time' => [
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
+                    'label' => 'Jam Pengecekan',
+                ],
                 'equipment_checklist' => [
                     'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
                     'label' => 'Checklist',

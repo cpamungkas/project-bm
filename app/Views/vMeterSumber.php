@@ -56,44 +56,7 @@
                                         generateChecklistTime($defaultChecklist['checklist'], $checkInspection);
                                     }
                                     ?>
-                                    <!-- <div class="form-group mb-3 row">
-                                        <label class="form-label col-3 col-form-label">Jam Pengecekan</label>
-                                        <div class="col">
-                                            <div class="form-check">
-                                                <input <?= timeCheck("08:00:00", $checkInspection) ?> <?php if (old('time') == "08:00:00") {
-                                                                                                            echo ("checked");
-                                                                                                        } ?> value="08:00:00" id="time" name="time" class="jamCheck form-check-input  <?= ($validation->hasError('time')) ? 'is-invalid' : ''; ?>" type="checkbox" onclick="jamCheck(this.value)">
-                                                <span class="form-check-label">08:00</span>
-                                            </div>
-                                            <div class="form-check">
-                                                <input <?= timeCheck("13:00:00", $checkInspection) ?> <?php if (old('time') == "13:00:00") {
-                                                                                                            echo ("checked");
-                                                                                                        } ?> value="13:00:00" id="time" name="time" class="jamCheck form-check-input  <?= ($validation->hasError('time')) ? 'is-invalid' : ''; ?>" type="checkbox" onclick="jamCheck(this.value)">
-                                                <span class="form-check-label">13:00</span>
-                                            </div>
-                                            <div class="form-check">
-                                                <input <?= timeCheck("19:00:00", $checkInspection) ?> <?php if (old('time') == "19:00:00") {
-                                                                                                            echo ("checked");
-                                                                                                        } ?> value="19:00:00" id="time" name="time" class="jamCheck form-check-input  <?= ($validation->hasError('time')) ? 'is-invalid' : ''; ?>" type="checkbox" onclick="jamCheck(this.value)">
-                                                <span class="form-check-label">19:00</span>
-                                            </div>
-                                            <?php if ($validation->hasError('time')) : ?>
-                                                <div style="font-size: 85.71428571%; color: #d63939;">
-                                                    <?= $validation->getError('time'); ?>
-                                                </div>
-                                            <?php endif; ?>
-                                        </div>
-                                        <script>
-                                            function jamCheck(b) {
-                                                var x = document.getElementsByClassName('jamCheck');
-                                                var i;
-
-                                                for (i = 0; i < x.length; i++) {
-                                                    if (x[i].value != b) x[i].checked = false;
-                                                }
-                                            }
-                                        </script>
-                                    </div> -->
+                                    
                                     <div class="form-group mb-3 row">
                                         <label class="form-label col-3 col-form-label">Date</label>
                                         <div class="col">
@@ -442,65 +405,35 @@
                                 <label class="form-label col-3 col-form-label">Location</label>
                                 <div class="col">
                                     <div class="input-icon mb-2">
-                                        <input id="location" name="location" class="form-control" value="<?= $location ?>" disabled>
+                                        <input class="form-control" value="<?= old('location') ?>" id="location" name="location" disabled>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">Jam Pengecekan</label>
-                                <div class="col">
-                                    <input type="text" hidden readonly id="timeValue" name="time" value="<?= old('time') ?>">
-                                    <div class="form-check">
-                                        <input disabled <?php if (old('time') == "08:00:00") {
-                                                            echo ("checked");
-                                                        } ?> value="08:00:00" id="time" name="time" class="jamCheck form-check-input  <?= ($validation->hasError('time')) ? 'is-invalid' : ''; ?>" type="checkbox" onclick="jamCheck(this.value)">
-                                        <span class="form-check-label">08:00</span>
-                                    </div>
-                                    <div class="form-check">
-                                        <input disabled <?php if (old('time') == "13:00:00") {
-                                                            echo ("checked");
-                                                        } ?> value="13:00:00" id="time" name="time" class="jamCheck form-check-input  <?= ($validation->hasError('time')) ? 'is-invalid' : ''; ?>" type="checkbox" onclick="jamCheck(this.value)">
-                                        <span class="form-check-label">13:00</span>
-                                    </div>
-                                    <div class="form-check">
-                                        <input disabled <?php if (old('time') == "19:00:00") {
-                                                            echo ("checked");
-                                                        } ?> value="19:00:00" id="time" name="time" class="jamCheck form-check-input  <?= ($validation->hasError('time')) ? 'is-invalid' : ''; ?>" type="checkbox" onclick="jamCheck(this.value)">
-                                        <span class="form-check-label">19:00</span>
-                                    </div>
-                                    <?php if ($validation->hasError('time')) : ?>
-                                        <div style="font-size: 85.71428571%; color: #d63939;">
-                                            <?= $validation->getError('time'); ?>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
-                                <script>
-                                    function jamCheck(b) {
-                                        var x = document.getElementsByClassName('jamCheck');
-                                        var i;
 
-                                        for (i = 0; i < x.length; i++) {
-                                            if (x[i].value != b) x[i].checked = false;
-                                        }
-                                    }
-                                </script>
-                            </div>
+                            <?php 
+                            if ($equipmentDefaultChecklist['checklist'] === $defaultChecklist['checklist']) {
+                                generateChecklistTime($defaultChecklist['checklist'], $checkInspection, ["08:00:00", "13:00:00", "19:00:00"], TRUE);
+                            } else {
+                                generateChecklistTime($defaultChecklist['checklist'], $checkInspection, null, TRUE);
+                            }
+                            ?>
+
+                        </div>
+                        <div class="col-lg-6">
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">Date</label>
                                 <div class="col">
                                     <div class="input-icon mb-2">
-                                        <input id="date" name="date" class="form-control" value="<?= date('d-m-Y'); ?>" readonly>
+                                        <input id="date" name="date" class="form-control" value="<?= old('date') ?>" disabled>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-lg-6">
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">Worker</label>
                                 <div class="col">
                                     <div class="input-icon mb-2">
-                                        <input id="worker" name="worker" class="form-control" value="<?= session()->get('initial') ?>" disabled>
+                                        <input id="worker" name="worker" class="form-control" value="<?= old('worker') ?>" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -508,19 +441,9 @@
                             <div class="form-group row">
                                 <label class="form-label col-3 col-form-label pt-0">Checklist</label>
                                 <div class="col">
-                                    <div class="form-floating">
-                                        <select disabled id="equipment_checklist" name="equipment_checklist" class="form-select <?= ($validation->hasError('equipment_checklist')) ? 'is-invalid' : ''; ?>" required>
-                                            <option <?= old('equipment_checklist') != null && old('equipment_checklist') == 'DAILY' ? 'selected' : ($defaultChecklist['checklist'] == 'DAILY' ? 'selected' : ''); ?> value="DAILY">DAILY</option>
-                                            <option <?= old('equipment_checklist') != null && old('equipment_checklist') == 'WEEKLY' ? 'selected' : ($defaultChecklist['checklist'] == 'WEEKLY' ? 'selected' : ''); ?> value="WEEKLY">WEEKLY</option>
-                                            <option <?= old('equipment_checklist') != null && old('equipment_checklist') == 'MONTHLY' ? 'selected' : ($defaultChecklist['checklist'] == 'MONTHLY' ? 'selected' : ''); ?> value="MONTHLY">MONTHLY</option>
-                                        </select>
-                                        <label for="floatingSelect">Select Checklist</label>
+                                    <div class="input-icon mb-2">
+                                        <input id="equipment_checklist" name="equipment_checklist" class="form-control" value="<?= old('equipment_checklist') ?>" disabled>
                                     </div>
-                                    <?php if ($validation->hasError('equipment_checklist')) : ?>
-                                        <div class="invalid-feedback">
-                                            <?= $validation->getError('equipment_checklist'); ?>
-                                        </div>
-                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -724,6 +647,10 @@
             $('#equipment_checklist').prop('disabled', false);
         });
 
+        $('#formEditData').on('submit', function() {
+            $('input').prop('disabled', false);
+        });
+
         oldData = <?= json_encode(session()->get('_ci_old_input')) ?>;
         if (oldData != null && oldData.post.idFormEdit != null) {
             $("#modal-editData").modal('show');
@@ -760,12 +687,13 @@
                 success: function(data) {
                     if (data.data != null) {
                         modalView.find("#idFormEdit").val(data.data.id);
-                        modalView.find("#time[value='" + data.data.time + "']").prop('checked', true);
+                        modalView.find("#equipment_checklist").val(data.data.equipment_checklist);
+                        // modalView.find("#time[value='" + data.data.time + "']").prop('checked', true);
                         modalView.find("#timeValue").val(data.data.time);
                         modalView.find("#date").val(data.data.date);
                         modalView.find("#worker").val(data.data.initial);
                         modalView.find("#location").val(data.data.storeName);
-                        modalView.find("#equipment_checklist option[value=" + data.data.equipment_checklist + "]").prop('selected', true);
+                        // modalView.find("#equipment_checklist option[value=" + data.data.equipment_checklist + "]").prop('selected', true);
                         modalView.find("#meter_pdam_floating_valve[value=" + data.data.meter_pdam_floating_valve + "]").prop('checked', true);
                         modalView.find("#meter_pdam_m3").val(data.data.meter_pdam_m3);
                         modalView.find("#meter_deep_well_m3").val(data.data.meter_deep_well_m3);

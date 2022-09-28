@@ -42,10 +42,14 @@
                                         <label class="form-label col-3 col-form-label">Location</label>
                                         <div class="col">
                                             <div class="input-icon mb-2">
-                                                <input class="form-control" value="<?= $location ?>" disabled>
+                                                <input id="location" class="form-control" value="<?= $location ?>" disabled>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <?php 
+                                generateChecklistTime($defaultChecklist['checklist'], $checkInspection);
+                            ?>
 
                                     <div class="form-group mb-3 row">
                                         <label class="form-label col-3 col-form-label">Date</label>
@@ -63,7 +67,7 @@
                                         <label class="form-label col-3 col-form-label">Worker</label>
                                         <div class="col">
                                             <div class="input-icon mb-2">
-                                                <input class="form-control" value="<?= session()->get('initial') ?>" disabled>
+                                                <input id="worker" class="form-control" value="<?= session()->get('initial') ?>" disabled>
                                             </div>
                                         </div>
                                     </div>
@@ -197,7 +201,7 @@
                                                                 <div class="input-icon mb-2">
                                                                     <input value="<?= old('tegangan_input'); ?>" class="form-control <?= ($validation->hasError('tegangan_input')) ? 'is-invalid' : ''; ?>" id="tegangan_input" name="tegangan_input">
                                                                     <?php if ($validation->hasError('tegangan_input')) : ?>
-                                                                        <div style="font-size: 85.71428571%; color: #d63939;">
+                                                                        <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
                                                                             <?= $validation->getError('tegangan_input'); ?>
                                                                         </div>
                                                                     <?php endif; ?>
@@ -218,7 +222,7 @@
                                                                 <div class="input-icon mb-2">
                                                                     <input value="<?= old('tegangan_output'); ?>" class="form-control <?= ($validation->hasError('tegangan_output')) ? 'is-invalid' : ''; ?>" id="tegangan_output" name="tegangan_output">
                                                                     <?php if ($validation->hasError('tegangan_output')) : ?>
-                                                                        <div style="font-size: 85.71428571%; color: #d63939;">
+                                                                        <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
                                                                             <?= $validation->getError('tegangan_output'); ?>
                                                                         </div>
                                                                     <?php endif; ?>
@@ -239,7 +243,7 @@
                                                                 <div class="input-icon mb-2">
                                                                     <input value="<?= old('tegangan_n_g'); ?>" class="form-control <?= ($validation->hasError('tegangan_n_g')) ? 'is-invalid' : ''; ?>" id="tegangan_n_g" name="tegangan_n_g">
                                                                     <?php if ($validation->hasError('tegangan_n_g')) : ?>
-                                                                        <div style="font-size: 85.71428571%; color: #d63939;">
+                                                                        <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
                                                                             <?= $validation->getError('tegangan_n_g'); ?>
                                                                         </div>
                                                                     <?php endif; ?>
@@ -266,7 +270,7 @@
                                                                 <div class="input-icon mb-2">
                                                                     <input value="<?= old('load_percent'); ?>" class="form-control <?= ($validation->hasError('load_percent')) ? 'is-invalid' : ''; ?>" id="load_percent" name="load_percent">
                                                                     <?php if ($validation->hasError('load_percent')) : ?>
-                                                                        <div style="font-size: 85.71428571%; color: #d63939;">
+                                                                        <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
                                                                             <?= $validation->getError('load_percent'); ?>
                                                                         </div>
                                                                     <?php endif; ?>
@@ -288,7 +292,7 @@
                                                                 <div class="input-icon mb-2">
                                                                     <input value="<?= old('load_amp'); ?>" class="form-control <?= ($validation->hasError('load_amp')) ? 'is-invalid' : ''; ?>" id="load_amp" name="load_amp">
                                                                     <?php if ($validation->hasError('load_amp')) : ?>
-                                                                        <div style="font-size: 85.71428571%; color: #d63939;">
+                                                                        <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
                                                                             <?= $validation->getError('load_amp'); ?>
                                                                         </div>
                                                                     <?php endif; ?>
@@ -321,7 +325,7 @@
                                                     Tidak
                                                 </div>
                                                 <?php if ($validation->hasError('inspeksi_kebersihan')) : ?>
-                                                    <div style="font-size: 85.71428571%; color: #d63939;">
+                                                    <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
                                                         <?= $validation->getError('inspeksi_kebersihan'); ?>
                                                     </div>
                                                 <?php endif; ?>
@@ -353,7 +357,7 @@
                                                     Tidak
                                                 </div>
                                                 <?php if ($validation->hasError('inspeksi_fan')) : ?>
-                                                    <div style="font-size: 85.71428571%; color: #d63939;">
+                                                    <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
                                                         <?= $validation->getError('inspeksi_fan'); ?>
                                                     </div>
                                                 <?php endif; ?>
@@ -379,7 +383,7 @@
                                                                 <div class="input-icon mb-2">
                                                                     <input value="<?= old('inspeksi_suhu'); ?>" class="form-control <?= ($validation->hasError('inspeksi_suhu')) ? 'is-invalid' : ''; ?>" id="inspeksi_suhu" name="inspeksi_suhu">
                                                                     <?php if ($validation->hasError('inspeksi_suhu')) : ?>
-                                                                        <div style="font-size: 85.71428571%; color: #d63939;">
+                                                                        <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
                                                                             <?= $validation->getError('inspeksi_suhu'); ?>
                                                                         </div>
                                                                     <?php endif; ?>
@@ -401,7 +405,7 @@
                                                                 <div class="input-icon mb-2">
                                                                     <input value="<?= old('inspeksi_alarm'); ?>" class="form-control <?= ($validation->hasError('inspeksi_alarm')) ? 'is-invalid' : ''; ?>" id="inspeksi_alarm" name="inspeksi_alarm">
                                                                     <?php if ($validation->hasError('inspeksi_alarm')) : ?>
-                                                                        <div style="font-size: 85.71428571%; color: #d63939;">
+                                                                        <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
                                                                             <?= $validation->getError('inspeksi_alarm'); ?>
                                                                         </div>
                                                                     <?php endif; ?>
@@ -591,34 +595,37 @@
             <div class="modal-body">
                 <form id="formEditUps" action="<?= base_url('ups/updateups') ?>" method="post">
                 <input value="<?= old('idFormEdit') ?>" type="text" hidden readonly id="idFormEdit" name="idFormEdit">
-                    <div class="row">
+                <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">Location</label>
                                 <div class="col">
                                     <div class="input-icon mb-2">
-                                        <input id="location" class="form-control" value="" disabled>
+                                        <input class="form-control" value="<?= old('location') ?>" id="location" name="location" disabled>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">Date</label>
-                                <div class="col">
-                                    <div class="input-icon mb-2">
-                                        <input id="date" name="date" class="form-control" value="<?= date('d-m-Y'); ?>" readonly>
-                                    </div>
-                                </div>
-                            </div>
-
+                            <?php 
+                                generateChecklistTime($defaultChecklist['checklist'], $checkInspection, null, TRUE);
+                            ?>
 
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label">Date</label>
+                                <div class="col">
+                                    <div class="input-icon mb-2">
+                                        <input id="date" name="date" class="form-control" value="<?= old('date') ?>" disabled>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">Worker</label>
                                 <div class="col">
                                     <div class="input-icon mb-2">
-                                        <input id="worker" class="form-control" value="" disabled>
+                                        <input id="worker" name="worker" class="form-control" value="<?= old('worker') ?>" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -626,19 +633,9 @@
                             <div class="form-group row">
                                 <label class="form-label col-3 col-form-label pt-0">Checklist</label>
                                 <div class="col">
-                                    <div class="form-floating">
-                                        <select disabled id="equipment_checklist" name="equipment_checklist" class="form-select <?= ($validation->hasError('equipment_checklist')) ? 'is-invalid' : ''; ?>" required>
-                                            <option <?= old('equipment_checklist') != null && old('equipment_checklist') == 'DAILY' ? 'selected' : ''; ?> value="DAILY">DAILY</option>
-                                            <option <?= old('equipment_checklist') != null && old('equipment_checklist') == 'WEEKLY' ? 'selected' : ''; ?> value="WEEKLY">WEEKLY</option>
-                                            <option <?= old('equipment_checklist') != null && old('equipment_checklist') == 'MONTHLY' ? 'selected' : ''; ?> value="MONTHLY">MONTHLY</option>
-                                        </select>
-                                        <label for="floatingSelect">Select Checklist</label>
+                                    <div class="input-icon mb-2">
+                                        <input id="equipment_checklist" name="equipment_checklist" class="form-control" value="<?= old('equipment_checklist') ?>" disabled>
                                     </div>
-                                    <?php if ($validation->hasError('equipment_checklist')) : ?>
-                                        <div class="invalid-feedback">
-                                            <?= $validation->getError('equipment_checklist'); ?>
-                                        </div>
-                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -752,7 +749,7 @@
                                                         <div class="input-icon mb-2">
                                                             <input value="<?= old('tegangan_input'); ?>" class="form-control <?= ($validation->hasError('tegangan_input')) ? 'is-invalid' : ''; ?>" id="tegangan_input" name="tegangan_input">
                                                             <?php if ($validation->hasError('tegangan_input')) : ?>
-                                                                <div style="font-size: 85.71428571%; color: #d63939;">
+                                                                <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
                                                                     <?= $validation->getError('tegangan_input'); ?>
                                                                 </div>
                                                             <?php endif; ?>
@@ -773,7 +770,7 @@
                                                         <div class="input-icon mb-2">
                                                             <input value="<?= old('tegangan_output'); ?>" class="form-control <?= ($validation->hasError('tegangan_output')) ? 'is-invalid' : ''; ?>" id="tegangan_output" name="tegangan_output">
                                                             <?php if ($validation->hasError('tegangan_output')) : ?>
-                                                                <div style="font-size: 85.71428571%; color: #d63939;">
+                                                                <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
                                                                     <?= $validation->getError('tegangan_output'); ?>
                                                                 </div>
                                                             <?php endif; ?>
@@ -794,7 +791,7 @@
                                                         <div class="input-icon mb-2">
                                                             <input value="<?= old('tegangan_n_g'); ?>" class="form-control <?= ($validation->hasError('tegangan_n_g')) ? 'is-invalid' : ''; ?>" id="tegangan_n_g" name="tegangan_n_g">
                                                             <?php if ($validation->hasError('tegangan_n_g')) : ?>
-                                                                <div style="font-size: 85.71428571%; color: #d63939;">
+                                                                <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
                                                                     <?= $validation->getError('tegangan_n_g'); ?>
                                                                 </div>
                                                             <?php endif; ?>
@@ -821,7 +818,7 @@
                                                         <div class="input-icon mb-2">
                                                             <input value="<?= old('load_percent'); ?>" class="form-control <?= ($validation->hasError('load_percent')) ? 'is-invalid' : ''; ?>" id="load_percent" name="load_percent">
                                                             <?php if ($validation->hasError('load_percent')) : ?>
-                                                                <div style="font-size: 85.71428571%; color: #d63939;">
+                                                                <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
                                                                     <?= $validation->getError('load_percent'); ?>
                                                                 </div>
                                                             <?php endif; ?>
@@ -843,7 +840,7 @@
                                                         <div class="input-icon mb-2">
                                                             <input value="<?= old('load_amp'); ?>" class="form-control <?= ($validation->hasError('load_amp')) ? 'is-invalid' : ''; ?>" id="load_amp" name="load_amp">
                                                             <?php if ($validation->hasError('load_amp')) : ?>
-                                                                <div style="font-size: 85.71428571%; color: #d63939;">
+                                                                <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
                                                                     <?= $validation->getError('load_amp'); ?>
                                                                 </div>
                                                             <?php endif; ?>
@@ -876,7 +873,7 @@
                                             Tidak
                                         </div>
                                         <?php if ($validation->hasError('inspeksi_kebersihan')) : ?>
-                                            <div style="font-size: 85.71428571%; color: #d63939;">
+                                            <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
                                                 <?= $validation->getError('inspeksi_kebersihan'); ?>
                                             </div>
                                         <?php endif; ?>
@@ -908,7 +905,7 @@
                                             Tidak
                                         </div>
                                         <?php if ($validation->hasError('inspeksi_fan')) : ?>
-                                            <div style="font-size: 85.71428571%; color: #d63939;">
+                                            <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
                                                 <?= $validation->getError('inspeksi_fan'); ?>
                                             </div>
                                         <?php endif; ?>
@@ -934,7 +931,7 @@
                                                         <div class="input-icon mb-2">
                                                             <input value="<?= old('inspeksi_suhu'); ?>" class="form-control <?= ($validation->hasError('inspeksi_suhu')) ? 'is-invalid' : ''; ?>" id="inspeksi_suhu" name="inspeksi_suhu">
                                                             <?php if ($validation->hasError('inspeksi_suhu')) : ?>
-                                                                <div style="font-size: 85.71428571%; color: #d63939;">
+                                                                <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
                                                                     <?= $validation->getError('inspeksi_suhu'); ?>
                                                                 </div>
                                                             <?php endif; ?>
@@ -956,7 +953,7 @@
                                                         <div class="input-icon mb-2">
                                                             <input value="<?= old('inspeksi_alarm'); ?>" class="form-control <?= ($validation->hasError('inspeksi_alarm')) ? 'is-invalid' : ''; ?>" id="inspeksi_alarm" name="inspeksi_alarm">
                                                             <?php if ($validation->hasError('inspeksi_alarm')) : ?>
-                                                                <div style="font-size: 85.71428571%; color: #d63939;">
+                                                                <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
                                                                     <?= $validation->getError('inspeksi_alarm'); ?>
                                                                 </div>
                                                             <?php endif; ?>
@@ -1031,10 +1028,14 @@
             $('#equipment_checklist').prop('disabled', false);
         });
 
+        $('#formEditUps').on('submit', function() {
+            $('input').prop('disabled', false);
+        });
+
         oldData = <?= json_encode(session()->get('_ci_old_input')) ?>;
         if (oldData != null && oldData.post.idFormEdit != null) {
-            $("#modal-editData").modal('show');
-            $("#formEditData").attr('action', site_url + "/ups/updateups/" + oldData.post.idFormEdit);
+            $("#modal-editUps").modal('show');
+            $("#formEditUps").attr('action', site_url + "/ups/updateups/" + oldData.post.idFormEdit);
 
             $("#formInputData").find("input:text, textarea").not("#location,#date,#worker").val("");
             $("#formInputData").find("input:checkbox").prop('checked', false);
@@ -1067,8 +1068,9 @@
                 success: function(data) {
                     if (data.data != null) {
                         modalView.find("#idFormEdit").val(data.data.id);
+                        modalView.find("#equipment_checklist").val(data.data.equipment_checklist);
                         // modalView.find("#time[value='" + data.data.time + "']").prop('checked', true);
-                        // modalView.find("#timeValue").val(data.data.time);
+                        modalView.find("#timeValue").val(data.data.time);
                         modalView.find("#date").val(data.data.date);
                         modalView.find("#worker").val(data.data.initial);
                         modalView.find("#location").val(data.data.storeName);
@@ -1088,7 +1090,7 @@
                         modalView.find("#inspeksi_alarm").val(data.data.inspeksi_alarm);
                         modalView.find("#inspeksi_kebersihan[value=" + data.data.inspeksi_kebersihan + "]").prop('checked', true);
                         modalView.find("#inspeksi_fan[value=" + data.data.inspeksi_fan + "]").prop('checked', true);
-                        modalView.find("#equipment_checklist option[value=" + data.data.equipment_checklist + "]").prop('selected', true);
+                        // modalView.find("#equipment_checklist option[value=" + data.data.equipment_checklist + "]").prop('selected', true);
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {

@@ -318,13 +318,24 @@ function timeCheck($time, $data)
 }
 
 // TODO lanjutin buat generate time checklist
-function generateChecklistTime($checklist, $checkInspection, $time = null)
+function generateChecklistTime($checklist, $checkInspection, $time = null, $isUpdate = FALSE)
 {
+    
+    $validation = \Config\Services::validation();
+
     if ($checklist == "MONTHLY") {
         return '';
     }
-
-    $validation = \Config\Services::validation();
+    if ($isUpdate) {
+        echo '<div class="form-group mb-3 row">
+        <label class="form-label col-3 col-form-label">Jam Pengecekan</label>
+        <div class="col">
+            <div class="input-icon mb-2">
+                <input id="timeValue" name="time" class="form-control" value="'. old('time') .'" disabled>
+            </div>
+        </div></div>';
+    return;
+    }
 
     echo '<div class="form-group mb-3 row">';
     echo '<label class="form-label col-3 col-form-label">Jam Pengecekan</label>';
@@ -348,7 +359,8 @@ function generateChecklistTime($checklist, $checkInspection, $time = null)
 
     foreach ($time as $key => $value) {
         echo '<div class="form-check">';
-        echo '<input ' . timeCheck($value, $checkInspection) . (old("time") == $value ? ' checked' : ' ');
+        echo ($isUpdate ? '<input type="text" hidden readonly id="timeValue" name="time" value="'. old('time') .'">' : '');
+        echo '<input '. ($isUpdate ? 'disabled' : '' ) . ' ' . timeCheck($value, $checkInspection) . (old("time") == $value ? ' checked' : ' ');
         echo ' value="'. $value .'" id="time" name="time" class="jamCheck form-check-input ' . ($validation->hasError("time") ? " is-invalid" : " ") . '"';
         echo 'type="checkbox" onclick="jamCheck(this.value)">
                 <span class="form-check-label">';
@@ -359,7 +371,7 @@ function generateChecklistTime($checklist, $checkInspection, $time = null)
     }
     
     if ($validation->hasError('time')) {
-        echo '<div style="font-size: 85.71428571%; color: #d63939;">' . 
+        echo '<div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">' . 
             $validation->getError('time') . 
         '</div>';
     }
