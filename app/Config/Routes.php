@@ -170,6 +170,182 @@ $routes->get('acahu', 'CEquipment::acahu');
 $routes->get('acsplitwallduckcassettevrv', 'CEquipment::acsplitwallduckcassettevrv');
 
 
+//? Store Equipment
+$routes->get('storeEquipment', 'CEquipment::index');
+$routes->post('storeEquipment', 'CEquipment::index');
+$routes->get('storeEquipment/saveStoreEquipment', 'CEquipment::saveStoreEquipment');
+$routes->post('storeEquipment/saveStoreEquipment', 'CEquipment::saveStoreEquipment');
+$routes->get('storeEquipment/editStoreEquipment', 'CEquipment::editStoreEquipment');
+$routes->post('storeEquipment/editStoreEquipment', 'CEquipment::editStoreEquipment');
+$routes->get('storeEquipment/deleteStoreEquipment', 'CEquipment::deleteStoreEquipment');
+$routes->post('storeEquipment/deleteStoreEquipment', 'CEquipment::deleteStoreEquipment');
+$routes->get('storeEquipment/ajaxDataStoreEquipment', 'CEquipment::ajaxDataStoreEquipment');
+$routes->post('storeEquipment/ajaxDataStoreEquipment', 'CEquipment::ajaxDataStoreEquipment');
+
+//? Equipment UPS
+$routes->get('ups', 'CEquipment::ups');
+$routes->get('ups/saveups', 'CEquipment::saveUps');
+$routes->post('ups/saveups', 'CEquipment::saveUps');
+$routes->get('ups/updateups/(:num)', 'CEquipment::updateUps/$1');
+$routes->post('ups/updateups/(:num)', 'CEquipment::updateUps/$1');
+$routes->get('ups/deleteups', 'CEquipment::deleteUps');
+$routes->post('ups/deleteups', 'CEquipment::deleteUps');
+$routes->get('ups/ajaxDataUps', 'CEquipment::ajaxDataUps');
+$routes->post('ups/ajaxDataUps', 'CEquipment::ajaxDataUps');
+
+//? Equipment Gas Station
+$routes->get('gasstation', 'CEquipment::gasStation');
+$routes->get('gasstation/savegasstation', 'CEquipment::saveGasStation');
+$routes->post('gasstation/savegasstation', 'CEquipment::saveGasStation');
+$routes->get('gasstation/updategasstation/(:num)', 'CEquipment::updateGasStation/$1');
+$routes->post('gasstation/updategasstation/(:num)', 'CEquipment::updateGasStation/$1');
+$routes->get('gasstation/deletegasstation', 'CEquipment::deleteGasStation');
+$routes->post('gasstation/deletegasstation', 'CEquipment::deleteGasStation');
+$routes->get('gasstation/ajaxDatagasstation', 'CEquipment::ajaxDataGasStation');
+$routes->post('gasstation/ajaxDatagasstation', 'CEquipment::ajaxDataGasStation');
+
+//? Equipment STP
+$routes->get('stp', 'CEquipment::stp');
+$routes->get('stp/saveStp', 'CEquipment::saveStp');
+$routes->post('stp/saveStp', 'CEquipment::saveStp');
+$routes->get('stp/updateStp/(:num)', 'CEquipment::updateStp/$1');
+$routes->post('stp/updateStp/(:num)', 'CEquipment::updateStp/$1');
+$routes->get('stp/deleteStp', 'CEquipment::deleteStp');
+$routes->post('stp/deleteStp', 'CEquipment::deleteStp');
+$routes->get('stp/ajaxDataStp', 'CEquipment::ajaxDataStp');
+$routes->post('stp/ajaxDataStp', 'CEquipment::ajaxDataStp');
+
+//? Equipment CCTV
+$routes->get('cctv', 'CEquipment::cctv');
+$routes->get('cctv/saveCctv', 'CEquipment::saveCctv');
+$routes->post('cctv/saveCctv', 'CEquipment::saveCctv');
+$routes->get('cctv/updateCctv/(:num)', 'CEquipment::updateCctv/$1');
+$routes->post('cctv/updateCctv/(:num)', 'CEquipment::updateCctv/$1');
+$routes->get('cctv/deleteCctv', 'CEquipment::deleteCctv');
+$routes->post('cctv/deleteCctv', 'CEquipment::deleteCctv');
+$routes->get('cctv/ajaxDataCctv', 'CEquipment::ajaxDataCctv');
+$routes->post('cctv/ajaxDataCctv', 'CEquipment::ajaxDataCctv');
+
+//? Equipment Plumbing
+$routes->get('plumbing', 'CEquipment::plumbing');
+$routes->get('plumbing/savePlumbing', 'CEquipment::savePlumbing');
+$routes->post('plumbing/savePlumbing', 'CEquipment::saveplumbing');
+$routes->get('plumbing/updatePlumbing/(:num)', 'CEquipment::updatePlumbing/$1');
+$routes->post('plumbing/updatePlumbing/(:num)', 'CEquipment::updatePlumbing/$1');
+$routes->get('plumbing/deletePlumbing', 'CEquipment::deletePlumbing');
+$routes->post('plumbing/deletePlumbing', 'CEquipment::deletePlumbing');
+$routes->get('plumbing/ajaxDataPlumbing', 'CEquipment::ajaxDataPlumbing');
+$routes->post('plumbing/ajaxDataPlumbing', 'CEquipment::ajaxDataPlumbing');
+
+//? Equipment Meter Sumber dan Air Olahan
+$routes->get('metersumber', 'CEquipment::metersumber');
+$routes->get('metersumber/saveMeterSumber', 'CEquipment::saveMeterSumber');
+$routes->post('metersumber/saveMeterSumber', 'CEquipment::saveMeterSumber');
+$routes->get('metersumber/updateMeterSumber/(:num)', 'CEquipment::updateMeterSumber/$1');
+$routes->post('metersumber/updateMeterSumber/(:num)', 'CEquipment::updateMeterSumber/$1');
+$routes->get('metersumber/deleteMeterSumber', 'CEquipment::deleteMeterSumber');
+$routes->post('metersumber/deleteMeterSumber', 'CEquipment::deleteMeterSumber');
+$routes->get('metersumber/ajaxDataMeterSumber', 'CEquipment::ajaxDataMeterSumber');
+$routes->post('metersumber/ajaxDataMeterSumber', 'CEquipment::ajaxDataMeterSumber');
+
+//? Equipment Dinding Partisi
+$routes->get('dindingpartisi', 'CEquipment::dindingpartisi');
+$routes->get('dindingpartisi/saveDindingPartisi', 'CEquipment::saveDindingPartisi');
+$routes->post('dindingpartisi/saveDindingPartisi', 'CEquipment::saveDindingPartisi');
+$routes->get('dindingpartisi/updateDindingPartisi/(:num)', 'CEquipment::updateDindingPartisi/$1');
+$routes->post('dindingpartisi/updateDindingPartisi/(:num)', 'CEquipment::updateDindingPartisi/$1');
+$routes->get('dindingpartisi/deleteDindingPartisi', 'CEquipment::deleteDindingPartisi');
+$routes->post('dindingpartisi/deleteDindingPartisi', 'CEquipment::deleteDindingPartisi');
+$routes->get('dindingpartisi/ajaxDataDindingPartisi', 'CEquipment::ajaxDataDindingPartisi');
+$routes->post('dindingpartisi/ajaxDataDindingPartisi', 'CEquipment::ajaxDataDindingPartisi');
+
+//? Equipment Pintu
+$routes->get('pintu', 'CEquipment::pintu');
+$routes->get('pintu/savePintu', 'CEquipment::savePintu');
+$routes->post('pintu/savePintu', 'CEquipment::savePintu');
+$routes->get('pintu/updatePintu/(:num)', 'CEquipment::updatePintu/$1');
+$routes->post('pintu/updatePintu/(:num)', 'CEquipment::updatePintu/$1');
+$routes->get('pintu/deletePintu', 'CEquipment::deletePintu');
+$routes->post('pintu/deletePintu', 'CEquipment::deletePintu');
+$routes->get('pintu/ajaxDataPintu', 'CEquipment::ajaxDataPintu');
+$routes->post('pintu/ajaxDataPintu', 'CEquipment::ajaxDataPintu');
+
+//? Equipment Folding Gate
+$routes->get('foldinggate', 'CEquipment::foldinggate');
+$routes->get('foldinggate/saveFoldingGate', 'CEquipment::saveFoldingGate');
+$routes->post('foldinggate/saveFoldingGate', 'CEquipment::saveFoldingGate');
+$routes->get('foldinggate/updateFoldingGate/(:num)', 'CEquipment::updateFoldingGate/$1');
+$routes->post('foldinggate/updateFoldingGate/(:num)', 'CEquipment::updateFoldingGate/$1');
+$routes->get('foldinggate/deleteFoldingGate', 'CEquipment::deleteFoldingGate');
+$routes->post('foldinggate/deleteFoldingGate', 'CEquipment::deleteFoldingGate');
+$routes->get('foldinggate/ajaxDataFoldingGate', 'CEquipment::ajaxDataFoldingGate');
+$routes->post('foldinggate/ajaxDataFoldingGate', 'CEquipment::ajaxDataFoldingGate');
+
+//? Equipment Rolling Door
+$routes->get('rollingdoor', 'CEquipment::rollingdoor');
+$routes->get('rollingdoor/saveRollingDoor', 'CEquipment::saveRollingDoor');
+$routes->post('rollingdoor/saveRollingDoor', 'CEquipment::saveRollingDoor');
+$routes->get('rollingdoor/updateRollingDoor/(:num)', 'CEquipment::updateRollingDoor/$1');
+$routes->post('rollingdoor/updateRollingDoor/(:num)', 'CEquipment::updateRollingDoor/$1');
+$routes->get('rollingdoor/deleteRollingDoor', 'CEquipment::deleteRollingDoor');
+$routes->post('rollingdoor/deleteRollingDoor', 'CEquipment::deleteRollingDoor');
+$routes->get('rollingdoor/ajaxDataRollingDoor', 'CEquipment::ajaxDataRollingDoor');
+$routes->post('rollingdoor/ajaxDataRollingDoor', 'CEquipment::ajaxDataRollingDoor');
+
+//? Equipment Fire Fighting
+$routes->get('firefighting', 'CEquipment::firefighting');
+$routes->get('firefighting/saveFireFighting', 'CEquipment::saveFireFighting');
+$routes->post('firefighting/saveFireFighting', 'CEquipment::saveFireFighting');
+$routes->get('firefighting/updateFireFighting/(:num)', 'CEquipment::updateFireFighting/$1');
+$routes->post('firefighting/updateFireFighting/(:num)', 'CEquipment::updateFireFighting/$1');
+$routes->get('firefighting/deleteFireFighting', 'CEquipment::deleteFireFighting');
+$routes->post('firefighting/deleteFireFighting', 'CEquipment::deleteFireFighting');
+$routes->get('firefighting/ajaxDataFireFighting', 'CEquipment::ajaxDataFireFighting');
+$routes->post('firefighting/ajaxDataFireFighting', 'CEquipment::ajaxDataFireFighting');
+
+//? Equipment Telephone & PABX
+$routes->get('telppabx', 'CEquipment::telppabx');
+$routes->get('telppabx/saveTelpPabx', 'CEquipment::saveTelpPabx');
+$routes->post('telppabx/saveTelpPabx', 'CEquipment::saveTelpPabx');
+$routes->get('telppabx/updateTelpPabx/(:num)', 'CEquipment::updateTelpPabx/$1');
+$routes->post('telppabx/updateTelpPabx/(:num)', 'CEquipment::updateTelpPabx/$1');
+$routes->get('telppabx/deleteTelpPabx', 'CEquipment::deleteTelpPabx');
+$routes->post('telppabx/deleteTelpPabx', 'CEquipment::deleteTelpPabx');
+$routes->get('telppabx/ajaxDataTelpPabx', 'CEquipment::ajaxDataTelpPabx');
+$routes->post('telppabx/ajaxDataTelpPabx', 'CEquipment::ajaxDataTelpPabx');
+
+//? Equipment Housekeeping
+$routes->get('housekeeping', 'CEquipment::housekeeping');
+$routes->get('housekeeping/saveHousekeeping', 'CEquipment::saveHousekeeping');
+$routes->post('housekeeping/saveHousekeeping', 'CEquipment::saveHousekeeping');
+$routes->get('housekeeping/updateHousekeeping/(:num)', 'CEquipment::updateHousekeeping/$1');
+$routes->post('housekeeping/updateHousekeeping/(:num)', 'CEquipment::updateHousekeeping/$1');
+$routes->get('housekeeping/deleteHousekeeping', 'CEquipment::deleteHousekeeping');
+$routes->post('housekeeping/deleteHousekeeping', 'CEquipment::deleteHousekeeping');
+$routes->get('housekeeping/ajaxDataHousekeeping', 'CEquipment::ajaxDataHousekeeping');
+$routes->post('housekeeping/ajaxDataHousekeeping', 'CEquipment::ajaxDataHousekeeping');
+
+//? Equipment Gondola
+$routes->get('gondola', 'CEquipment::gondola');
+$routes->get('gondola/saveGondola', 'CEquipment::saveGondola');
+$routes->post('gondola/saveGondola', 'CEquipment::saveGondola');
+$routes->get('gondola/updateGondola/(:num)', 'CEquipment::updateGondola/$1');
+$routes->post('gondola/updateGondola/(:num)', 'CEquipment::updateGondola/$1');
+$routes->get('gondola/deleteGondola', 'CEquipment::deleteGondola');
+$routes->post('gondola/deleteGondola', 'CEquipment::deleteGondola');
+$routes->get('gondola/ajaxDataGondola', 'CEquipment::ajaxDataGondola');
+$routes->post('gondola/ajaxDataGondola', 'CEquipment::ajaxDataGondola');
+
+//? Equipment Sound System
+$routes->get('soundsystem', 'CEquipment::soundsystem');
+$routes->get('soundsystem/saveSoundSystem', 'CEquipment::saveSoundSystem');
+$routes->post('soundsystem/saveSoundSystem', 'CEquipment::saveSoundSystem');
+$routes->get('soundsystem/updateSoundSystem/(:num)', 'CEquipment::updateSoundSystem/$1');
+$routes->post('soundsystem/updateSoundSystem/(:num)', 'CEquipment::updateSoundSystem/$1');
+$routes->get('soundsystem/deleteSoundSystem', 'CEquipment::deleteSoundSystem');
+$routes->post('soundsystem/deleteSoundSystem', 'CEquipment::deleteSoundSystem');
+$routes->get('soundsystem/ajaxDataSoundSystem', 'CEquipment::ajaxDataSoundSystem');
+$routes->post('soundsystem/ajaxDataSoundSystem', 'CEquipment::ajaxDataSoundSystem');
 
 
 
