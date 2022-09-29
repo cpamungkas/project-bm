@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\MEquipment;
 use CodeIgniter\Controller;
 use App\Models\MUser;
 use App\Models\MStore;
@@ -13,6 +14,7 @@ class CWorker extends BaseController
     {
         $this->mUser = new MUser();
         $this->mStore = new MStore();
+        $this->mEquipment = new MEquipment();
         // $this->request = new Request();
         helper(['form', 'url']);
     }
@@ -45,6 +47,9 @@ class CWorker extends BaseController
             $data['totaloperational'] = 0; //$this->mStore->getTotalOperational();
             $data['totalcomplaint'] = 0; //$this->mStore->getTotalComplaint();
             $data['totalreport'] = 0; //$this->mStore->getTotalReport();
+
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            
             return view('vWorker', $data);
         }
     }

@@ -42,27 +42,19 @@
                                         <label class="form-label col-3 col-form-label">Location</label>
                                         <div class="col">
                                             <div class="input-icon mb-2">
-                                                <input class="form-control" value="<?= $location ?>" disabled>
+                                                <input id="location" class="form-control" value="<?= $location ?>" disabled>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group mb-3 row">
-                                        <label class="form-label col-3 col-form-label">Jam Pengecekan</label>
-                                        <div class="col">
-                                            <!-- TODO hanya bisa pilih 1x per hari -->
-                                            <div class="form-check">
-                                                <input <?= timeCheck("10:00:00", $checkInspection)?> <?php if (old('time') == "10:00:00") {
-                                                            echo ("checked");
-                                                        } ?> value="10:00:00" id="time" name="time" class="jamCheck form-check-input  <?= ($validation->hasError('time')) ? 'is-invalid' : ''; ?>" type="checkbox">
-                                                <span class="form-check-label">10:00</span>
-                                            </div>
-                                            <?php if ($validation->hasError('time')) : ?>
-                                                <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                    <?= $validation->getError('time'); ?>
-                                                </div>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
+                                    
+                                    <?php 
+                                    if ($equipmentDefaultChecklist['checklist'] === $defaultChecklist['checklist']) {
+                                        generateChecklistTime($defaultChecklist['checklist'], $checkInspection, ["10:00:00"]);
+                                    } else {
+                                        generateChecklistTime($defaultChecklist['checklist'], $checkInspection);
+                                    }
+                                    ?>
+
                                     <div class="form-group mb-3 row">
                                         <label class="form-label col-3 col-form-label">Date</label>
                                         <div class="col">
@@ -78,7 +70,7 @@
                                         <label class="form-label col-3 col-form-label">Worker</label>
                                         <div class="col">
                                             <div class="input-icon mb-2">
-                                                <input class="form-control" value="<?= session()->get('initial') ?>" disabled>
+                                                <input id="worker" class="form-control" value="<?= session()->get('initial') ?>" disabled>
                                             </div>
                                         </div>
                                     </div>
@@ -156,7 +148,7 @@
                                                         <span class="form-check-label">Rusak</span>
                                                     </div>
                                                     <?php if ($validation->hasError("hdd_internal$i")) : ?>
-                                                        <div style="font-size: 85.71428571%; color: #d63939;">
+                                                        <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
                                                             <?= $validation->getError("hdd_internal$i"); ?>
                                                         </div>
                                                     <?php endif; ?>
@@ -188,7 +180,7 @@
                                                         <span class="form-check-label">Rusak</span>
                                                     </div>
                                                     <?php if ($validation->hasError("usb_extender$i")) : ?>
-                                                        <div style="font-size: 85.71428571%; color: #d63939;">
+                                                        <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
                                                             <?= $validation->getError("usb_extender$i"); ?>
                                                         </div>
                                                     <?php endif; ?>
@@ -220,7 +212,7 @@
                                                         <span class="form-check-label">Rusak</span>
                                                     </div>
                                                     <?php if ($validation->hasError("hdmi_vga_ext$i")) : ?>
-                                                        <div style="font-size: 85.71428571%; color: #d63939;">
+                                                        <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
                                                             <?= $validation->getError("hdmi_vga_ext$i"); ?>
                                                         </div>
                                                     <?php endif; ?>
@@ -480,6 +472,31 @@
                     </div>
                 </div>
             </div>
+            <?php if(count($getStoreEquipmentByStore) > 1): ?>
+                <div class="col-12">
+                    <a
+                        href="<?php
+                            $i = 1;
+                            foreach($getStoreEquipmentByStore as $s) {
+                                if($s['idEquipment'] > $defaultChecklist['idEq']) {
+                                    echo($s['url']);
+                                    break;
+                                }
+                                
+                                if($i == count($getStoreEquipmentByStore)){
+                                    echo($getStoreEquipmentByStore[0]['url']);
+                                    break;
+                                }
+
+                                $i++;
+                            }
+                        ?>"
+                        class="btn btn-outline-primary ms-auto"
+                    >
+                        Next
+                    </a>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>
@@ -494,75 +511,57 @@
             </div>
             <div class="modal-body">
                 <form id="formEditData" action="<?= base_url('') ?>" method="post">
-                    <input type="text" hidden readonly id="idFormEdit" name="idFormEdit">
+                    <input value="<?= old('idFormEdit') ?>" type="text" hidden readonly id="idFormEdit" name="idFormEdit">
                     <div class="elem-dvr">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">Location</label>
-                                    <div class="col">
-                                        <div class="input-icon mb-2">
-                                            <input id="location" name="location" class="form-control" value="<?= $location ?>" disabled>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">Jam Pengecekan</label>
-                                    <div class="col">
-                                        <div class="form-check">
-                                        <input type="text" hidden readonly id="timeValue" name="time" value="<?= old('time') ?>">
-                                            <input disabled <?php if (old('time') == "10:00:00") {
-                                                        echo ("checked");
-                                                    } ?> value="10:00:00" id="time" name="time" class="jamCheck form-check-input  <?= ($validation->hasError('time')) ? 'is-invalid' : ''; ?>" type="checkbox">
-                                            <span class="form-check-label">10:00</span>
-                                        </div>
-                                        <?php if ($validation->hasError('time')) : ?>
-                                            <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                <?= $validation->getError('time'); ?>
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">Date</label>
-                                    <div class="col">
-                                        <div class="input-icon mb-2">
-                                            <input id="date" name="date" class="form-control" value="<?= date('d-m-Y'); ?>" readonly>
-                                        </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label">Location</label>
+                                <div class="col">
+                                    <div class="input-icon mb-2">
+                                        <input class="form-control" value="<?= old('location') ?>" id="location" name="location" disabled>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-lg-6">
-                                <div class="form-group mb-3 row">
-                                    <label class="form-label col-3 col-form-label">Worker</label>
-                                    <div class="col">
-                                        <div class="input-icon mb-2">
-                                            <input id="worker" name="worker" class="form-control" value="<?= session()->get('initial') ?>" disabled>
-                                        </div>
+                            <?php 
+                            if ($equipmentDefaultChecklist['checklist'] === $defaultChecklist['checklist']) {
+                                generateChecklistTime($defaultChecklist['checklist'], $checkInspection, ["10:00:00"], TRUE);
+                            } else {
+                                generateChecklistTime($defaultChecklist['checklist'], $checkInspection, null, TRUE);
+                            }
+                            ?>
+
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label">Date</label>
+                                <div class="col">
+                                    <div class="input-icon mb-2">
+                                        <input id="date" name="date" class="form-control" value="<?= old('date') ?>" disabled>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="form-group row">
-                                    <label class="form-label col-3 col-form-label pt-0">Checklist</label>
-                                    <div class="col">
-                                        <div class="form-floating">
-                                            <select disabled id="equipment_checklist" name="equipment_checklist" class="form-select <?= ($validation->hasError('equipment_checklist')) ? 'is-invalid' : ''; ?>" required>
-                                                <option <?= old('equipment_checklist') != null && old('equipment_checklist') == 'DAILY' ? 'selected' : ($defaultChecklist['checklist'] == 'DAILY' ? 'selected' : ''); ?> value="DAILY">DAILY</option>
-                                                <option <?= old('equipment_checklist') != null && old('equipment_checklist') == 'WEEKLY' ? 'selected' : ($defaultChecklist['checklist'] == 'WEEKLY' ? 'selected' : ''); ?> value="WEEKLY">WEEKLY</option>
-                                                <option <?= old('equipment_checklist') != null && old('equipment_checklist') == 'MONTHLY' ? 'selected' : ($defaultChecklist['checklist'] == 'MONTHLY' ? 'selected' : ''); ?> value="MONTHLY">MONTHLY</option>
-                                            </select>
-                                            <label for="floatingSelect">Select Checklist</label>
-                                        </div>
-                                        <?php if ($validation->hasError('equipment_checklist')) : ?>
-                                            <div class="invalid-feedback">
-                                                <?= $validation->getError('equipment_checklist'); ?>
-                                            </div>
-                                        <?php endif; ?>
+                            <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label">Worker</label>
+                                <div class="col">
+                                    <div class="input-icon mb-2">
+                                        <input id="worker" name="worker" class="form-control" value="<?= old('worker') ?>" disabled>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="form-label col-3 col-form-label pt-0">Checklist</label>
+                                <div class="col">
+                                    <div class="input-icon mb-2">
+                                        <input id="equipment_checklist" name="equipment_checklist" class="form-control" value="<?= old('equipment_checklist') ?>" disabled>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
                         <div style="width: 100%; border-top: 1px solid lightgrey; height: 0; margin-top: 20px; margin-bottom: 20px;"></div>
 
@@ -584,7 +583,7 @@
                                             <span class="form-check-label">Rusak</span>
                                         </div>
                                         <?php if ($validation->hasError("hdd_internal")) : ?>
-                                            <div style="font-size: 85.71428571%; color: #d63939;">
+                                            <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
                                                 <?= $validation->getError("hdd_internal"); ?>
                                             </div>
                                         <?php endif; ?>
@@ -823,17 +822,24 @@
     var site_url = `<?= base_url() ?>`;
     $(document).ready(function() {
 
-        if ($("#formInputData .jamCheck").not(":disabled").length == 0) {
+        let validateChecklist = `<?= $defaultChecklist['checklist'] ?>`;
+        let dataChecklist = `<?= isset($checkInspection['data']) ? json_encode($checkInspection['data']) : '' ?>`;
+
+        if (($("#formInputData .jamCheck").not(":disabled").length == 0 && validateChecklist != "MONTHLY") || (validateChecklist == "MONTHLY" && dataChecklist != '')) {
             $("#formInputData").find("input,button,select,textarea").prop('disabled', true);
             Swal.fire(
                 'Warning!',
-                'Data for the <?= strtolower($defaultChecklist['checklist'])?> inspection already exists or the timestamp has passed! Input form will be disabled',
+                'Data for the <?= strtolower($defaultChecklist['checklist']) ?> inspection already exists or the timestamp has passed! Input form will be disabled',
                 'warning'
             )
         }
 
         $('#formInputData').on('submit', function() {
             $('#equipment_checklist').prop('disabled', false);
+        });
+
+        $('#formEditData').on('submit', function() {
+            $('input').prop('disabled', false);
         });
 
         $("#btnSubmitFormInput").click(function(e) {
@@ -847,10 +853,6 @@
             }
         });
 
-        $('#formInputData').on('submit', function() {
-            $('#equipment_checklist').prop('disabled', false);
-        });
-
         $("#formInputData .dvrCheck").change(function() {
             var elemFormInputData = $("#formInputData .elem-" + this.id)
             var bool = elemFormInputData.prop("hidden");
@@ -862,7 +864,7 @@
             $("#modal-editData").modal('show');
             $("#formEditData").attr('action', site_url + "/cctv/updateCctv/" + oldData.post.idFormEdit);
 
-            $("#formInputData").find("input:text").val("");
+            $("#formInputData").find("input:text, textarea").not("#location,#date,#worker").val("");
             $("#formInputData").find("input:checkbox").prop('checked', false);
             $("#formInputData").find(".is-invalid").removeClass("is-invalid");
             $("#formInputData").find(".invalid-feedback,.hasil-validasi").hide();
@@ -894,12 +896,13 @@
                     if (data.data != null) {
                         modalView.find("#modalTitle").append(' ' + data.data.dvr);
                         modalView.find("#idFormEdit").val(data.data.id);
-                        modalView.find("#time[value='" + data.data.time + "']").prop('checked', true);
+                        modalView.find("#equipment_checklist").val(data.data.equipment_checklist);
+                        // modalView.find("#time[value='" + data.data.time + "']").prop('checked', true);
                         modalView.find("#timeValue").val(data.data.time);
                         modalView.find("#date").val(data.data.date);
                         modalView.find("#worker").val(data.data.initial);
                         modalView.find("#location").val(data.data.storeName);
-                        modalView.find("#equipment_checklist option[value=" + data.data.equipment_checklist + "]").prop('selected', true);
+                        // modalView.find("#equipment_checklist option[value=" + data.data.equipment_checklist + "]").prop('selected', true);
                         modalView.find("#hdd_internal[value=" + data.data.hdd_internal + "]").prop('checked', true);
                         modalView.find("#usb_extender[value=" + data.data.usb_extender + "]").prop('checked', true);
                         modalView.find("#hdmi_vga_ext[value=" + data.data.hdmi_vga_ext + "]").prop('checked', true);

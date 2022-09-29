@@ -4,11 +4,21 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\MCctv;
+use App\Models\MDindingPartisi;
 use App\Models\MEquipment;
+use App\Models\MFireFighting;
+use App\Models\MFoldingGate;
 use App\Models\MGasStation;
+use App\Models\MGondola;
+use App\Models\MHousekeeping;
+use App\Models\MMeterSumber;
+use App\Models\MPintu;
 use App\Models\MPlumbing;
+use App\Models\MRollingDoor;
+use App\Models\MSoundSystem;
 use App\Models\MStore;
 use App\Models\MStp;
+use App\Models\MTelephonePabx;
 use App\Models\MUser;
 use App\Models\MUps;
 
@@ -18,12 +28,22 @@ class CEquipment extends BaseController
     {
         $this->mUser = new MUser();
         $this->mStore = new MStore();
-        $this->mEquip = new MEquipment();
+        $this->mEquipment = new MEquipment();
         $this->mUps = new MUps();
         $this->mGas = new MGasStation();
         $this->mStp = new MStp();
         $this->mCctv = new MCctv();
         $this->mPlumbing = new MPlumbing();
+        $this->mMeterSumber = new MMeterSumber();
+        $this->mDinding = new MDindingPartisi();
+        $this->mPintu = new MPintu();
+        $this->mGate = new MFoldingGate();
+        $this->mRollDoor = new MRollingDoor();
+        $this->mFireFight = new MFireFighting();
+        $this->mTelpPabx = new MTelephonePabx();
+        $this->mHouseKeep = new MHousekeeping();
+        $this->mGondola = new MGondola();
+        $this->mSoundSystem = new MSoundSystem();
         helper(['form', 'url', 'functionHelper']);
     }
 
@@ -33,7 +53,7 @@ class CEquipment extends BaseController
         if (!session()->get('isLoggedIn')) {
             return redirect()->to('/');
         } else {
-            $data['title'] = 'Schedule | B.M Apps &copy; Gramedia ' . date('Y');
+            $data['title'] = 'Store Equipment | B.M Apps &copy; Gramedia ' . date('Y');
             $data['isLoggedIn'] = session()->get('isLoggedIn');
             $data['id'] = session()->get('id');
             $data['username'] = session()->get('username');
@@ -49,12 +69,15 @@ class CEquipment extends BaseController
             $data['status_deleted'] = session()->get('status_deleted');
             $data['validation'] = \Config\Services::validation();
 
-            $data['getStore'] = $this->mEquip->getStoreDropdown();
-            $data['getDataTableStoreEquip'] = $this->mEquip->getDataTableStoreEquip();
+            $data['getStore'] = $this->mEquipment->getStoreDropdown();
+            $data['getAllStore'] = $this->mEquipment->getStoreDropdown(FALSE);
+            $data['getDataTableStoreEquip'] = $this->mEquipment->getDataTableStoreEquip();
 
-            $equipment = $this->mEquip->getEquipment();
+            $equipment = $this->mEquipment->getEquipment();
             $data['getEquipment'] = $equipment;
             $data['equipBox'] = array_chunk($equipment, 11);
+
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
 
             return view('vStoreEquipment', $data);
         }
@@ -65,7 +88,7 @@ class CEquipment extends BaseController
         if (!session()->get('isLoggedIn')) {
             return redirect()->to('/');
         } else {
-            $equipment = $this->mEquip->getEquipment();
+            $equipment = $this->mEquipment->getEquipment();
             $rules = [
                 'storeName' => [
                     'rules' => 'required|numeric',
@@ -108,7 +131,7 @@ class CEquipment extends BaseController
                 }
             }
 
-            $input = $this->mEquip->inputStoreEquipSetup($dataInput);
+            $input = $this->mEquipment->inputStoreEquipSetup($dataInput);
 
             if ($input) {
                 session()->setFlashdata('success', 'Store Equipment has been added');
@@ -125,7 +148,7 @@ class CEquipment extends BaseController
         if (!session()->get('isLoggedIn')) {
             return redirect()->to('/');
         } else {
-            $equipment = $this->mEquip->getEquipment();
+            $equipment = $this->mEquipment->getEquipment();
             $rules = [
                 'storeName' => [
                     'rules' => 'required|numeric',
@@ -168,7 +191,7 @@ class CEquipment extends BaseController
                 }
             }
 
-            $edit = $this->mEquip->editStoreEquipSetup($dataEdit, $post['storeName']);
+            $edit = $this->mEquipment->editStoreEquipSetup($dataEdit, $post['storeName']);
 
             if ($edit) {
                 session()->setFlashdata('success', 'Store Equipment has been edited');
@@ -182,7 +205,7 @@ class CEquipment extends BaseController
 
     public function deleteStoreEquipment()
     {
-        $delete = $this->mEquip->deleteStoreEquipment($this->request->getPost('idStore'));
+        $delete = $this->mEquipment->deleteStoreEquipment($this->request->getPost('idStore'));
         if ($delete) {
             $response = [
                 'success' => true,
@@ -199,8 +222,8 @@ class CEquipment extends BaseController
 
     public function ajaxDataStoreEquipment()
     {
-        $equip = $this->mEquip->getEquipment();
-        $data = $this->mEquip->ajaxDataStoreEquipment($this->request->getPost('idStore'));
+        $equip = $this->mEquipment->getEquipment();
+        $data = $this->mEquipment->ajaxDataStoreEquipment($this->request->getPost('idStore'));
         if ($data) {
             $response = [
                 'success' => true,
@@ -238,11 +261,19 @@ class CEquipment extends BaseController
             $data['validation'] = \Config\Services::validation();
 
             $data['getDataTableUps'] = $this->mUps->getDataTableUps();
-            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_ups");
-            $data['checkInspection'] = $this->mEquip->checkInspection('tb_ups', $checklist['checklist']);
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_ups");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_ups', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
 
-            return view('vUps', $data);
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 18);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vUps', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
         }
     }
 
@@ -253,6 +284,14 @@ class CEquipment extends BaseController
             return redirect()->to('/');
         } else {
             $rules = [
+                'time' => [
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
+                    'label' => 'Jam Pengecekan',
+                ],
                 'equipment_checklist' => [
                     'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
                     'label' => 'Checklist',
@@ -348,6 +387,7 @@ class CEquipment extends BaseController
 
             $dataInput = [
                 'location' => session()->get('idstore'),
+                'time' => $this->request->getPost('time'),
                 'date' => date('Y-m-d'),
                 'worker' => session()->get('id'),
                 'equipment_checklist' => $this->request->getPost('equipment_checklist'),
@@ -387,10 +427,6 @@ class CEquipment extends BaseController
             return redirect()->to('/');
         } else {
             $rules = [
-                'equipment_checklist' => [
-                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
-                    'label' => 'Checklist',
-                ],
                 'merk' => [
                     'rules' => 'required|max_length[25]',
                     'label' => 'Merk',
@@ -482,7 +518,6 @@ class CEquipment extends BaseController
 
             $dataUpdate = [
                 'id' => $id,
-                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
                 'merk' => $this->request->getPost('merk'),
                 'type' => $this->request->getPost('type'),
                 'serial_number' => $this->request->getPost('serial_number'),
@@ -569,11 +604,20 @@ class CEquipment extends BaseController
             $data['validation'] = \Config\Services::validation();
 
             $data['getDataTableGasStation'] = $this->mGas->getDataTableGasStation();
-            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_gasstation");
-            $data['checkInspection'] = $this->mEquip->checkInspection('tb_gas_station', $checklist['checklist']);
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_gasstation");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_gas_station', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
+            $data['equipmentDefaultChecklist'] = $this->mEquipment->equipmentDefaultChecklist("equipment_gasstation");
 
-            return view('vGasStation', $data);
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 32);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vGasStation', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
         }
     }
 
@@ -584,7 +628,11 @@ class CEquipment extends BaseController
         } else {
             $rules = [
                 'time' => [
-                    'rules' => 'required|in_list[08:00:00,13:00:00,19:00:00]',
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
                     'label' => 'Jam Pengecekan',
                 ],
                 'equipment_checklist' => [
@@ -652,10 +700,6 @@ class CEquipment extends BaseController
             return redirect()->to('/');
         } else {
             $rules = [
-                'equipment_checklist' => [
-                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
-                    'label' => 'Checklist',
-                ],
                 'pressure' => [
                     'rules' => 'required|max_length[6]|regex_match[^\d+(\.\d{1,2})?$]',
                     'errors' => [
@@ -688,7 +732,6 @@ class CEquipment extends BaseController
 
             $dataUpdate = [
                 'id' => $id,
-                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
                 'pressure' => $this->request->getPost('pressure'),
                 'selenoid_valve' => $this->request->getPost('selenoid_valve'),
                 'detector' => $this->request->getPost('detector'),
@@ -764,11 +807,20 @@ class CEquipment extends BaseController
             $data['validation'] = \Config\Services::validation();
 
             $data['getDataTableStp'] = $this->mStp->getDataTableStp();
-            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_stp");
-            $data['checkInspection'] = $this->mEquip->checkInspection('tb_stp', $checklist['checklist']);
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_stp");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_stp', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
+            $data['equipmentDefaultChecklist'] = $this->mEquipment->equipmentDefaultChecklist("equipment_stp");
 
-            return view('vStp', $data);
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 19);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vStp', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
         }
     }
 
@@ -779,7 +831,11 @@ class CEquipment extends BaseController
         } else {
             $rules = [
                 'time' => [
-                    'rules' => 'required|in_list[13:00:00]',
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
                     'label' => 'Jam Pengecekan',
                 ],
                 'equipment_checklist' => [
@@ -912,10 +968,6 @@ class CEquipment extends BaseController
             return redirect()->to('/');
         } else {
             $rules = [
-                'equipment_checklist' => [
-                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
-                    'label' => 'Checklist',
-                ],
                 'blower1' => [
                     'rules' => 'required|in_list[0,1]',
                     'label' => 'Blower 1',
@@ -1000,7 +1052,6 @@ class CEquipment extends BaseController
 
             $dataUpdate = [
                 'id' => $id,
-                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
                 'blower1' => $this->request->getPost('blower1'),
                 'blower2' => $this->request->getPost('blower2'),
                 'transfer_pump1' => $this->request->getPost('transfer_pump1'),
@@ -1089,11 +1140,20 @@ class CEquipment extends BaseController
             $data['validation'] = \Config\Services::validation();
 
             $data['getDataTableCctv'] = $this->mCctv->getDataTableCctv();
-            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_cctv");
-            $data['checkInspection'] = $this->mEquip->checkInspection('tb_cctv', $checklist['checklist']);
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_cctv");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_cctv', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
+            $data['equipmentDefaultChecklist'] = $this->mEquipment->equipmentDefaultChecklist("equipment_cctv");
 
-            return view('vCctv', $data);
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 20);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vCctv', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
         }
     }
 
@@ -1104,7 +1164,11 @@ class CEquipment extends BaseController
         } else {
             $rules = [
                 'time' => [
-                    'rules' => 'required|in_list[10:00:00]',
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
                     'label' => 'Jam Pengecekan',
                 ],
                 'equipment_checklist' => [
@@ -1327,13 +1391,21 @@ class CEquipment extends BaseController
             $data['status_deleted'] = session()->get('status_deleted');
             $data['validation'] = \Config\Services::validation();
 
-            // TODO lanjutin cek data yg udh diisi per default checklist
             $data['getDataTablePlumbing'] = $this->mPlumbing->getDataTablePlumbing();
-            $checklist = $this->mEquip->defaultChecklist(session()->get('idstore'), "equipment_plumbing");
-            $data['checkInspection'] = $this->mPlumbing->checkInspection($checklist['checklist']);
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_plumbing");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_plumbing', $checklist['checklist']);
             $data['defaultChecklist'] = $checklist;
+            $data['equipmentDefaultChecklist'] = $this->mEquipment->equipmentDefaultChecklist("equipment_plumbing");
             
-            return view('vPlumbing', $data);
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 21);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vPlumbing', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
         }
     }
 
@@ -1344,7 +1416,11 @@ class CEquipment extends BaseController
         } else {
             $rules = [
                 'time' => [
-                    'rules' => 'required|in_list[08:00:00]',
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
                     'label' => 'Jam Pengecekan',
                 ],
                 'equipment_checklist' => [
@@ -1569,6 +1645,2769 @@ class CEquipment extends BaseController
     public function ajaxDataPlumbing()
     {
         $data = $this->mPlumbing->ajaxDataPlumbing($this->request->getPost('id'));
+        if ($data) {
+            $response = [
+                'success' => true,
+                'data' => $data,
+            ];
+        } else {
+            $response = [
+                'success' => false,
+            ];
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function metersumber()
+    {
+        $data['url'] = $this->request->uri->getSegment(1);
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $data['title'] = 'Meter Sumber & Air Olahan | B.M Apps &copy; Gramedia ' . date('Y');
+            $data['isLoggedIn'] = session()->get('isLoggedIn');
+            $data['id'] = session()->get('id');
+            $data['username'] = session()->get('username');
+            $data['name'] = session()->get('name');
+            $data['email'] = session()->get('email');
+            $data['image'] = session()->get('image');
+            $data['is_active'] = session()->get('is_active');
+            $data['role_id'] = session()->get('role_id');
+            $data['roleuser'] = session()->get('roleuser');
+            $data['superior_role_id'] = session()->get('superior_role_id');
+            $data['location'] = session()->get('location');
+            $data['level'] = session()->get('level');
+            $data['status_deleted'] = session()->get('status_deleted');
+            $data['validation'] = \Config\Services::validation();
+
+            $data['getDataTableMeterSumber'] = $this->mMeterSumber->getDataTableMeterSumber();
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_metersumber");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_meter_sumber_dan_air_olahan', $checklist['checklist']);
+            $data['defaultChecklist'] = $checklist;
+            // TODO implement ke semua
+            $data['equipmentDefaultChecklist'] = $this->mEquipment->equipmentDefaultChecklist("equipment_metersumber");
+            
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 22);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vMeterSumber', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
+        }
+    }
+
+    public function saveMeterSumber()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            // TODO implement time ke semua
+            $rules = [
+                'time' => [
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
+                    'label' => 'Jam Pengecekan',
+                ],
+                'equipment_checklist' => [
+                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
+                    'label' => 'Checklist',
+                ],
+                'meter_pdam_floating_valve' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Meter PDAM - Floating Valve',
+                ],
+                'meter_pdam_m3' => [
+                    'rules' => 'required|max_length[10]|regex_match[^\d+(\.\d{1,2})?$]',
+                    'errors' => [
+                        'regex_match' => '{field} must be a decimal number with at most 2 decimal places'
+                    ],
+                    'label' => 'Meter PDAM - M&sup3;',
+                ],
+                'meter_deep_well_m3' => [
+                    'rules' => 'required|max_length[10]|regex_match[^\d+(\.\d{1,2})?$]',
+                    'errors' => [
+                        'regex_match' => '{field} must be a decimal number with at most 2 decimal places'
+                    ],
+                    'label' => 'Meter Deep Well - M&sup3;',
+                ],
+                'meter_air_effluent_m3' => [
+                    'rules' => 'required|max_length[10]|regex_match[^\d+(\.\d{1,2})?$]',
+                    'errors' => [
+                        'regex_match' => '{field} must be a decimal number with at most 2 decimal places'
+                    ],
+                    'label' => 'Meter Air Effluent - M&sup3;',
+                ],
+                'keterangan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Keterangan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/metersumber')->withInput()->with('validation', $validation);
+            }
+
+            $dataInput = [
+                'location' => session()->get('idstore'),
+                'time' => $this->request->getPost('time'),
+                'date' => date('Y-m-d'),
+                'worker' => session()->get('id'),
+                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
+                'meter_pdam_floating_valve' => $this->request->getPost('meter_pdam_floating_valve'),
+                'meter_pdam_m3' => $this->request->getPost('meter_pdam_m3'),
+                'meter_deep_well_m3' => $this->request->getPost('meter_deep_well_m3'),
+                'meter_air_effluent_m3' => $this->request->getPost('meter_air_effluent_m3'),
+                'keterangan' => $this->request->getPost('keterangan'),
+            ];
+
+            $input = $this->mMeterSumber->save($dataInput);
+
+            if ($input) {
+                session()->setFlashdata('success', 'Meter Sumber & Air Olahan Data has been added');
+                return redirect()->to('/metersumber', 201);
+            }
+
+            session()->setFlashdata('error', 'Meter Sumber & Air Olahan Data has not been added');
+            return redirect()->to('/metersumber', 500);
+        }
+    }
+
+    public function updateMeterSumber($id)
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'meter_pdam_floating_valve' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Meter PDAM - Floating Valve',
+                ],
+                'meter_pdam_m3' => [
+                    'rules' => 'required|max_length[10]|regex_match[^\d+(\.\d{1,2})?$]',
+                    'errors' => [
+                        'regex_match' => '{field} must be a decimal number with at most 2 decimal places'
+                    ],
+                    'label' => 'Meter PDAM - M&sup3;',
+                ],
+                'meter_deep_well_m3' => [
+                    'rules' => 'required|max_length[10]|regex_match[^\d+(\.\d{1,2})?$]',
+                    'errors' => [
+                        'regex_match' => '{field} must be a decimal number with at most 2 decimal places'
+                    ],
+                    'label' => 'Meter Deep Well - M&sup3;',
+                ],
+                'meter_air_effluent_m3' => [
+                    'rules' => 'required|max_length[10]|regex_match[^\d+(\.\d{1,2})?$]',
+                    'errors' => [
+                        'regex_match' => '{field} must be a decimal number with at most 2 decimal places'
+                    ],
+                    'label' => 'Meter Air Effluent - M&sup3;',
+                ],
+                'keterangan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Keterangan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/metersumber')->withInput()->with('validation', $validation);
+            }
+
+            $dataUpdate = [
+                'id' => $id,
+                'meter_pdam_floating_valve' => $this->request->getPost('meter_pdam_floating_valve'),
+                'meter_pdam_m3' => $this->request->getPost('meter_pdam_m3'),
+                'meter_deep_well_m3' => $this->request->getPost('meter_deep_well_m3'),
+                'meter_air_effluent_m3' => $this->request->getPost('meter_air_effluent_m3'),
+                'keterangan' => $this->request->getPost('keterangan'),
+            ];
+
+            $update = $this->mMeterSumber->save($dataUpdate);
+
+            if ($update) {
+                session()->setFlashdata('success', 'Meter Sumber & Air Olahan Data has been edited');
+                return redirect()->to('/metersumber', 200);
+            }
+
+            session()->setFlashdata('error', 'Meter Sumber & Air Olahan Data has not been edited');
+            return redirect()->to('/metersumber', 500);
+        }
+    }
+
+    public function deleteMeterSumber()
+    {
+        $delete = $this->mMeterSumber->delete($this->request->getPost('id'));
+        if ($delete) {
+            $response = [
+                'success' => true,
+            ];
+            session()->setFlashdata('success', 'Meter Sumber & Air Olahan Data has been deleted');
+        } else {
+            $response = [
+                'success' => false,
+            ];
+            session()->setFlashdata('error', 'Meter Sumber & Air Olahan Data has not been deleted');
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function ajaxDataMeterSumber()
+    {
+        $data = $this->mMeterSumber->ajaxDataMeterSumber($this->request->getPost('id'));
+        if ($data) {
+            $response = [
+                'success' => true,
+                'data' => $data,
+            ];
+        } else {
+            $response = [
+                'success' => false,
+            ];
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function dindingpartisi()
+    {
+        $data['url'] = $this->request->uri->getSegment(1);
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $data['title'] = 'Dinding Partisi | B.M Apps &copy; Gramedia ' . date('Y');
+            $data['isLoggedIn'] = session()->get('isLoggedIn');
+            $data['id'] = session()->get('id');
+            $data['username'] = session()->get('username');
+            $data['name'] = session()->get('name');
+            $data['email'] = session()->get('email');
+            $data['image'] = session()->get('image');
+            $data['is_active'] = session()->get('is_active');
+            $data['role_id'] = session()->get('role_id');
+            $data['roleuser'] = session()->get('roleuser');
+            $data['superior_role_id'] = session()->get('superior_role_id');
+            $data['location'] = session()->get('location');
+            $data['level'] = session()->get('level');
+            $data['status_deleted'] = session()->get('status_deleted');
+            $data['validation'] = \Config\Services::validation();
+
+            $data['getDataTableDindingPartisi'] = $this->mDinding->getDataTableDindingPartisi();
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_dindingpartisi");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_dinding_partisi', $checklist['checklist']);
+            $data['defaultChecklist'] = $checklist;
+            
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 23);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vDindingPartisi', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
+        }
+    }
+
+    public function saveDindingPartisi()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'time' => [
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
+                    'label' => 'Jam Pengecekan',
+                ],
+                'equipment_checklist' => [
+                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
+                    'label' => 'Checklist',
+                ],
+                'ruang' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Ruang',
+                ],
+                'lantai' => [
+                    'rules' => 'required|max_length[2]',
+                    'label' => 'Lantai',
+                ],
+                'cat' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Cat',
+                ],
+                'kaca' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kaca',
+                ],
+                'kusen' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kusen',
+                ],
+                'wallpaper' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Wallpaper',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]|is_natural',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/dindingpartisi')->withInput()->with('validation', $validation);
+            }
+
+            $dataInput = [
+                'location' => session()->get('idstore'),
+                'time' => $this->request->getPost('time'),
+                'date' => date('Y-m-d'),
+                'worker' => session()->get('id'),
+                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
+                'ruang' => $this->request->getPost('ruang'),
+                'lantai' => $this->request->getPost('lantai'),
+                'cat' => $this->request->getPost('cat'),
+                'kaca' => $this->request->getPost('kaca'),
+                'kusen' => $this->request->getPost('kusen'),
+                'wallpaper' => $this->request->getPost('wallpaper'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $input = $this->mDinding->save($dataInput);
+
+            if ($input) {
+                session()->setFlashdata('success', 'Dinding Partisi Data has been added');
+                return redirect()->to('/dindingpartisi', 201);
+            }
+
+            session()->setFlashdata('error', 'Dinding Partisi Data has not been added');
+            return redirect()->to('/dindingpartisi', 500);
+        }
+    }
+
+    public function updateDindingPartisi($id)
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'ruang' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Ruang',
+                ],
+                'lantai' => [
+                    'rules' => 'required|max_length[2]',
+                    'label' => 'Lantai',
+                ],
+                'cat' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Cat',
+                ],
+                'kaca' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kaca',
+                ],
+                'kusen' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kusen',
+                ],
+                'wallpaper' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Wallpaper',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]|is_natural',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/dindingpartisi')->withInput()->with('validation', $validation);
+            }
+
+            $dataUpdate = [
+                'id' => $id,
+                'ruang' => $this->request->getPost('ruang'),
+                'lantai' => $this->request->getPost('lantai'),
+                'cat' => $this->request->getPost('cat'),
+                'kaca' => $this->request->getPost('kaca'),
+                'kusen' => $this->request->getPost('kusen'),
+                'wallpaper' => $this->request->getPost('wallpaper'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $update = $this->mDinding->save($dataUpdate);
+
+            if ($update) {
+                session()->setFlashdata('success', 'Dinding Partisi Data has been edited');
+                return redirect()->to('/dindingpartisi', 200);
+            }
+
+            session()->setFlashdata('error', 'Dinding Partisi Data has not been edited');
+            return redirect()->to('/dindingpartisi', 500);
+        }
+    }
+
+    public function deleteDindingPartisi()
+    {
+        $delete = $this->mDinding->delete($this->request->getPost('id'));
+        if ($delete) {
+            $response = [
+                'success' => true,
+            ];
+            session()->setFlashdata('success', 'Dinding Partisi Data has been deleted');
+        } else {
+            $response = [
+                'success' => false,
+            ];
+            session()->setFlashdata('error', 'Dinding Partisi Data has not been deleted');
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function ajaxDataDindingPartisi()
+    {
+        $data = $this->mDinding->ajaxDataDindingPartisi($this->request->getPost('id'));
+        if ($data) {
+            $response = [
+                'success' => true,
+                'data' => $data,
+            ];
+        } else {
+            $response = [
+                'success' => false,
+            ];
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function pintu()
+    {
+        $data['url'] = $this->request->uri->getSegment(1);
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $data['title'] = 'Pintu | B.M Apps &copy; Gramedia ' . date('Y');
+            $data['isLoggedIn'] = session()->get('isLoggedIn');
+            $data['id'] = session()->get('id');
+            $data['username'] = session()->get('username');
+            $data['name'] = session()->get('name');
+            $data['email'] = session()->get('email');
+            $data['image'] = session()->get('image');
+            $data['is_active'] = session()->get('is_active');
+            $data['role_id'] = session()->get('role_id');
+            $data['roleuser'] = session()->get('roleuser');
+            $data['superior_role_id'] = session()->get('superior_role_id');
+            $data['location'] = session()->get('location');
+            $data['level'] = session()->get('level');
+            $data['status_deleted'] = session()->get('status_deleted');
+            $data['validation'] = \Config\Services::validation();
+
+            $data['getDataTablePintu'] = $this->mPintu->getDataTablePintu();
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_pintu");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_pintu', $checklist['checklist']);
+            $data['defaultChecklist'] = $checklist;
+            
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 24);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vPintu', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
+        }
+    }
+
+    public function savePintu()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'time' => [
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
+                    'label' => 'Jam Pengecekan',
+                ],
+                'equipment_checklist' => [
+                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
+                    'label' => 'Checklist',
+                ],
+                'ruang' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Ruang',
+                ],
+                'lantai' => [
+                    'rules' => 'required|max_length[2]',
+                    'label' => 'Lantai',
+                ],
+                'cat' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Cat',
+                ],
+                'kunci' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kunci',
+                ],
+                'kusen' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kusen',
+                ],
+                'handle_pintu' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Handle Pintu',
+                ],
+                'engsel' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Engsel',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]|is_natural',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/pintu')->withInput()->with('validation', $validation);
+            }
+
+            $dataInput = [
+                'location' => session()->get('idstore'),
+                'time' => $this->request->getPost('time'),
+                'date' => date('Y-m-d'),
+                'worker' => session()->get('id'),
+                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
+                'ruang' => $this->request->getPost('ruang'),
+                'lantai' => $this->request->getPost('lantai'),
+                'cat' => $this->request->getPost('cat'),
+                'kunci' => $this->request->getPost('kunci'),
+                'kusen' => $this->request->getPost('kusen'),
+                'handle_pintu' => $this->request->getPost('handle_pintu'),
+                'engsel' => $this->request->getPost('engsel'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $input = $this->mPintu->save($dataInput);
+
+            if ($input) {
+                session()->setFlashdata('success', 'Pintu Data has been added');
+                return redirect()->to('/pintu', 201);
+            }
+
+            session()->setFlashdata('error', 'Pintu Data has not been added');
+            return redirect()->to('/pintu', 500);
+        }
+    }
+
+    public function updatePintu($id)
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'ruang' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Ruang',
+                ],
+                'lantai' => [
+                    'rules' => 'required|max_length[2]',
+                    'label' => 'Lantai',
+                ],
+                'cat' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Cat',
+                ],
+                'kunci' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kunci',
+                ],
+                'kusen' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kusen',
+                ],
+                'handle_pintu' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Handle Pintu',
+                ],
+                'engsel' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Engsel',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]|is_natural',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/pintu')->withInput()->with('validation', $validation);
+            }
+
+            $dataUpdate = [
+                'id' => $id,
+                'ruang' => $this->request->getPost('ruang'),
+                'lantai' => $this->request->getPost('lantai'),
+                'cat' => $this->request->getPost('cat'),
+                'kunci' => $this->request->getPost('kunci'),
+                'kusen' => $this->request->getPost('kusen'),
+                'handle_pintu' => $this->request->getPost('handle_pintu'),
+                'engsel' => $this->request->getPost('engsel'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $update = $this->mPintu->save($dataUpdate);
+
+            if ($update) {
+                session()->setFlashdata('success', 'Pintu Data has been edited');
+                return redirect()->to('/pintu', 200);
+            }
+
+            session()->setFlashdata('error', 'Pintu Data has not been edited');
+            return redirect()->to('/pintu', 500);
+        }
+    }
+
+    public function deletePintu()
+    {
+        $delete = $this->mPintu->delete($this->request->getPost('id'));
+        if ($delete) {
+            $response = [
+                'success' => true,
+            ];
+            session()->setFlashdata('success', 'Pintu Data has been deleted');
+        } else {
+            $response = [
+                'success' => false,
+            ];
+            session()->setFlashdata('error', 'Pintu Data has not been deleted');
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function ajaxDataPintu()
+    {
+        $data = $this->mPintu->ajaxDataPintu($this->request->getPost('id'));
+        if ($data) {
+            $response = [
+                'success' => true,
+                'data' => $data,
+            ];
+        } else {
+            $response = [
+                'success' => false,
+            ];
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function foldinggate()
+    {
+        $data['url'] = $this->request->uri->getSegment(1);
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $data['title'] = 'Folding Gate | B.M Apps &copy; Gramedia ' . date('Y');
+            $data['isLoggedIn'] = session()->get('isLoggedIn');
+            $data['id'] = session()->get('id');
+            $data['username'] = session()->get('username');
+            $data['name'] = session()->get('name');
+            $data['email'] = session()->get('email');
+            $data['image'] = session()->get('image');
+            $data['is_active'] = session()->get('is_active');
+            $data['role_id'] = session()->get('role_id');
+            $data['roleuser'] = session()->get('roleuser');
+            $data['superior_role_id'] = session()->get('superior_role_id');
+            $data['location'] = session()->get('location');
+            $data['level'] = session()->get('level');
+            $data['status_deleted'] = session()->get('status_deleted');
+            $data['validation'] = \Config\Services::validation();
+
+            $data['getDataTableFoldingGate'] = $this->mGate->getDataTableFoldingGate();
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_foldinggate");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_folding_gate', $checklist['checklist']);
+            $data['defaultChecklist'] = $checklist;
+            
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 25);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vFoldingGate', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
+        }
+    }
+
+    public function saveFoldingGate()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'time' => [
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
+                    'label' => 'Jam Pengecekan',
+                ],
+                'equipment_checklist' => [
+                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
+                    'label' => 'Checklist',
+                ],
+                'name' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Nama Folding Gate',
+                ],
+                'kunci_set' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kunci Set',
+                ],
+                'daun' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Daun',
+                ],
+                'silangan' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Silangan',
+                ],
+                'rangka_cnp' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Rangka CNP',
+                ],
+                'rangka_unp' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Rangka UNP',
+                ],
+                'handle' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Handle',
+                ],
+                'roda_bearing' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Roda Bearing',
+                ],
+                'rel' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Rel',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]|is_natural',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/foldinggate')->withInput()->with('validation', $validation);
+            }
+
+            $dataInput = [
+                'location' => session()->get('idstore'),
+                'time' => $this->request->getPost('time'),
+                'date' => date('Y-m-d'),
+                'worker' => session()->get('id'),
+                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
+                'name' => $this->request->getPost('name'),
+                'kunci_set' => $this->request->getPost('kunci_set'),
+                'daun' => $this->request->getPost('daun'),
+                'silangan' => $this->request->getPost('silangan'),
+                'rangka_cnp' => $this->request->getPost('rangka_cnp'),
+                'rangka_unp' => $this->request->getPost('rangka_unp'),
+                'handle' => $this->request->getPost('handle'),
+                'roda_bearing' => $this->request->getPost('roda_bearing'),
+                'rel' => $this->request->getPost('rel'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $input = $this->mGate->save($dataInput);
+
+            if ($input) {
+                session()->setFlashdata('success', 'Folding Gate Data has been added');
+                return redirect()->to('/foldinggate', 201);
+            }
+
+            session()->setFlashdata('error', 'Folding Gate Data has not been added');
+            return redirect()->to('/foldinggate', 500);
+        }
+    }
+
+    public function updateFoldingGate($id)
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'name' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Nama Folding Gate',
+                ],
+                'kunci_set' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kunci Set',
+                ],
+                'daun' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Daun',
+                ],
+                'silangan' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Silangan',
+                ],
+                'rangka_cnp' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Rangka CNP',
+                ],
+                'rangka_unp' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Rangka UNP',
+                ],
+                'handle' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Handle',
+                ],
+                'roda_bearing' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Roda Bearing',
+                ],
+                'rel' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Rel',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]|is_natural',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/foldinggate')->withInput()->with('validation', $validation);
+            }
+
+            $dataUpdate = [
+                'id' => $id,
+                'name' => $this->request->getPost('name'),
+                'kunci_set' => $this->request->getPost('kunci_set'),
+                'daun' => $this->request->getPost('daun'),
+                'silangan' => $this->request->getPost('silangan'),
+                'rangka_cnp' => $this->request->getPost('rangka_cnp'),
+                'rangka_unp' => $this->request->getPost('rangka_unp'),
+                'handle' => $this->request->getPost('handle'),
+                'roda_bearing' => $this->request->getPost('roda_bearing'),
+                'rel' => $this->request->getPost('rel'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $update = $this->mGate->save($dataUpdate);
+
+            if ($update) {
+                session()->setFlashdata('success', 'Folding Gate Data has been edited');
+                return redirect()->to('/foldinggate', 200);
+            }
+
+            session()->setFlashdata('error', 'Folding Gate Data has not been edited');
+            return redirect()->to('/foldinggate', 500);
+        }
+    }
+
+    public function deleteFoldingGate()
+    {
+        $delete = $this->mGate->delete($this->request->getPost('id'));
+        if ($delete) {
+            $response = [
+                'success' => true,
+            ];
+            session()->setFlashdata('success', 'Folding Gate Data has been deleted');
+        } else {
+            $response = [
+                'success' => false,
+            ];
+            session()->setFlashdata('error', 'Folding Gate Data has not been deleted');
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function ajaxDataFoldingGate()
+    {
+        $data = $this->mGate->ajaxDataFoldingGate($this->request->getPost('id'));
+        if ($data) {
+            $response = [
+                'success' => true,
+                'data' => $data,
+            ];
+        } else {
+            $response = [
+                'success' => false,
+            ];
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function rollingdoor()
+    {
+        $data['url'] = $this->request->uri->getSegment(1);
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $data['title'] = 'Rolling Door | B.M Apps &copy; Gramedia ' . date('Y');
+            $data['isLoggedIn'] = session()->get('isLoggedIn');
+            $data['id'] = session()->get('id');
+            $data['username'] = session()->get('username');
+            $data['name'] = session()->get('name');
+            $data['email'] = session()->get('email');
+            $data['image'] = session()->get('image');
+            $data['is_active'] = session()->get('is_active');
+            $data['role_id'] = session()->get('role_id');
+            $data['roleuser'] = session()->get('roleuser');
+            $data['superior_role_id'] = session()->get('superior_role_id');
+            $data['location'] = session()->get('location');
+            $data['level'] = session()->get('level');
+            $data['status_deleted'] = session()->get('status_deleted');
+            $data['validation'] = \Config\Services::validation();
+
+            $data['getDataTableRollingDoor'] = $this->mRollDoor->getDataTableRollingDoor();
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_rollingdoor");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_rolling_door', $checklist['checklist']);
+            $data['defaultChecklist'] = $checklist;
+            
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 26);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vRollingDoor', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
+        }
+    }
+
+    public function saveRollingDoor()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'time' => [
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
+                    'label' => 'Jam Pengecekan',
+                ],
+                'equipment_checklist' => [
+                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
+                    'label' => 'Checklist',
+                ],
+                'name' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Nama Folding Gate',
+                ],
+                'kunci_set' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kunci Set',
+                ],
+                'daun_slot' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Daun / Slot',
+                ],
+                'pulley' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Pulley',
+                ],
+                'pegas' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Pegas / Per',
+                ],
+                'as_batang' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'AS Batang',
+                ],
+                'side_bracket' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Side Bracket',
+                ],
+                'bottom_t_rail' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Bottom Rail T',
+                ],
+                'pilar_rel' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Pillar Rel',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]|is_natural',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/rollingdoor')->withInput()->with('validation', $validation);
+            }
+
+            $dataInput = [
+                'location' => session()->get('idstore'),
+                'time' => $this->request->getPost('time'),
+                'date' => date('Y-m-d'),
+                'worker' => session()->get('id'),
+                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
+                'name' => $this->request->getPost('name'),
+                'kunci_set' => $this->request->getPost('kunci_set'),
+                'daun_slot' => $this->request->getPost('daun_slot'),
+                'pulley' => $this->request->getPost('pulley'),
+                'pegas' => $this->request->getPost('pegas'),
+                'as_batang' => $this->request->getPost('as_batang'),
+                'side_bracket' => $this->request->getPost('side_bracket'),
+                'bottom_t_rail' => $this->request->getPost('bottom_t_rail'),
+                'pilar_rel' => $this->request->getPost('pilar_rel'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $input = $this->mRollDoor->save($dataInput);
+
+            if ($input) {
+                session()->setFlashdata('success', 'Rolling Door Data has been added');
+                return redirect()->to('/rollingdoor', 201);
+            }
+
+            session()->setFlashdata('error', 'Rolling Door Data has not been added');
+            return redirect()->to('/rollingdoor', 500);
+        }
+    }
+
+    public function updateRollingDoor($id)
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'name' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Nama Folding Gate',
+                ],
+                'kunci_set' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kunci Set',
+                ],
+                'daun_slot' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Daun / Slot',
+                ],
+                'pulley' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Pulley',
+                ],
+                'pegas' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Pegas / Per',
+                ],
+                'as_batang' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'AS Batang',
+                ],
+                'side_bracket' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Side Bracket',
+                ],
+                'bottom_t_rail' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Bottom Rail T',
+                ],
+                'pilar_rel' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Pillar Rel',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]|is_natural',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/rollingdoor')->withInput()->with('validation', $validation);
+            }
+
+            $dataUpdate = [
+                'id' => $id,
+                'name' => $this->request->getPost('name'),
+                'kunci_set' => $this->request->getPost('kunci_set'),
+                'daun_slot' => $this->request->getPost('daun_slot'),
+                'pulley' => $this->request->getPost('pulley'),
+                'pegas' => $this->request->getPost('pegas'),
+                'as_batang' => $this->request->getPost('as_batang'),
+                'side_bracket' => $this->request->getPost('side_bracket'),
+                'bottom_t_rail' => $this->request->getPost('bottom_t_rail'),
+                'pilar_rel' => $this->request->getPost('pilar_rel'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $update = $this->mRollDoor->save($dataUpdate);
+
+            if ($update) {
+                session()->setFlashdata('success', 'Rolling Door Data has been edited');
+                return redirect()->to('/rollingdoor', 200);
+            }
+
+            session()->setFlashdata('error', 'Rolling Door Data has not been edited');
+            return redirect()->to('/rollingdoor', 500);
+        }
+    }
+
+    public function deleteRollingDoor()
+    {
+        $delete = $this->mRollDoor->delete($this->request->getPost('id'));
+        if ($delete) {
+            $response = [
+                'success' => true,
+            ];
+            session()->setFlashdata('success', 'Rolling Door Data has been deleted');
+        } else {
+            $response = [
+                'success' => false,
+            ];
+            session()->setFlashdata('error', 'Rolling Door Data has not been deleted');
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function ajaxDataRollingDoor()
+    {
+        $data = $this->mRollDoor->ajaxDataRollingDoor($this->request->getPost('id'));
+        if ($data) {
+            $response = [
+                'success' => true,
+                'data' => $data,
+            ];
+        } else {
+            $response = [
+                'success' => false,
+            ];
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function firefighting()
+    {
+        $data['url'] = $this->request->uri->getSegment(1);
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $data['title'] = 'Fire Fighting | B.M Apps &copy; Gramedia ' . date('Y');
+            $data['isLoggedIn'] = session()->get('isLoggedIn');
+            $data['id'] = session()->get('id');
+            $data['username'] = session()->get('username');
+            $data['name'] = session()->get('name');
+            $data['email'] = session()->get('email');
+            $data['image'] = session()->get('image');
+            $data['is_active'] = session()->get('is_active');
+            $data['role_id'] = session()->get('role_id');
+            $data['roleuser'] = session()->get('roleuser');
+            $data['superior_role_id'] = session()->get('superior_role_id');
+            $data['location'] = session()->get('location');
+            $data['level'] = session()->get('level');
+            $data['status_deleted'] = session()->get('status_deleted');
+            $data['validation'] = \Config\Services::validation();
+
+            $data['getDataTableFireFighting'] = $this->mFireFight->getDataTableFireFighting();
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_firefighting");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_fire_fighting', $checklist['checklist']);
+            $data['defaultChecklist'] = $checklist;
+            
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 27);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vFireFighting', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
+        }
+    }
+
+    public function saveFireFighting()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'time' => [
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
+                    'label' => 'Jam Pengecekan',
+                ],
+                'equipment_checklist' => [
+                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
+                    'label' => 'Checklist',
+                ],
+                'type' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Type',
+                ],
+                'jumlah_zona' => [
+                    'rules' => 'required|max_length[30]|numeric',
+                    'label' => 'Jumlah Zona',
+                ],
+                'mcfa_normal' => [
+                    'rules' => 'permit_empty|in_list[0,1]',
+                    'label' => 'MCFA - Normal',
+                ],
+                'mcfa_alarm_silenced' => [
+                    'rules' => 'permit_empty|in_list[0,1]',
+                    'label' => 'MCFA - Alarm Silenced',
+                ],
+                'mcfa_fire' => [
+                    'rules' => 'permit_empty|in_list[0,1]',
+                    'label' => 'MCFA - Fire',
+                ],
+                'mcfa_trouble' => [
+                    'rules' => 'permit_empty|in_list[0,1]',
+                    'label' => 'MCFA - Trouble',
+                ],
+                'lt1_smoke_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 1 - Smoke Detector',
+                ],
+                'lt1_heat_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 1 - Heat Detector',
+                ],
+                'lt1_flow_switch' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 1 - Flow Switch',
+                ],
+                'lt2_smoke_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 2 - Smoke Detector',
+                ],
+                'lt2_heat_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 2 - Heat Detector',
+                ],
+                'lt2_flow_switch' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 2 - Flow Switch',
+                ],
+                'lt3_smoke_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 3 - Smoke Detector',
+                ],
+                'lt3_heat_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 3 - Heat Detector',
+                ],
+                'lt3_flow_switch' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 3 - Flow Switch',
+                ],
+                'lt4_smoke_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 4 - Smoke Detector',
+                ],
+                'lt4_heat_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 4 - Heat Detector',
+                ],
+                'lt4_flow_switch' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 4 - Flow Switch',
+                ],
+                'hydrant_pillar' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Hydrant Pillar',
+                ],
+                'siamese_connection' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Siamese Connection',
+                ],
+                'lampu_dan_bell' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lampu & Bell',
+                ],
+                'break_glass' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Break Glass',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]|is_natural',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/firefighting')->withInput()->with('validation', $validation);
+            }
+
+            $dataInput = [
+                'location' => session()->get('idstore'),
+                'time' => $this->request->getPost('time'),
+                'date' => date('Y-m-d'),
+                'worker' => session()->get('id'),
+                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
+                'type' => $this->request->getPost('type'),
+                'jumlah_zona' => $this->request->getPost('jumlah_zona'),
+                'mcfa_normal' => $this->request->getPost('mcfa_normal'),
+                'mcfa_alarm_silenced' => $this->request->getPost('mcfa_alarm_silenced'),
+                'mcfa_fire' => $this->request->getPost('mcfa_fire'),
+                'mcfa_trouble' => $this->request->getPost('mcfa_trouble'),
+                'lt1_smoke_detector' => $this->request->getPost('lt1_smoke_detector'),
+                'lt1_heat_detector' => $this->request->getPost('lt1_heat_detector'),
+                'lt1_flow_switch' => $this->request->getPost('lt1_flow_switch'),
+                'lt2_smoke_detector' => $this->request->getPost('lt2_smoke_detector'),
+                'lt2_heat_detector' => $this->request->getPost('lt2_heat_detector'),
+                'lt2_flow_switch' => $this->request->getPost('lt2_flow_switch'),
+                'lt3_smoke_detector' => $this->request->getPost('lt3_smoke_detector'),
+                'lt3_heat_detector' => $this->request->getPost('lt3_heat_detector'),
+                'lt3_flow_switch' => $this->request->getPost('lt3_flow_switch'),
+                'lt4_smoke_detector' => $this->request->getPost('lt4_smoke_detector'),
+                'lt4_heat_detector' => $this->request->getPost('lt4_heat_detector'),
+                'lt4_flow_switch' => $this->request->getPost('lt4_flow_switch'),
+                'hydrant_pillar' => $this->request->getPost('hydrant_pillar'),
+                'siamese_connection' => $this->request->getPost('siamese_connection'),
+                'lampu_dan_bell' => $this->request->getPost('lampu_dan_bell'),
+                'break_glass' => $this->request->getPost('break_glass'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $input = $this->mFireFight->save($dataInput);
+
+            if ($input) {
+                session()->setFlashdata('success', 'Fire Fighting Data has been added');
+                return redirect()->to('/firefighting', 201);
+            }
+
+            session()->setFlashdata('error', 'Fire Fighting Data has not been added');
+            return redirect()->to('/firefighting', 500);
+        }
+    }
+
+    public function updateFireFighting($id)
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'type' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Type',
+                ],
+                'jumlah_zona' => [
+                    'rules' => 'required|max_length[30]|numeric',
+                    'label' => 'Jumlah Zona',
+                ],
+                'mcfa_normal' => [
+                    'rules' => 'permit_empty|in_list[0,1]',
+                    'label' => 'MCFA - Normal',
+                ],
+                'mcfa_alarm_silenced' => [
+                    'rules' => 'permit_empty|in_list[0,1]',
+                    'label' => 'MCFA - Alarm Silenced',
+                ],
+                'mcfa_fire' => [
+                    'rules' => 'permit_empty|in_list[0,1]',
+                    'label' => 'MCFA - Fire',
+                ],
+                'mcfa_trouble' => [
+                    'rules' => 'permit_empty|in_list[0,1]',
+                    'label' => 'MCFA - Trouble',
+                ],
+                'lt1_smoke_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 1 - Smoke Detector',
+                ],
+                'lt1_heat_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 1 - Heat Detector',
+                ],
+                'lt1_flow_switch' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 1 - Flow Switch',
+                ],
+                'lt2_smoke_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 2 - Smoke Detector',
+                ],
+                'lt2_heat_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 2 - Heat Detector',
+                ],
+                'lt2_flow_switch' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 2 - Flow Switch',
+                ],
+                'lt3_smoke_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 3 - Smoke Detector',
+                ],
+                'lt3_heat_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 3 - Heat Detector',
+                ],
+                'lt3_flow_switch' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 3 - Flow Switch',
+                ],
+                'lt4_smoke_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 4 - Smoke Detector',
+                ],
+                'lt4_heat_detector' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 4 - Heat Detector',
+                ],
+                'lt4_flow_switch' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai 4 - Flow Switch',
+                ],
+                'hydrant_pillar' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Hydrant Pillar',
+                ],
+                'siamese_connection' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Siamese Connection',
+                ],
+                'lampu_dan_bell' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lampu & Bell',
+                ],
+                'break_glass' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Break Glass',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]|is_natural',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/firefighting')->withInput()->with('validation', $validation);
+            }
+
+            $dataUpdate = [
+                'id' => $id,
+                'type' => $this->request->getPost('type'),
+                'jumlah_zona' => $this->request->getPost('jumlah_zona'),
+                'mcfa_normal' => $this->request->getPost('mcfa_normal'),
+                'mcfa_alarm_silenced' => $this->request->getPost('mcfa_alarm_silenced'),
+                'mcfa_fire' => $this->request->getPost('mcfa_fire'),
+                'mcfa_trouble' => $this->request->getPost('mcfa_trouble'),
+                'lt1_smoke_detector' => $this->request->getPost('lt1_smoke_detector'),
+                'lt1_heat_detector' => $this->request->getPost('lt1_heat_detector'),
+                'lt1_flow_switch' => $this->request->getPost('lt1_flow_switch'),
+                'lt2_smoke_detector' => $this->request->getPost('lt2_smoke_detector'),
+                'lt2_heat_detector' => $this->request->getPost('lt2_heat_detector'),
+                'lt2_flow_switch' => $this->request->getPost('lt2_flow_switch'),
+                'lt3_smoke_detector' => $this->request->getPost('lt3_smoke_detector'),
+                'lt3_heat_detector' => $this->request->getPost('lt3_heat_detector'),
+                'lt3_flow_switch' => $this->request->getPost('lt3_flow_switch'),
+                'lt4_smoke_detector' => $this->request->getPost('lt4_smoke_detector'),
+                'lt4_heat_detector' => $this->request->getPost('lt4_heat_detector'),
+                'lt4_flow_switch' => $this->request->getPost('lt4_flow_switch'),
+                'hydrant_pillar' => $this->request->getPost('hydrant_pillar'),
+                'siamese_connection' => $this->request->getPost('siamese_connection'),
+                'lampu_dan_bell' => $this->request->getPost('lampu_dan_bell'),
+                'break_glass' => $this->request->getPost('break_glass'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $update = $this->mFireFight->save($dataUpdate);
+
+            if ($update) {
+                session()->setFlashdata('success', 'Fire Fighting Data has been edited');
+                return redirect()->to('/firefighting', 200);
+            }
+
+            session()->setFlashdata('error', 'Fire Fighting Data has not been edited');
+            return redirect()->to('/firefighting', 500);
+        }
+    }
+
+    public function deleteFireFighting()
+    {
+        $delete = $this->mFireFight->delete($this->request->getPost('id'));
+        if ($delete) {
+            $response = [
+                'success' => true,
+            ];
+            session()->setFlashdata('success', 'Fire Fighting Data has been deleted');
+        } else {
+            $response = [
+                'success' => false,
+            ];
+            session()->setFlashdata('error', 'Fire Fighting Data has not been deleted');
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function ajaxDataFireFighting()
+    {
+        $data = $this->mFireFight->ajaxDataFireFighting($this->request->getPost('id'));
+        if ($data) {
+            $response = [
+                'success' => true,
+                'data' => $data,
+            ];
+        } else {
+            $response = [
+                'success' => false,
+            ];
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function telppabx()
+    {
+        $data['url'] = $this->request->uri->getSegment(1);
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $data['title'] = 'Telephone & PABX | B.M Apps &copy; Gramedia ' . date('Y');
+            $data['isLoggedIn'] = session()->get('isLoggedIn');
+            $data['id'] = session()->get('id');
+            $data['username'] = session()->get('username');
+            $data['name'] = session()->get('name');
+            $data['email'] = session()->get('email');
+            $data['image'] = session()->get('image');
+            $data['is_active'] = session()->get('is_active');
+            $data['role_id'] = session()->get('role_id');
+            $data['roleuser'] = session()->get('roleuser');
+            $data['superior_role_id'] = session()->get('superior_role_id');
+            $data['location'] = session()->get('location');
+            $data['level'] = session()->get('level');
+            $data['status_deleted'] = session()->get('status_deleted');
+            $data['validation'] = \Config\Services::validation();
+
+            $data['getDataTableTelpPabx'] = $this->mTelpPabx->getDataTableTelpPabx();
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_telephonepabx");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_telephone_pabx', $checklist['checklist']);
+            $data['defaultChecklist'] = $checklist;
+            
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 28);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vTelephoneDanPABX', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
+        }
+    }
+
+    public function saveTelpPabx()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'time' => [
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
+                    'label' => 'Jam Pengecekan',
+                ],
+                'equipment_checklist' => [
+                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
+                    'label' => 'Checklist',
+                ],
+                'ruang' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Ruang',
+                ],
+                'lantai' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Lantai',
+                ],
+                'line_co' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Line CO',
+                ],
+                'line_ext' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Line Ext',
+                ],
+                'microphone' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Microphone',
+                ],
+                'kabel_handle' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kabel Handle',
+                ],
+                'speaker' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Speaker',
+                ],
+                'layar_display' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Layar Display',
+                ],
+                'roset' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Roset',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]|is_natural',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/telppabx')->withInput()->with('validation', $validation);
+            }
+
+            $dataInput = [
+                'location' => session()->get('idstore'),
+                'time' => $this->request->getPost('time'),
+                'date' => date('Y-m-d'),
+                'worker' => session()->get('id'),
+                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
+                'ruang' => $this->request->getPost('ruang'),
+                'lantai' => $this->request->getPost('lantai'),
+                'line_co' => $this->request->getPost('line_co'),
+                'line_ext' => $this->request->getPost('line_ext'),
+                'microphone' => $this->request->getPost('microphone'),
+                'kabel_handle' => $this->request->getPost('kabel_handle'),
+                'speaker' => $this->request->getPost('speaker'),
+                'layar_display' => $this->request->getPost('layar_display'),
+                'roset' => $this->request->getPost('roset'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $input = $this->mTelpPabx->save($dataInput);
+
+            if ($input) {
+                session()->setFlashdata('success', 'Telephone & PABX Data has been added');
+                return redirect()->to('/telppabx', 201);
+            }
+
+            session()->setFlashdata('error', 'Telephone & PABX Data has not been added');
+            return redirect()->to('/telppabx', 500);
+        }
+    }
+
+    public function updateTelpPabx($id)
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'ruang' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Ruang',
+                ],
+                'lantai' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Lantai',
+                ],
+                'line_co' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Line CO',
+                ],
+                'line_ext' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Line Ext',
+                ],
+                'microphone' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Microphone',
+                ],
+                'kabel_handle' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kabel Handle',
+                ],
+                'speaker' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Speaker',
+                ],
+                'layar_display' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Layar Display',
+                ],
+                'roset' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Roset',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]|is_natural',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/telppabx')->withInput()->with('validation', $validation);
+            }
+
+            $dataUpdate = [
+                'id' => $id,
+                'ruang' => $this->request->getPost('ruang'),
+                'lantai' => $this->request->getPost('lantai'),
+                'line_co' => $this->request->getPost('line_co'),
+                'line_ext' => $this->request->getPost('line_ext'),
+                'microphone' => $this->request->getPost('microphone'),
+                'kabel_handle' => $this->request->getPost('kabel_handle'),
+                'speaker' => $this->request->getPost('speaker'),
+                'layar_display' => $this->request->getPost('layar_display'),
+                'roset' => $this->request->getPost('roset'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $update = $this->mTelpPabx->save($dataUpdate);
+
+            if ($update) {
+                session()->setFlashdata('success', 'Telephone & PABX Data has been edited');
+                return redirect()->to('/telppabx', 200);
+            }
+
+            session()->setFlashdata('error', 'Telephone & PABX Data has not been edited');
+            return redirect()->to('/telppabx', 500);
+        }
+    }
+
+    public function deleteTelpPabx()
+    {
+        $delete = $this->mTelpPabx->delete($this->request->getPost('id'));
+        if ($delete) {
+            $response = [
+                'success' => true,
+            ];
+            session()->setFlashdata('success', 'Telephone & PABX Data has been deleted');
+        } else {
+            $response = [
+                'success' => false,
+            ];
+            session()->setFlashdata('error', 'Telephone & PABX Data has not been deleted');
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function ajaxDataTelpPabx()
+    {
+        $data = $this->mTelpPabx->ajaxDataTelpPabx($this->request->getPost('id'));
+        if ($data) {
+            $response = [
+                'success' => true,
+                'data' => $data,
+            ];
+        } else {
+            $response = [
+                'success' => false,
+            ];
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function housekeeping()
+    {
+        $data['url'] = $this->request->uri->getSegment(1);
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $data['title'] = 'Housekeeping | B.M Apps &copy; Gramedia ' . date('Y');
+            $data['isLoggedIn'] = session()->get('isLoggedIn');
+            $data['id'] = session()->get('id');
+            $data['username'] = session()->get('username');
+            $data['name'] = session()->get('name');
+            $data['email'] = session()->get('email');
+            $data['image'] = session()->get('image');
+            $data['is_active'] = session()->get('is_active');
+            $data['role_id'] = session()->get('role_id');
+            $data['roleuser'] = session()->get('roleuser');
+            $data['superior_role_id'] = session()->get('superior_role_id');
+            $data['location'] = session()->get('location');
+            $data['level'] = session()->get('level');
+            $data['status_deleted'] = session()->get('status_deleted');
+            $data['validation'] = \Config\Services::validation();
+
+            $data['getDataTableHousekeeping'] = $this->mHouseKeep->getDataTableHousekeeping();
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_housekeeping");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_housekeeping', $checklist['checklist']);
+            $data['defaultChecklist'] = $checklist;
+            $data['equipmentDefaultChecklist'] = $this->mEquipment->equipmentDefaultChecklist("equipment_housekeeping");
+            
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 29);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vHousekeeping', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
+        }
+    }
+
+    public function saveHousekeeping()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'time' => [
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
+                    'label' => 'Jam Pengecekan',
+                ],
+                'equipment_checklist' => [
+                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
+                    'label' => 'Checklist',
+                ],
+                'ruang' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Ruang',
+                ],
+                'lantai' => [
+                    'rules' => 'required|max_length[3]',
+                    'label' => 'Lantai',
+                ],
+                'kloset' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kloset',
+                ],
+                'urinoir' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Urinoir',
+                ],
+                'washtafel' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Washtafel',
+                ],
+                'grease_trap' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Grease Trap',
+                ],
+                'diffuser' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Diffuser',
+                ],
+                'kebersihan_lantai' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai',
+                ],
+                'dinding' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Dinding',
+                ],
+                'cermin' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kaca / Cermin',
+                ],
+                'tempat_sampah' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Tempat Sampah',
+                ],
+                'floor_drainage' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Floor Drainage',
+                ],
+                'kap_lampu' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kap Lampu',
+                ],
+                'hand_dryer' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Hand Dryer',
+                ],
+                'exhaust_fan' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Exhaust Fan',
+                ],
+                'air_curtain' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Air Curtain',
+                ],
+                'plafond' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Plafond',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]|is_natural',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/housekeeping')->withInput()->with('validation', $validation);
+            }
+
+            $dataInput = [
+                'location' => session()->get('idstore'),
+                'time' => $this->request->getPost('time'),
+                'date' => date('Y-m-d'),
+                'worker' => session()->get('id'),
+                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
+                'ruang' => $this->request->getPost('ruang'),
+                'lantai' => $this->request->getPost('lantai'),
+                'kloset' => $this->request->getPost('kloset'),
+                'urinoir' => $this->request->getPost('urinoir'),
+                'washtafel' => $this->request->getPost('washtafel'),
+                'grease_trap' => $this->request->getPost('grease_trap'),
+                'diffuser' => $this->request->getPost('diffuser'),
+                'kebersihan_lantai' => $this->request->getPost('kebersihan_lantai'),
+                'dinding' => $this->request->getPost('dinding'),
+                'cermin' => $this->request->getPost('cermin'),
+                'tempat_sampah' => $this->request->getPost('tempat_sampah'),
+                'floor_drainage' => $this->request->getPost('floor_drainage'),
+                'kap_lampu' => $this->request->getPost('kap_lampu'),
+                'hand_dryer' => $this->request->getPost('hand_dryer'),
+                'exhaust_fan' => $this->request->getPost('exhaust_fan'),
+                'air_curtain' => $this->request->getPost('air_curtain'),
+                'plafond' => $this->request->getPost('plafond'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $input = $this->mHouseKeep->save($dataInput);
+
+            if ($input) {
+                session()->setFlashdata('success', 'Housekeeping Data has been added');
+                return redirect()->to('/housekeeping', 201);
+            }
+
+            session()->setFlashdata('error', 'Housekeeping Data has not been added');
+            return redirect()->to('/housekeeping', 500);
+        }
+    }
+
+    public function updateHousekeeping($id)
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'ruang' => [
+                    'rules' => 'required|max_length[30]',
+                    'label' => 'Ruang',
+                ],
+                'lantai' => [
+                    'rules' => 'required|max_length[3]',
+                    'label' => 'Lantai',
+                ],
+                'kloset' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kloset',
+                ],
+                'urinoir' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Urinoir',
+                ],
+                'washtafel' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Washtafel',
+                ],
+                'grease_trap' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Grease Trap',
+                ],
+                'diffuser' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Diffuser',
+                ],
+                'kebersihan_lantai' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Lantai',
+                ],
+                'dinding' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Dinding',
+                ],
+                'cermin' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kaca / Cermin',
+                ],
+                'tempat_sampah' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Tempat Sampah',
+                ],
+                'floor_drainage' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Floor Drainage',
+                ],
+                'kap_lampu' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Kap Lampu',
+                ],
+                'hand_dryer' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Hand Dryer',
+                ],
+                'exhaust_fan' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Exhaust Fan',
+                ],
+                'air_curtain' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Air Curtain',
+                ],
+                'plafond' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Plafond',
+                ],
+                'jumlah_temuan' => [
+                    'rules' => 'required|max_length[10]|is_natural',
+                    'label' => 'Jumlah Temuan',
+                ],
+                'penjelasan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Penjelasan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/housekeeping')->withInput()->with('validation', $validation);
+            }
+
+            $dataUpdate = [
+                'id' => $id,
+                'ruang' => $this->request->getPost('ruang'),
+                'lantai' => $this->request->getPost('lantai'),
+                'kloset' => $this->request->getPost('kloset'),
+                'urinoir' => $this->request->getPost('urinoir'),
+                'washtafel' => $this->request->getPost('washtafel'),
+                'grease_trap' => $this->request->getPost('grease_trap'),
+                'diffuser' => $this->request->getPost('diffuser'),
+                'kebersihan_lantai' => $this->request->getPost('kebersihan_lantai'),
+                'dinding' => $this->request->getPost('dinding'),
+                'cermin' => $this->request->getPost('cermin'),
+                'tempat_sampah' => $this->request->getPost('tempat_sampah'),
+                'floor_drainage' => $this->request->getPost('floor_drainage'),
+                'kap_lampu' => $this->request->getPost('kap_lampu'),
+                'hand_dryer' => $this->request->getPost('hand_dryer'),
+                'exhaust_fan' => $this->request->getPost('exhaust_fan'),
+                'air_curtain' => $this->request->getPost('air_curtain'),
+                'plafond' => $this->request->getPost('plafond'),
+                'jumlah_temuan' => $this->request->getPost('jumlah_temuan'),
+                'penjelasan' => $this->request->getPost('penjelasan'),
+            ];
+
+            $update = $this->mHouseKeep->save($dataUpdate);
+
+            if ($update) {
+                session()->setFlashdata('success', 'Housekeeping Data has been edited');
+                return redirect()->to('/housekeeping', 200);
+            }
+
+            session()->setFlashdata('error', 'Housekeeping Data has not been edited');
+            return redirect()->to('/housekeeping', 500);
+        }
+    }
+
+    public function deleteHousekeeping()
+    {
+        $delete = $this->mHouseKeep->delete($this->request->getPost('id'));
+        if ($delete) {
+            $response = [
+                'success' => true,
+            ];
+            session()->setFlashdata('success', 'Housekeeping Data has been deleted');
+        } else {
+            $response = [
+                'success' => false,
+            ];
+            session()->setFlashdata('error', 'Housekeeping Data has not been deleted');
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function ajaxDataHousekeeping()
+    {
+        $data = $this->mHouseKeep->ajaxDataHousekeeping($this->request->getPost('id'));
+        if ($data) {
+            $response = [
+                'success' => true,
+                'data' => $data,
+            ];
+        } else {
+            $response = [
+                'success' => false,
+            ];
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function gondola()
+    {
+        $data['url'] = $this->request->uri->getSegment(1);
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $data['title'] = 'Gondola | B.M Apps &copy; Gramedia ' . date('Y');
+            $data['isLoggedIn'] = session()->get('isLoggedIn');
+            $data['id'] = session()->get('id');
+            $data['username'] = session()->get('username');
+            $data['name'] = session()->get('name');
+            $data['email'] = session()->get('email');
+            $data['image'] = session()->get('image');
+            $data['is_active'] = session()->get('is_active');
+            $data['role_id'] = session()->get('role_id');
+            $data['roleuser'] = session()->get('roleuser');
+            $data['superior_role_id'] = session()->get('superior_role_id');
+            $data['location'] = session()->get('location');
+            $data['level'] = session()->get('level');
+            $data['status_deleted'] = session()->get('status_deleted');
+            $data['validation'] = \Config\Services::validation();
+
+            $data['getDataTableGondola'] = $this->mGondola->getDataTableGondola();
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_gondola");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_gondola', $checklist['checklist']);
+            $data['defaultChecklist'] = $checklist;
+            $data['equipmentDefaultChecklist'] = $this->mEquipment->equipmentDefaultChecklist("equipment_gondola");
+            
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 30);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vGondola', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
+        }
+    }
+
+    public function saveGondola()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'time' => [
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
+                    'label' => 'Jam Pengecekan',
+                ],
+                'equipment_checklist' => [
+                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
+                    'label' => 'Checklist',
+                ],
+                'paket_kontrol' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Paket Kontrol',
+                ],
+                'motor_gerak_rail' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Motor Gerak Rail',
+                ],
+                'motor_gerak_putar' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Motor Gerak Putar',
+                ],
+                'motor_gerak_arm' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Motor Gerak Arm',
+                ],
+                'motor_gerak_keranjang' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Motor Gerak Keranjang',
+                ],
+                'wire_rope' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Wire Rope',
+                ],
+                'safety_block' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Safety Block',
+                ],
+                'gear_box' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Gear Box',
+                ],
+                'noise' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Noise',
+                ],
+                'vibrasi' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Vibrasi',
+                ],
+                'pelumasan' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Pelumasan',
+                ],
+                'seragam' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Seragam',
+                ],
+                'id_card' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'ID Card',
+                ],
+                'helmet' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Helmet',
+                ],
+                'safety_glasses' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Safety Glasses',
+                ],
+                'full_body_harnetz' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Full Body Harnetz',
+                ],
+                'auto_stop' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Auto Stop / Gerigi',
+                ],
+                'carbiner' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Carbiner',
+                ],
+                'sarung_tangan' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Sarung Tangan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/gondola')->withInput()->with('validation', $validation);
+            }
+
+            $dataInput = [
+                'location' => session()->get('idstore'),
+                'time' => $this->request->getPost('time'),
+                'date' => date('Y-m-d'),
+                'worker' => session()->get('id'),
+                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
+                'paket_kontrol' => $this->request->getPost('paket_kontrol'),
+                'motor_gerak_rail' => $this->request->getPost('motor_gerak_rail'),
+                'motor_gerak_putar' => $this->request->getPost('motor_gerak_putar'),
+                'motor_gerak_arm' => $this->request->getPost('motor_gerak_arm'),
+                'motor_gerak_keranjang' => $this->request->getPost('motor_gerak_keranjang'),
+                'wire_rope' => $this->request->getPost('wire_rope'),
+                'safety_block' => $this->request->getPost('safety_block'),
+                'gear_box' => $this->request->getPost('gear_box'),
+                'noise' => $this->request->getPost('noise'),
+                'vibrasi' => $this->request->getPost('vibrasi'),
+                'pelumasan' => $this->request->getPost('pelumasan'),
+                'seragam' => $this->request->getPost('seragam'),
+                'id_card' => $this->request->getPost('id_card'),
+                'helmet' => $this->request->getPost('helmet'),
+                'safety_glasses' => $this->request->getPost('safety_glasses'),
+                'full_body_harnetz' => $this->request->getPost('full_body_harnetz'),
+                'auto_stop' => $this->request->getPost('auto_stop'),
+                'carbiner' => $this->request->getPost('carbiner'),
+                'sarung_tangan' => $this->request->getPost('sarung_tangan'),
+            ];
+
+            $input = $this->mGondola->save($dataInput);
+
+            if ($input) {
+                session()->setFlashdata('success', 'Gondola Data has been added');
+                return redirect()->to('/gondola', 201);
+            }
+
+            session()->setFlashdata('error', 'Gondola Data has not been added');
+            return redirect()->to('/gondola', 500);
+        }
+    }
+
+    public function updateGondola($id)
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'paket_kontrol' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Paket Kontrol',
+                ],
+                'motor_gerak_rail' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Motor Gerak Rail',
+                ],
+                'motor_gerak_putar' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Motor Gerak Putar',
+                ],
+                'motor_gerak_arm' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Motor Gerak Arm',
+                ],
+                'motor_gerak_keranjang' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Motor Gerak Keranjang',
+                ],
+                'wire_rope' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Wire Rope',
+                ],
+                'safety_block' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Safety Block',
+                ],
+                'gear_box' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Gear Box',
+                ],
+                'noise' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Noise',
+                ],
+                'vibrasi' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Vibrasi',
+                ],
+                'pelumasan' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Pelumasan',
+                ],
+                'seragam' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Seragam',
+                ],
+                'id_card' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'ID Card',
+                ],
+                'helmet' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Helmet',
+                ],
+                'safety_glasses' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Safety Glasses',
+                ],
+                'full_body_harnetz' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Full Body Harnetz',
+                ],
+                'auto_stop' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Auto Stop / Gerigi',
+                ],
+                'carbiner' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Carbiner',
+                ],
+                'sarung_tangan' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Sarung Tangan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/gondola')->withInput()->with('validation', $validation);
+            }
+
+            $dataUpdate = [
+                'id' => $id,
+                'paket_kontrol' => $this->request->getPost('paket_kontrol'),
+                'motor_gerak_rail' => $this->request->getPost('motor_gerak_rail'),
+                'motor_gerak_putar' => $this->request->getPost('motor_gerak_putar'),
+                'motor_gerak_arm' => $this->request->getPost('motor_gerak_arm'),
+                'motor_gerak_keranjang' => $this->request->getPost('motor_gerak_keranjang'),
+                'wire_rope' => $this->request->getPost('wire_rope'),
+                'safety_block' => $this->request->getPost('safety_block'),
+                'gear_box' => $this->request->getPost('gear_box'),
+                'noise' => $this->request->getPost('noise'),
+                'vibrasi' => $this->request->getPost('vibrasi'),
+                'pelumasan' => $this->request->getPost('pelumasan'),
+                'seragam' => $this->request->getPost('seragam'),
+                'id_card' => $this->request->getPost('id_card'),
+                'helmet' => $this->request->getPost('helmet'),
+                'safety_glasses' => $this->request->getPost('safety_glasses'),
+                'full_body_harnetz' => $this->request->getPost('full_body_harnetz'),
+                'auto_stop' => $this->request->getPost('auto_stop'),
+                'carbiner' => $this->request->getPost('carbiner'),
+                'sarung_tangan' => $this->request->getPost('sarung_tangan'),
+            ];
+
+            $update = $this->mGondola->save($dataUpdate);
+
+            if ($update) {
+                session()->setFlashdata('success', 'Gondola Data has been edited');
+                return redirect()->to('/gondola', 200);
+            }
+
+            session()->setFlashdata('error', 'Gondola Data has not been edited');
+            return redirect()->to('/gondola', 500);
+        }
+    }
+
+    public function deleteGondola()
+    {
+        $delete = $this->mGondola->delete($this->request->getPost('id'));
+        if ($delete) {
+            $response = [
+                'success' => true,
+            ];
+            session()->setFlashdata('success', 'Gondola Data has been deleted');
+        } else {
+            $response = [
+                'success' => false,
+            ];
+            session()->setFlashdata('error', 'Gondola Data has not been deleted');
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function ajaxDataGondola()
+    {
+        $data = $this->mGondola->ajaxDataGondola($this->request->getPost('id'));
+        if ($data) {
+            $response = [
+                'success' => true,
+                'data' => $data,
+            ];
+        } else {
+            $response = [
+                'success' => false,
+            ];
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function soundsystem()
+    {
+        $data['url'] = $this->request->uri->getSegment(1);
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $data['title'] = 'Sound System | B.M Apps &copy; Gramedia ' . date('Y');
+            $data['isLoggedIn'] = session()->get('isLoggedIn');
+            $data['id'] = session()->get('id');
+            $data['username'] = session()->get('username');
+            $data['name'] = session()->get('name');
+            $data['email'] = session()->get('email');
+            $data['image'] = session()->get('image');
+            $data['is_active'] = session()->get('is_active');
+            $data['role_id'] = session()->get('role_id');
+            $data['roleuser'] = session()->get('roleuser');
+            $data['superior_role_id'] = session()->get('superior_role_id');
+            $data['location'] = session()->get('location');
+            $data['level'] = session()->get('level');
+            $data['status_deleted'] = session()->get('status_deleted');
+            $data['validation'] = \Config\Services::validation();
+
+            $data['getDataTableSoundSystem'] = $this->mSoundSystem->getDataTableSoundSystem();
+            $checklist = $this->mEquipment->defaultChecklist(session()->get('idstore'), "equipment_soundsystem");
+            $data['checkInspection'] = $this->mEquipment->checkInspection('tb_sound_system', $checklist['checklist']);
+            $data['defaultChecklist'] = $checklist;
+            
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+            $data['getStoreEquipmentByStoreEquipment'] = $this->mEquipment->getStoreEquipmentByStoreEquipment(session()->get('idstore'), 31);
+
+            if($data['getStoreEquipmentByStoreEquipment']) {
+                return view('vSoundSystem', $data);
+            }
+            else {
+                return redirect()->to('/storeEquipment');
+            }
+        }
+    }
+
+    public function saveSoundSystem()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'time' => [
+                    'rules' => 'checkTimeByChecklist['. $this->request->getPost('equipment_checklist') . ']|checkEmptyTime['. $this->request->getPost('equipment_checklist') . ']',
+                    'errors' => [
+                        'checkEmptyTime' => '{field} is required on DIALY and WEEKLY check',
+                        'checkTimeByChecklist' => '{field} value is invalid',
+                    ],
+                    'label' => 'Jam Pengecekan',
+                ],
+                'equipment_checklist' => [
+                    'rules' => 'required|in_list[DAILY,WEEKLY,MONTHLY]',
+                    'label' => 'Checklist',
+                ],
+                'amplifier' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Mains Utility - Amplifier',
+                ],
+                'mixer' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Mains Utility - Mixer',
+                ],
+                'radio_fm' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Mains Utility - Radio FM',
+                ],
+                'cd_mp3_player' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Mains Utility - CD/MP3 Player',
+                ],
+                'switch_zone' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Mains Utility - Switch Zone',
+                ],
+                'mic_announcer' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Mains Utility - Mic Announcer',
+                ],
+                'speaker_jumlah' => [
+                    'rules' => 'required|is_natural|max_length[10]',
+                    'label' => 'Speaker - Jumlah',
+                ],
+                'speaker_keterangan' => [
+                    'rules' => 'required|max_length[500]',
+                    'label' => 'Speaker - Keterangan',
+                ],
+                'car_call' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Features - Car Call',
+                ],
+                'emergency_evac_system' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Features - Emergency Evac System',
+                ],
+                'keterangan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Keterangan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/soundsystem')->withInput()->with('validation', $validation);
+            }
+
+            $dataInput = [
+                'location' => session()->get('idstore'),
+                'time' => $this->request->getPost('time'),
+                'date' => date('Y-m-d'),
+                'worker' => session()->get('id'),
+                'equipment_checklist' => $this->request->getPost('equipment_checklist'),
+                'amplifier' => $this->request->getPost('amplifier'),
+                'mixer' => $this->request->getPost('mixer'),
+                'radio_fm' => $this->request->getPost('radio_fm'),
+                'cd_mp3_player' => $this->request->getPost('cd_mp3_player'),
+                'switch_zone' => $this->request->getPost('switch_zone'),
+                'mic_announcer' => $this->request->getPost('mic_announcer'),
+                'speaker_jumlah' => $this->request->getPost('speaker_jumlah'),
+                'speaker_keterangan' => $this->request->getPost('speaker_keterangan'),
+                'car_call' => $this->request->getPost('car_call'),
+                'emergency_evac_system' => $this->request->getPost('emergency_evac_system'),
+                'keterangan' => $this->request->getPost('keterangan'),
+            ];
+
+            $input = $this->mSoundSystem->save($dataInput);
+
+            if ($input) {
+                session()->setFlashdata('success', 'Sound System Data has been added');
+                return redirect()->to('/soundsystem', 201);
+            }
+
+            session()->setFlashdata('error', 'Sound System Data has not been added');
+            return redirect()->to('/soundsystem', 500);
+        }
+    }
+
+    public function updateSoundSystem($id)
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/');
+        } else {
+            $rules = [
+                'amplifier' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Mains Utility - Amplifier',
+                ],
+                'mixer' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Mains Utility - Mixer',
+                ],
+                'radio_fm' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Mains Utility - Radio FM',
+                ],
+                'cd_mp3_player' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Mains Utility - CD/MP3 Player',
+                ],
+                'switch_zone' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Mains Utility - Switch Zone',
+                ],
+                'mic_announcer' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Mains Utility - Mic Announcer',
+                ],
+                'speaker_jumlah' => [
+                    'rules' => 'required|is_natural|max_length[10]',
+                    'label' => 'Speaker - Jumlah',
+                ],
+                'speaker_keterangan' => [
+                    'rules' => 'required|max_length[500]',
+                    'label' => 'Speaker - Keterangan',
+                ],
+                'car_call' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Features - Car Call',
+                ],
+                'emergency_evac_system' => [
+                    'rules' => 'required|in_list[0,1]',
+                    'label' => 'Features - Emergency Evac System',
+                ],
+                'keterangan' => [
+                    'rules' => 'required|max_length[2000]',
+                    'label' => 'Keterangan',
+                ],
+            ];
+
+            if (!$this->validate($rules)) {
+                $validation = \Config\Services::validation();
+                return redirect()->to('/soundsystem')->withInput()->with('validation', $validation);
+            }
+
+            $dataUpdate = [
+                'id' => $id,
+                'amplifier' => $this->request->getPost('amplifier'),
+                'mixer' => $this->request->getPost('mixer'),
+                'radio_fm' => $this->request->getPost('radio_fm'),
+                'cd_mp3_player' => $this->request->getPost('cd_mp3_player'),
+                'switch_zone' => $this->request->getPost('switch_zone'),
+                'mic_announcer' => $this->request->getPost('mic_announcer'),
+                'speaker_jumlah' => $this->request->getPost('speaker_jumlah'),
+                'speaker_keterangan' => $this->request->getPost('speaker_keterangan'),
+                'car_call' => $this->request->getPost('car_call'),
+                'emergency_evac_system' => $this->request->getPost('emergency_evac_system'),
+                'keterangan' => $this->request->getPost('keterangan'),
+            ];
+
+            $update = $this->mSoundSystem->save($dataUpdate);
+
+            if ($update) {
+                session()->setFlashdata('success', 'Sound System Data has been edited');
+                return redirect()->to('/soundsystem', 200);
+            }
+
+            session()->setFlashdata('error', 'Sound System Data has not been edited');
+            return redirect()->to('/soundsystem', 500);
+        }
+    }
+
+    public function deleteSoundSystem()
+    {
+        $delete = $this->mSoundSystem->delete($this->request->getPost('id'));
+        if ($delete) {
+            $response = [
+                'success' => true,
+            ];
+            session()->setFlashdata('success', 'Sound System Data has been deleted');
+        } else {
+            $response = [
+                'success' => false,
+            ];
+            session()->setFlashdata('error', 'Sound System Data has not been deleted');
+        }
+        return $this->response->setJSON($response);
+    }
+
+    public function ajaxDataSoundSystem()
+    {
+        $data = $this->mSoundSystem->ajaxDataSoundSystem($this->request->getPost('id'));
         if ($data) {
             $response = [
                 'success' => true,

@@ -76,6 +76,8 @@ class MPlumbing extends Model
         $builder->join("tb_store", "tb_store.idStore = tb_plumbing.location", "LEFT");
         $builder->join("tb_user", "tb_user.id = tb_plumbing.worker", "LEFT");
 
+        $builder->orderBy("created_at","DESC");
+
         return $builder->get()->getResultArray();
     }
 
@@ -125,7 +127,6 @@ class MPlumbing extends Model
                 break;
 
             case 'WEEKLY':
-                // TODO optimalisasi dg tanggal ambil -7 day to +7 day
                 $builder->where("DATE_FORMAT(date, '%Y-%m')", convertDate($date, 'Y-m'));
                 $arrTanggal = $builder->get()->getResultArray();
 

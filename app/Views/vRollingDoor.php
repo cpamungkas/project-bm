@@ -31,11 +31,11 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Plumbing</h3>
+                        <h3 class="card-title">Rolling Door</h3>
                     </div>
 
                     <div class="card-body">
-                        <form id="formInputData" action="<?php echo base_url('plumbing/savePlumbing'); ?>" method="post">
+                        <form id="formInputData" action="<?php echo base_url('rollingdoor/saveRollingDoor'); ?>" method="post">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group mb-3 row">
@@ -48,12 +48,8 @@
                                     </div>
 
                                     <?php 
-                            if ($equipmentDefaultChecklist['checklist'] === $defaultChecklist['checklist']) {
-                                generateChecklistTime($defaultChecklist['checklist'], $checkInspection, ["08:00:00"]);
-                            } else {
-                                generateChecklistTime($defaultChecklist['checklist'], $checkInspection);
-                            }
-                            ?>
+                                        generateChecklistTime($defaultChecklist['checklist'], $checkInspection);
+                                    ?>
 
                                     <div class="form-group mb-3 row">
                                         <label class="form-label col-3 col-form-label">Date</label>
@@ -98,6 +94,22 @@
 
                             <div style="width: 100%; border-top: 1px solid lightgrey; height: 0; margin-top: 20px; margin-bottom: 20px;"></div>
 
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">Rolling Door Name</label>
+                                        <div class="col">
+                                            <input type="text" class="form-control <?= ($validation->hasError('name')) ? 'is-invalid' : ''; ?>" id="name" name="name" placeholder="Rolling Door Name" value="<?= old('name'); ?>">
+                                            <?php if ($validation->hasError('name')) : ?>
+                                                <div class="invalid-feedback">
+                                                    <?= $validation->getError('name'); ?>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="table-responsive">
                                 <table class="table table-bordered card-table table-vcenter text-nowrap datatable" style="width:100%">
                                     <tbody>
@@ -107,263 +119,30 @@
                                             <td style="border: 0;"></td>
                                         </tr>
                                         <tr>
-                                            <td class="col-3" rowspan="2">Instalasi Air Bersih</td>
-                                            <td class="col-4" style="padding-left: 8px;">P. Transfer 1</td>
+                                            <td class="col-3" rowspan="8">Inspeksi Rolling Door</td>
+                                            <td class="col-4" style="padding-left: 8px;">Kunci Set</td>
                                             <td>
                                                 <div style="padding-top: 10px; padding-bottom: 5px;">
-                                                    <input <?php if (old('instalasi_air_bersih_p_transfer1') == "1") {
+                                                    <input <?php if (old('kunci_set') == "1") {
                                                                 echo ("checked");
-                                                            } ?> id="instalasi_air_bersih_p_transfer1" name="instalasi_air_bersih_p_transfer1" type="checkbox" class="checkinstalasi_air_bersih_p_transfer1 <?= ($validation->hasError('instalasi_air_bersih_p_transfer1')) ? 'is-invalid' : ''; ?>" onclick="checkinstalasi_air_bersih_p_transfer1(this.value);" value="1">
-                                                    Auto<br>
-                                                </div>
-                                                <div style="padding-top: 5px; padding-bottom: 10px;">
-                                                    <input <?php if (old('instalasi_air_bersih_p_transfer1') == "0") {
-                                                                echo ("checked");
-                                                            } ?> id="instalasi_air_bersih_p_transfer1" name="instalasi_air_bersih_p_transfer1" type="checkbox" class="checkinstalasi_air_bersih_p_transfer1 <?= ($validation->hasError('instalasi_air_bersih_p_transfer1')) ? 'is-invalid' : ''; ?>" onclick="checkinstalasi_air_bersih_p_transfer1(this.value);" value="0">
-                                                    Manual
-                                                </div>
-                                                <?php if ($validation->hasError('instalasi_air_bersih_p_transfer1')) : ?>
-                                                    <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                        <?= $validation->getError('instalasi_air_bersih_p_transfer1'); ?>
-                                                    </div>
-                                                <?php endif; ?>
-                                            </td>
-                                            <script>
-                                                function checkinstalasi_air_bersih_p_transfer1(b) {
-                                                    var x = document.getElementsByClassName('checkinstalasi_air_bersih_p_transfer1');
-                                                    var i;
-
-                                                    for (i = 0; i < x.length; i++) {
-                                                        if (x[i].value != b) x[i].checked = false;
-                                                    }
-                                                }
-                                            </script>
-                                        </tr>
-                                        <tr>
-                                            <td class="col-4" style="padding-left: 8px;">P. Transfer 2</td>
-                                            <td>
-                                                <div style="padding-top: 10px; padding-bottom: 5px;">
-                                                    <input <?php if (old('instalasi_air_bersih_p_transfer2') == "1") {
-                                                                echo ("checked");
-                                                            } ?> id="instalasi_air_bersih_p_transfer2" name="instalasi_air_bersih_p_transfer2" type="checkbox" class="checkinstalasi_air_bersih_p_transfer2 <?= ($validation->hasError('instalasi_air_bersih_p_transfer2')) ? 'is-invalid' : ''; ?>" onclick="checkinstalasi_air_bersih_p_transfer2(this.value);" value="1">
-                                                    Auto<br>
-                                                </div>
-                                                <div style="padding-top: 5px; padding-bottom: 10px;">
-                                                    <input <?php if (old('instalasi_air_bersih_p_transfer2') == "0") {
-                                                                echo ("checked");
-                                                            } ?> id="instalasi_air_bersih_p_transfer2" name="instalasi_air_bersih_p_transfer2" type="checkbox" class="checkinstalasi_air_bersih_p_transfer2 <?= ($validation->hasError('instalasi_air_bersih_p_transfer2')) ? 'is-invalid' : ''; ?>" onclick="checkinstalasi_air_bersih_p_transfer2(this.value);" value="0">
-                                                    Manual
-                                                </div>
-                                                <?php if ($validation->hasError('instalasi_air_bersih_p_transfer2')) : ?>
-                                                    <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                        <?= $validation->getError('instalasi_air_bersih_p_transfer2'); ?>
-                                                    </div>
-                                                <?php endif; ?>
-                                            </td>
-                                            <script>
-                                                function checkinstalasi_air_bersih_p_transfer2(b) {
-                                                    var x = document.getElementsByClassName('checkinstalasi_air_bersih_p_transfer2');
-                                                    var i;
-
-                                                    for (i = 0; i < x.length; i++) {
-                                                        if (x[i].value != b) x[i].checked = false;
-                                                    }
-                                                }
-                                            </script>
-                                        </tr>
-                                        <tr style="border: 0;">
-                                            <td style="border: 0;"></td>
-                                            <td style="border: 0;"></td>
-                                            <td style="border: 0;"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="col-3" rowspan="2">Fire Pump</td>
-                                            <td class="col-4" style="padding-left: 8px;">Jockey Pump</td>
-                                            <td>
-                                                <div style="padding-top: 10px; padding-bottom: 5px;">
-                                                    <input <?php if (old('fire_pump_jockey_pump') == "1") {
-                                                                echo ("checked");
-                                                            } ?> id="fire_pump_jockey_pump" name="fire_pump_jockey_pump" type="checkbox" class="checkfire_pump_jockey_pump <?= ($validation->hasError('fire_pump_jockey_pump')) ? 'is-invalid' : ''; ?>" onclick="checkfire_pump_jockey_pump(this.value);" value="1">
-                                                    Auto<br>
-                                                </div>
-                                                <div style="padding-top: 5px; padding-bottom: 10px;">
-                                                    <input <?php if (old('fire_pump_jockey_pump') == "0") {
-                                                                echo ("checked");
-                                                            } ?> id="fire_pump_jockey_pump" name="fire_pump_jockey_pump" type="checkbox" class="checkfire_pump_jockey_pump <?= ($validation->hasError('fire_pump_jockey_pump')) ? 'is-invalid' : ''; ?>" onclick="checkfire_pump_jockey_pump(this.value);" value="0">
-                                                    Manual
-                                                </div>
-                                                <?php if ($validation->hasError('fire_pump_jockey_pump')) : ?>
-                                                    <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                        <?= $validation->getError('fire_pump_jockey_pump'); ?>
-                                                    </div>
-                                                <?php endif; ?>
-                                                <div class="form-group mb-3 row">
-                                                    <label class="form-label col-3 col-form-label">Pressure</label>
-                                                    <div class="col">
-                                                        <input type="text" class="form-control <?= ($validation->hasError('fire_pump_jockey_pressure')) ? 'is-invalid' : ''; ?>" id="fire_pump_jockey_pressure" name="fire_pump_jockey_pressure" placeholder="Pressure" value="<?= old('fire_pump_jockey_pressure'); ?>">
-                                                        <?php if ($validation->hasError('fire_pump_jockey_pressure')) : ?>
-                                                            <div class="invalid-feedback">
-                                                                <?= $validation->getError('fire_pump_jockey_pressure'); ?>
-                                                            </div>
-                                                        <?php endif; ?>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <script>
-                                                function checkfire_pump_jockey_pump(b) {
-                                                    var x = document.getElementsByClassName('checkfire_pump_jockey_pump');
-                                                    var i;
-
-                                                    for (i = 0; i < x.length; i++) {
-                                                        if (x[i].value != b) x[i].checked = false;
-                                                    }
-                                                }
-                                            </script>
-
-                                        </tr>
-                                        <tr>
-                                            <td class="col-4" style="padding-left: 8px;">Hydrant Pump</td>
-                                            <td>
-                                                <div style="padding-top: 10px; padding-bottom: 5px;">
-                                                    <input <?php if (old('fire_pump_hydrant_pump') == "1") {
-                                                                echo ("checked");
-                                                            } ?> id="fire_pump_hydrant_pump" name="fire_pump_hydrant_pump" type="checkbox" class="checkfire_pump_hydrant_pump <?= ($validation->hasError('fire_pump_hydrant_pump')) ? 'is-invalid' : ''; ?>" onclick="checkfire_pump_hydrant_pump(this.value);" value="1">
-                                                    Auto<br>
-                                                </div>
-                                                <div style="padding-top: 5px; padding-bottom: 10px;">
-                                                    <input <?php if (old('fire_pump_hydrant_pump') == "0") {
-                                                                echo ("checked");
-                                                            } ?> id="fire_pump_hydrant_pump" name="fire_pump_hydrant_pump" type="checkbox" class="checkfire_pump_hydrant_pump <?= ($validation->hasError('fire_pump_hydrant_pump')) ? 'is-invalid' : ''; ?>" onclick="checkfire_pump_hydrant_pump(this.value);" value="0">
-                                                    Manual
-                                                </div>
-                                                <?php if ($validation->hasError('fire_pump_hydrant_pump')) : ?>
-                                                    <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                        <?= $validation->getError('fire_pump_hydrant_pump'); ?>
-                                                    </div>
-                                                <?php endif; ?>
-                                                <div class="form-group mb-3 row">
-                                                    <label class="form-label col-3 col-form-label">Pressure</label>
-                                                    <div class="col">
-                                                        <input type="text" class="form-control <?= ($validation->hasError('fire_pump_hydrant_pressure')) ? 'is-invalid' : ''; ?>" id="fire_pump_hydrant_pressure" name="fire_pump_hydrant_pressure" placeholder="Pressure" value="<?= old('fire_pump_hydrant_pressure'); ?>">
-                                                        <?php if ($validation->hasError('fire_pump_hydrant_pressure')) : ?>
-                                                            <div class="invalid-feedback">
-                                                                <?= $validation->getError('fire_pump_hydrant_pressure'); ?>
-                                                            </div>
-                                                        <?php endif; ?>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <script>
-                                                function checkfire_pump_hydrant_pump(b) {
-                                                    var x = document.getElementsByClassName('checkfire_pump_hydrant_pump');
-                                                    var i;
-
-                                                    for (i = 0; i < x.length; i++) {
-                                                        if (x[i].value != b) x[i].checked = false;
-                                                    }
-                                                }
-                                            </script>
-                                        </tr>
-                                        <tr style="border: 0;">
-                                            <td style="border: 0;"></td>
-                                            <td style="border: 0;"></td>
-                                            <td style="border: 0;"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="col-3" rowspan="2">GWT</td>
-                                            <td class="col-4" style="padding-left: 8px;">Level Air</td>
-                                            <td>
-                                                <div style="padding-top: 10px; padding-bottom: 5px;">
-                                                    <input <?php if (old('gwt_level_air') == "1") {
-                                                                echo ("checked");
-                                                            } ?> id="gwt_level_air" name="gwt_level_air" type="checkbox" class="checkgwt_level_air <?= ($validation->hasError('gwt_level_air')) ? 'is-invalid' : ''; ?>" onclick="checkgwt_level_air(this.value);" value="1">
-                                                    Full<br>
-                                                </div>
-                                                <div style="padding-top: 5px; padding-bottom: 10px;">
-                                                    <input <?php if (old('gwt_level_air') == "0") {
-                                                                echo ("checked");
-                                                            } ?> id="gwt_level_air" name="gwt_level_air" type="checkbox" class="checkgwt_level_air <?= ($validation->hasError('gwt_level_air')) ? 'is-invalid' : ''; ?>" onclick="checkgwt_level_air(this.value);" value="0">
-                                                    Kurang
-                                                </div>
-                                                <?php if ($validation->hasError('gwt_level_air')) : ?>
-                                                    <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                        <?= $validation->getError('gwt_level_air'); ?>
-                                                    </div>
-                                                <?php endif; ?>
-                                            </td>
-                                            <script>
-                                                function checkgwt_level_air(b) {
-                                                    var x = document.getElementsByClassName('checkgwt_level_air');
-                                                    var i;
-
-                                                    for (i = 0; i < x.length; i++) {
-                                                        if (x[i].value != b) x[i].checked = false;
-                                                    }
-                                                }
-                                            </script>
-                                        </tr>
-                                        <tr>
-                                            <td class="col-4" style="padding-left: 8px;">Elektrode</td>
-                                            <td>
-                                                <div style="padding-top: 10px; padding-bottom: 5px;">
-                                                    <input <?php if (old('gwt_elektrode') == "1") {
-                                                                echo ("checked");
-                                                            } ?> id="gwt_elektrode" name="gwt_elektrode" type="checkbox" class="checkgwt_elektrode <?= ($validation->hasError('gwt_elektrode')) ? 'is-invalid' : ''; ?>" onclick="checkgwt_elektrode(this.value);" value="1">
+                                                            } ?> id="kunci_set" name="kunci_set" type="checkbox" class="checkkunci_set <?= ($validation->hasError('kunci_set')) ? 'is-invalid' : ''; ?>" onclick="checkkunci_set(this.value);" value="1">
                                                     Baik<br>
                                                 </div>
                                                 <div style="padding-top: 5px; padding-bottom: 10px;">
-                                                    <input <?php if (old('gwt_elektrode') == "0") {
+                                                    <input <?php if (old('kunci_set') == "0") {
                                                                 echo ("checked");
-                                                            } ?> id="gwt_elektrode" name="gwt_elektrode" type="checkbox" class="checkgwt_elektrode <?= ($validation->hasError('gwt_elektrode')) ? 'is-invalid' : ''; ?>" onclick="checkgwt_elektrode(this.value);" value="0">
+                                                            } ?> id="kunci_set" name="kunci_set" type="checkbox" class="checkkunci_set <?= ($validation->hasError('kunci_set')) ? 'is-invalid' : ''; ?>" onclick="checkkunci_set(this.value);" value="0">
                                                     Rusak
                                                 </div>
-                                                <?php if ($validation->hasError('gwt_elektrode')) : ?>
+                                                <?php if ($validation->hasError('kunci_set')) : ?>
                                                     <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                        <?= $validation->getError('gwt_elektrode'); ?>
+                                                        <?= $validation->getError('kunci_set'); ?>
                                                     </div>
                                                 <?php endif; ?>
                                             </td>
                                             <script>
-                                                function checkgwt_elektrode(b) {
-                                                    var x = document.getElementsByClassName('checkgwt_elektrode');
-                                                    var i;
-
-                                                    for (i = 0; i < x.length; i++) {
-                                                        if (x[i].value != b) x[i].checked = false;
-                                                    }
-                                                }
-                                            </script>
-                                        </tr>
-                                        <tr style="border: 0;">
-                                            <td style="border: 0;"></td>
-                                            <td style="border: 0;"></td>
-                                            <td style="border: 0;"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="col-3" rowspan="2">Roof Tank</td>
-                                            <td class="col-4" style="padding-left: 8px;">Level Air</td>
-                                            <td>
-                                                <div style="padding-top: 10px; padding-bottom: 5px;">
-                                                    <input <?php if (old('roof_tank_level_air') == "1") {
-                                                                echo ("checked");
-                                                            } ?> id="roof_tank_level_air" name="roof_tank_level_air" type="checkbox" class="checkroof_tank_level_air <?= ($validation->hasError('roof_tank_level_air')) ? 'is-invalid' : ''; ?>" onclick="checkroof_tank_level_air(this.value);" value="1">
-                                                    Full<br>
-                                                </div>
-                                                <div style="padding-top: 5px; padding-bottom: 10px;">
-                                                    <input <?php if (old('roof_tank_level_air') == "0") {
-                                                                echo ("checked");
-                                                            } ?> id="roof_tank_level_air" name="roof_tank_level_air" type="checkbox" class="checkroof_tank_level_air <?= ($validation->hasError('roof_tank_level_air')) ? 'is-invalid' : ''; ?>" onclick="checkroof_tank_level_air(this.value);" value="0">
-                                                    Kurang
-                                                </div>
-                                                <?php if ($validation->hasError('roof_tank_level_air')) : ?>
-                                                    <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                        <?= $validation->getError('roof_tank_level_air'); ?>
-                                                    </div>
-                                                <?php endif; ?>
-                                            </td>
-                                            <script>
-                                                function checkroof_tank_level_air(b) {
-                                                    var x = document.getElementsByClassName('checkroof_tank_level_air');
+                                                function checkkunci_set(b) {
+                                                    var x = document.getElementsByClassName('checkkunci_set');
                                                     var i;
 
                                                     for (i = 0; i < x.length; i++) {
@@ -373,67 +152,29 @@
                                             </script>
                                         </tr>
                                         <tr>
-                                            <td class="col-4" style="padding-left: 8px;">Elektrode</td>
+                                            <td class="col-4" style="padding-left: 8px;">Daun / Slot</td>
                                             <td>
                                                 <div style="padding-top: 10px; padding-bottom: 5px;">
-                                                    <input <?php if (old('roof_tank_elektrode') == "1") {
+                                                    <input <?php if (old('daun_slot') == "1") {
                                                                 echo ("checked");
-                                                            } ?> id="roof_tank_elektrode" name="roof_tank_elektrode" type="checkbox" class="checkroof_tank_elektrode <?= ($validation->hasError('roof_tank_elektrode')) ? 'is-invalid' : ''; ?>" onclick="checkroof_tank_elektrode(this.value);" value="1">
+                                                            } ?> id="daun_slot" name="daun_slot" type="checkbox" class="checkdaun_slot <?= ($validation->hasError('daun_slot')) ? 'is-invalid' : ''; ?>" onclick="checkdaun_slot(this.value);" value="1">
                                                     Baik<br>
                                                 </div>
                                                 <div style="padding-top: 5px; padding-bottom: 10px;">
-                                                    <input <?php if (old('roof_tank_elektrode') == "0") {
+                                                    <input <?php if (old('daun_slot') == "0") {
                                                                 echo ("checked");
-                                                            } ?> id="roof_tank_elektrode" name="roof_tank_elektrode" type="checkbox" class="checkroof_tank_elektrode <?= ($validation->hasError('roof_tank_elektrode')) ? 'is-invalid' : ''; ?>" onclick="checkroof_tank_elektrode(this.value);" value="0">
+                                                            } ?> id="daun_slot" name="daun_slot" type="checkbox" class="checkdaun_slot <?= ($validation->hasError('daun_slot')) ? 'is-invalid' : ''; ?>" onclick="checkdaun_slot(this.value);" value="0">
                                                     Rusak
                                                 </div>
-                                                <?php if ($validation->hasError('roof_tank_elektrode')) : ?>
+                                                <?php if ($validation->hasError('daun_slot')) : ?>
                                                     <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                        <?= $validation->getError('roof_tank_elektrode'); ?>
+                                                        <?= $validation->getError('daun_slot'); ?>
                                                     </div>
                                                 <?php endif; ?>
                                             </td>
                                             <script>
-                                                function checkroof_tank_elektrode(b) {
-                                                    var x = document.getElementsByClassName('checkroof_tank_elektrode');
-                                                    var i;
-
-                                                    for (i = 0; i < x.length; i++) {
-                                                        if (x[i].value != b) x[i].checked = false;
-                                                    }
-                                                }
-                                            </script>
-                                        </tr>
-                                        <tr style="border: 0;">
-                                            <td style="border: 0;"></td>
-                                            <td style="border: 0;"></td>
-                                            <td style="border: 0;"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="col-3" rowspan="2">Recycle Tank</td>
-                                            <td class="col-4" style="padding-left: 8px;">Level Air</td>
-                                            <td>
-                                                <div style="padding-top: 10px; padding-bottom: 5px;">
-                                                    <input <?php if (old('recycle_tank_level_air') == "1") {
-                                                                echo ("checked");
-                                                            } ?> id="recycle_tank_level_air" name="recycle_tank_level_air" type="checkbox" class="checkrecycle_tank_level_air <?= ($validation->hasError('recycle_tank_level_air')) ? 'is-invalid' : ''; ?>" onclick="checkrecycle_tank_level_air(this.value);" value="1">
-                                                    Full<br>
-                                                </div>
-                                                <div style="padding-top: 5px; padding-bottom: 10px;">
-                                                    <input <?php if (old('recycle_tank_level_air') == "0") {
-                                                                echo ("checked");
-                                                            } ?> id="recycle_tank_level_air" name="recycle_tank_level_air" type="checkbox" class="checkrecycle_tank_level_air <?= ($validation->hasError('recycle_tank_level_air')) ? 'is-invalid' : ''; ?>" onclick="checkrecycle_tank_level_air(this.value);" value="0">
-                                                    Kurang
-                                                </div>
-                                                <?php if ($validation->hasError('recycle_tank_level_air')) : ?>
-                                                    <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                        <?= $validation->getError('recycle_tank_level_air'); ?>
-                                                    </div>
-                                                <?php endif; ?>
-                                            </td>
-                                            <script>
-                                                function checkrecycle_tank_level_air(b) {
-                                                    var x = document.getElementsByClassName('checkrecycle_tank_level_air');
+                                                function checkdaun_slot(b) {
+                                                    var x = document.getElementsByClassName('checkdaun_slot');
                                                     var i;
 
                                                     for (i = 0; i < x.length; i++) {
@@ -443,29 +184,189 @@
                                             </script>
                                         </tr>
                                         <tr>
-                                            <td class="col-4" style="padding-left: 8px;">Elektrode</td>
+                                            <td class="col-4" style="padding-left: 8px;">Pulley</td>
                                             <td>
                                                 <div style="padding-top: 10px; padding-bottom: 5px;">
-                                                    <input <?php if (old('recycle_tank_elektrode') == "1") {
+                                                    <input <?php if (old('pulley') == "1") {
                                                                 echo ("checked");
-                                                            } ?> id="recycle_tank_elektrode" name="recycle_tank_elektrode" type="checkbox" class="checkrecycle_tank_elektrode <?= ($validation->hasError('recycle_tank_elektrode')) ? 'is-invalid' : ''; ?>" onclick="checkrecycle_tank_elektrode(this.value);" value="1">
+                                                            } ?> id="pulley" name="pulley" type="checkbox" class="checkpulley <?= ($validation->hasError('pulley')) ? 'is-invalid' : ''; ?>" onclick="checkpulley(this.value);" value="1">
                                                     Baik<br>
                                                 </div>
                                                 <div style="padding-top: 5px; padding-bottom: 10px;">
-                                                    <input <?php if (old('recycle_tank_elektrode') == "0") {
+                                                    <input <?php if (old('pulley') == "0") {
                                                                 echo ("checked");
-                                                            } ?> id="recycle_tank_elektrode" name="recycle_tank_elektrode" type="checkbox" class="checkrecycle_tank_elektrode <?= ($validation->hasError('recycle_tank_elektrode')) ? 'is-invalid' : ''; ?>" onclick="checkrecycle_tank_elektrode(this.value);" value="0">
+                                                            } ?> id="pulley" name="pulley" type="checkbox" class="checkpulley <?= ($validation->hasError('pulley')) ? 'is-invalid' : ''; ?>" onclick="checkpulley(this.value);" value="0">
                                                     Rusak
                                                 </div>
-                                                <?php if ($validation->hasError('recycle_tank_elektrode')) : ?>
+                                                <?php if ($validation->hasError('pulley')) : ?>
                                                     <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                        <?= $validation->getError('recycle_tank_elektrode'); ?>
+                                                        <?= $validation->getError('pulley'); ?>
                                                     </div>
                                                 <?php endif; ?>
                                             </td>
                                             <script>
-                                                function checkrecycle_tank_elektrode(b) {
-                                                    var x = document.getElementsByClassName('checkrecycle_tank_elektrode');
+                                                function checkpulley(b) {
+                                                    var x = document.getElementsByClassName('checkpulley');
+                                                    var i;
+
+                                                    for (i = 0; i < x.length; i++) {
+                                                        if (x[i].value != b) x[i].checked = false;
+                                                    }
+                                                }
+                                            </script>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-4" style="padding-left: 8px;">Pegas / Per</td>
+                                            <td>
+                                                <div style="padding-top: 10px; padding-bottom: 5px;">
+                                                    <input <?php if (old('pegas') == "1") {
+                                                                echo ("checked");
+                                                            } ?> id="pegas" name="pegas" type="checkbox" class="checkpegas <?= ($validation->hasError('pegas')) ? 'is-invalid' : ''; ?>" onclick="checkpegas(this.value);" value="1">
+                                                    Baik<br>
+                                                </div>
+                                                <div style="padding-top: 5px; padding-bottom: 10px;">
+                                                    <input <?php if (old('pegas') == "0") {
+                                                                echo ("checked");
+                                                            } ?> id="pegas" name="pegas" type="checkbox" class="checkpegas <?= ($validation->hasError('pegas')) ? 'is-invalid' : ''; ?>" onclick="checkpegas(this.value);" value="0">
+                                                    Rusak
+                                                </div>
+                                                <?php if ($validation->hasError('pegas')) : ?>
+                                                    <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
+                                                        <?= $validation->getError('pegas'); ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </td>
+                                            <script>
+                                                function checkpegas(b) {
+                                                    var x = document.getElementsByClassName('checkpegas');
+                                                    var i;
+
+                                                    for (i = 0; i < x.length; i++) {
+                                                        if (x[i].value != b) x[i].checked = false;
+                                                    }
+                                                }
+                                            </script>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-4" style="padding-left: 8px;">AS Batang</td>
+                                            <td>
+                                                <div style="padding-top: 10px; padding-bottom: 5px;">
+                                                    <input <?php if (old('as_batang') == "1") {
+                                                                echo ("checked");
+                                                            } ?> id="as_batang" name="as_batang" type="checkbox" class="checkas_batang <?= ($validation->hasError('as_batang')) ? 'is-invalid' : ''; ?>" onclick="checkas_batang(this.value);" value="1">
+                                                    Baik<br>
+                                                </div>
+                                                <div style="padding-top: 5px; padding-bottom: 10px;">
+                                                    <input <?php if (old('as_batang') == "0") {
+                                                                echo ("checked");
+                                                            } ?> id="as_batang" name="as_batang" type="checkbox" class="checkas_batang <?= ($validation->hasError('as_batang')) ? 'is-invalid' : ''; ?>" onclick="checkas_batang(this.value);" value="0">
+                                                    Rusak
+                                                </div>
+                                                <?php if ($validation->hasError('as_batang')) : ?>
+                                                    <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
+                                                        <?= $validation->getError('as_batang'); ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </td>
+                                            <script>
+                                                function checkas_batang(b) {
+                                                    var x = document.getElementsByClassName('checkas_batang');
+                                                    var i;
+
+                                                    for (i = 0; i < x.length; i++) {
+                                                        if (x[i].value != b) x[i].checked = false;
+                                                    }
+                                                }
+                                            </script>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-4" style="padding-left: 8px;">Side Bracket</td>
+                                            <td>
+                                                <div style="padding-top: 10px; padding-bottom: 5px;">
+                                                    <input <?php if (old('side_bracket') == "1") {
+                                                                echo ("checked");
+                                                            } ?> id="side_bracket" name="side_bracket" type="checkbox" class="checkside_bracket <?= ($validation->hasError('side_bracket')) ? 'is-invalid' : ''; ?>" onclick="checkside_bracket(this.value);" value="1">
+                                                    Baik<br>
+                                                </div>
+                                                <div style="padding-top: 5px; padding-bottom: 10px;">
+                                                    <input <?php if (old('side_bracket') == "0") {
+                                                                echo ("checked");
+                                                            } ?> id="side_bracket" name="side_bracket" type="checkbox" class="checkside_bracket <?= ($validation->hasError('side_bracket')) ? 'is-invalid' : ''; ?>" onclick="checkside_bracket(this.value);" value="0">
+                                                    Rusak
+                                                </div>
+                                                <?php if ($validation->hasError('side_bracket')) : ?>
+                                                    <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
+                                                        <?= $validation->getError('side_bracket'); ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </td>
+                                            <script>
+                                                function checkside_bracket(b) {
+                                                    var x = document.getElementsByClassName('checkside_bracket');
+                                                    var i;
+
+                                                    for (i = 0; i < x.length; i++) {
+                                                        if (x[i].value != b) x[i].checked = false;
+                                                    }
+                                                }
+                                            </script>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-4" style="padding-left: 8px;">Bottom Rail T</td>
+                                            <td>
+                                                <div style="padding-top: 10px; padding-bottom: 5px;">
+                                                    <input <?php if (old('bottom_t_rail') == "1") {
+                                                                echo ("checked");
+                                                            } ?> id="bottom_t_rail" name="bottom_t_rail" type="checkbox" class="checkbottom_t_rail <?= ($validation->hasError('bottom_t_rail')) ? 'is-invalid' : ''; ?>" onclick="checkbottom_t_rail(this.value);" value="1">
+                                                    Baik<br>
+                                                </div>
+                                                <div style="padding-top: 5px; padding-bottom: 10px;">
+                                                    <input <?php if (old('bottom_t_rail') == "0") {
+                                                                echo ("checked");
+                                                            } ?> id="bottom_t_rail" name="bottom_t_rail" type="checkbox" class="checkbottom_t_rail <?= ($validation->hasError('bottom_t_rail')) ? 'is-invalid' : ''; ?>" onclick="checkbottom_t_rail(this.value);" value="0">
+                                                    Rusak
+                                                </div>
+                                                <?php if ($validation->hasError('bottom_t_rail')) : ?>
+                                                    <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
+                                                        <?= $validation->getError('bottom_t_rail'); ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </td>
+                                            <script>
+                                                function checkbottom_t_rail(b) {
+                                                    var x = document.getElementsByClassName('checkbottom_t_rail');
+                                                    var i;
+
+                                                    for (i = 0; i < x.length; i++) {
+                                                        if (x[i].value != b) x[i].checked = false;
+                                                    }
+                                                }
+                                            </script>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-4" style="padding-left: 8px;">Pillar Rel</td>
+                                            <td>
+                                                <div style="padding-top: 10px; padding-bottom: 5px;">
+                                                    <input <?php if (old('pilar_rel') == "1") {
+                                                                echo ("checked");
+                                                            } ?> id="pilar_rel" name="pilar_rel" type="checkbox" class="checkpilar_rel <?= ($validation->hasError('pilar_rel')) ? 'is-invalid' : ''; ?>" onclick="checkpilar_rel(this.value);" value="1">
+                                                    Baik<br>
+                                                </div>
+                                                <div style="padding-top: 5px; padding-bottom: 10px;">
+                                                    <input <?php if (old('pilar_rel') == "0") {
+                                                                echo ("checked");
+                                                            } ?> id="pilar_rel" name="pilar_rel" type="checkbox" class="checkpilar_rel <?= ($validation->hasError('pilar_rel')) ? 'is-invalid' : ''; ?>" onclick="checkpilar_rel(this.value);" value="0">
+                                                    Rusak
+                                                </div>
+                                                <?php if ($validation->hasError('pilar_rel')) : ?>
+                                                    <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
+                                                        <?= $validation->getError('pilar_rel'); ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </td>
+                                            <script>
+                                                function checkpilar_rel(b) {
+                                                    var x = document.getElementsByClassName('checkpilar_rel');
                                                     var i;
 
                                                     for (i = 0; i < x.length; i++) {
@@ -485,23 +386,35 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group mb-3 row">
-                                        <label class="form-label col-3 col-form-label">Keterangan</label>
-                                        <textarea name="keterangan" id="keterangan" class="form-control col <?= ($validation->hasError('keterangan')) ? 'is-invalid' : ''; ?>" rows="6"><?= old('keterangan'); ?></textarea>
-                                        <?php if ($validation->hasError('keterangan')) : ?>
+                                        <label class="form-label col-3 col-form-label">Jumlah Temuan</label>
+                                        <div class="col">
+                                            <input type="text" class="form-control <?= ($validation->hasError('jumlah_temuan')) ? 'is-invalid' : ''; ?>" id="jumlah_temuan" name="jumlah_temuan" placeholder="Jumlah Temuan" value="<?= old('jumlah_temuan'); ?>">
+                                            <?php if ($validation->hasError('jumlah_temuan')) : ?>
+                                                <div class="invalid-feedback">
+                                                    <?= $validation->getError('jumlah_temuan'); ?>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group mb-3 row">
+                                        <label class="form-label col-3 col-form-label">Penjelasan</label>
+                                        <textarea name="penjelasan" id="penjelasan" class="form-control col <?= ($validation->hasError('penjelasan')) ? 'is-invalid' : ''; ?>" rows="6"><?= old('penjelasan'); ?></textarea>
+                                        <?php if ($validation->hasError('penjelasan')) : ?>
                                             <div class="invalid-feedback">
-                                                <?= $validation->getError('keterangan'); ?>
+                                                <?= $validation->getError('penjelasan'); ?>
                                             </div>
                                         <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
 
-
                             <div class="form-footer">
                                 <div class="row align-items-center">
                                     <div class="col"></div>
                                     <div class="col-auto">
-                                        <button type="submit" class="btn btn-outline-primary ms-auto" id="btnSubmitShift" name="btnSubmitShift">
+                                        <button type="submit" class="btn btn-outline-primary ms-auto">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                 <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -528,7 +441,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Plumbing</h3>
+                        <h3 class="card-title">Rolling Door</h3>
                     </div>
 
                     <div class="clearfix">
@@ -541,72 +454,50 @@
                                 <tr>
                                     <th class="w-1">No.</th>
                                     <th>Location</th>
-                                    <th>Jam Pengecekan</th>
                                     <th>Time Stamp</th>
                                     <th>PIC</th>
-                                    <th class="text-center">Instalasi Air Bersih
-                                        <br>P.Transfer 1
+                                    <th class="text-center">Rolling Door<br>
+                                        Name
                                     </th>
-                                    <th class="text-center">Instalasi Air Bersih
-                                        <br>P.Transfer 2
+                                    <th>Kunci Set</th>
+                                    <th class="text-center">Daun/<br>
+                                        Slot
                                     </th>
-                                    <th class="text-center">Fire Pump
-                                        <br>Jockey Pump
+                                    <th>Pulley</th>
+                                    <th class="text-center">Pegas/<br>
+                                        Per
                                     </th>
-                                    <th class="text-center">Fire Pump
-                                        <br>Jockey Pump Pressure
+                                    <th>AS Batang</th>
+                                    <th>Side Bracket</th>
+                                    <th class="text-center">Bottom<br>
+                                        Rail T
                                     </th>
-                                    <th class="text-center">Fire Pump
-                                        <br>Hydrant Pump
-                                    </th>
-                                    <th class="text-center">Fire Pump
-                                        <br>Hydrant Pump Pressure
-                                    </th>
-                                    <th class="text-center">GWT
-                                        <br>Level Air
-                                    </th>
-                                    <th class="text-center">GWT
-                                        <br>Elektrode
-                                    </th>
-                                    <th class="text-center">Roof Tank
-                                        <br>Level Air
-                                    </th>
-                                    <th class="text-center">Roof Tank
-                                        <br>Elektrode
-                                    </th>
-                                    <th class="text-center">Recycle Tank
-                                        <br>Level Air
-                                    </th>
-                                    <th class="text-center">Recycle Tank
-                                        <br>Elektrode
-                                    </th>
-                                    <th>Keterangan</th>
+                                    <th>Pillar Rel</th>
+                                    <th>Jumlah Temuan</th>
+                                    <th>Penjelasan</th>
                                     <th class="text-end">Action</th>
                                 </tr>
                             </thead>
 
                             <tbody>
                                 <?php $i = 1 ?>
-                                <?php foreach ($getDataTablePlumbing as $ts) : ?>
+                                <?php foreach ($getDataTableRollingDoor as $ts) : ?>
                                     <tr>
                                         <td><?= $i ?></td>
                                         <td><?= $ts['storeName']; ?></td>
-                                        <td><?= $ts['time']; ?></td>
                                         <td><?= dateView($ts['date']); ?></td>
                                         <td><?= $ts['initial']; ?></td>
-                                        <td><?= autoManual($ts['instalasi_air_bersih_p_transfer1']); ?></td>
-                                        <td><?= autoManual($ts['instalasi_air_bersih_p_transfer2']); ?></td>
-                                        <td><?= autoManual($ts['fire_pump_jockey_pump']); ?></td>
-                                        <td><?= $ts['fire_pump_jockey_pressure']; ?></td>
-                                        <td><?= autoManual($ts['fire_pump_hydrant_pump']); ?></td>
-                                        <td><?= $ts['fire_pump_hydrant_pressure']; ?></td>
-                                        <td><?= fullKurang($ts['gwt_level_air']); ?></td>
-                                        <td><?= equipmentStatus($ts['gwt_elektrode']); ?></td>
-                                        <td><?= fullKurang($ts['roof_tank_level_air']); ?></td>
-                                        <td><?= equipmentStatus($ts['roof_tank_elektrode']); ?></td>
-                                        <td><?= fullKurang($ts['recycle_tank_level_air']); ?></td>
-                                        <td><?= equipmentStatus($ts['recycle_tank_elektrode']); ?></td>
-                                        <td><?= $ts['keterangan']; ?></td>
+                                        <td><?= $ts['name']; ?></td>
+                                        <td><?= equipmentStatus($ts['kunci_set']); ?></td>
+                                        <td><?= equipmentStatus($ts['daun_slot']); ?></td>
+                                        <td><?= equipmentStatus($ts['pulley']); ?></td>
+                                        <td><?= equipmentStatus($ts['pegas']); ?></td>
+                                        <td><?= equipmentStatus($ts['as_batang']); ?></td>
+                                        <td><?= equipmentStatus($ts['side_bracket']); ?></td>
+                                        <td><?= equipmentStatus($ts['bottom_t_rail']); ?></td>
+                                        <td><?= equipmentStatus($ts['pilar_rel']); ?></td>
+                                        <td><?= $ts['jumlah_temuan']; ?></td>
+                                        <td><?= $ts['penjelasan']; ?></td>
                                         <td class="text-end">
                                             <div class="row g-2 align-items-center mb-n3">
                                                 <div class="col-6 col-sm-4 col-md-2 col-xl-auto mb-3">
@@ -684,7 +575,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit Data Plumbing</h5>
+                <h5 class="modal-title">Edit Data Rolling Door</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -702,11 +593,7 @@
                             </div>
 
                             <?php 
-                            if ($equipmentDefaultChecklist['checklist'] === $defaultChecklist['checklist']) {
-                                generateChecklistTime($defaultChecklist['checklist'], $checkInspection, ["08:00:00"], TRUE);
-                            } else {
                                 generateChecklistTime($defaultChecklist['checklist'], $checkInspection, null, TRUE);
-                            }
                             ?>
 
                         </div>
@@ -742,6 +629,22 @@
 
                     <div style="width: 100%; border-top: 1px solid lightgrey; height: 0; margin-top: 20px; margin-bottom: 20px;"></div>
 
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label">Folding Gate Name</label>
+                                <div class="col">
+                                    <input type="text" class="form-control <?= ($validation->hasError('name')) ? 'is-invalid' : ''; ?>" id="name" name="name" placeholder="Folding Gate Name" value="<?= old('name'); ?>">
+                                    <?php if ($validation->hasError('name')) : ?>
+                                        <div class="invalid-feedback">
+                                            <?= $validation->getError('name'); ?>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="table-responsive">
                         <table class="table table-bordered card-table table-vcenter text-nowrap datatable" style="width:100%">
                             <tbody>
@@ -751,263 +654,30 @@
                                     <td style="border: 0;"></td>
                                 </tr>
                                 <tr>
-                                    <td class="col-3" rowspan="2">Instalasi Air Bersih</td>
-                                    <td class="col-4" style="padding-left: 8px;">P. Transfer 1</td>
+                                    <td class="col-3" rowspan="8">Inspeksi Rolling Door</td>
+                                    <td class="col-4" style="padding-left: 8px;">Kunci Set</td>
                                     <td>
                                         <div style="padding-top: 10px; padding-bottom: 5px;">
-                                            <input <?php if (old('instalasi_air_bersih_p_transfer1') == "1") {
+                                            <input <?php if (old('kunci_set') == "1") {
                                                         echo ("checked");
-                                                    } ?> id="instalasi_air_bersih_p_transfer1" name="instalasi_air_bersih_p_transfer1" type="checkbox" class="checkinstalasi_air_bersih_p_transfer1 <?= ($validation->hasError('instalasi_air_bersih_p_transfer1')) ? 'is-invalid' : ''; ?>" onclick="checkinstalasi_air_bersih_p_transfer1(this.value);" value="1">
-                                            Auto<br>
-                                        </div>
-                                        <div style="padding-top: 5px; padding-bottom: 10px;">
-                                            <input <?php if (old('instalasi_air_bersih_p_transfer1') == "0") {
-                                                        echo ("checked");
-                                                    } ?> id="instalasi_air_bersih_p_transfer1" name="instalasi_air_bersih_p_transfer1" type="checkbox" class="checkinstalasi_air_bersih_p_transfer1 <?= ($validation->hasError('instalasi_air_bersih_p_transfer1')) ? 'is-invalid' : ''; ?>" onclick="checkinstalasi_air_bersih_p_transfer1(this.value);" value="0">
-                                            Manual
-                                        </div>
-                                        <?php if ($validation->hasError('instalasi_air_bersih_p_transfer1')) : ?>
-                                            <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                <?= $validation->getError('instalasi_air_bersih_p_transfer1'); ?>
-                                            </div>
-                                        <?php endif; ?>
-                                    </td>
-                                    <script>
-                                        function checkinstalasi_air_bersih_p_transfer1(b) {
-                                            var x = document.getElementsByClassName('checkinstalasi_air_bersih_p_transfer1');
-                                            var i;
-
-                                            for (i = 0; i < x.length; i++) {
-                                                if (x[i].value != b) x[i].checked = false;
-                                            }
-                                        }
-                                    </script>
-                                </tr>
-                                <tr>
-                                    <td class="col-4" style="padding-left: 8px;">P. Transfer 2</td>
-                                    <td>
-                                        <div style="padding-top: 10px; padding-bottom: 5px;">
-                                            <input <?php if (old('instalasi_air_bersih_p_transfer2') == "1") {
-                                                        echo ("checked");
-                                                    } ?> id="instalasi_air_bersih_p_transfer2" name="instalasi_air_bersih_p_transfer2" type="checkbox" class="checkinstalasi_air_bersih_p_transfer2 <?= ($validation->hasError('instalasi_air_bersih_p_transfer2')) ? 'is-invalid' : ''; ?>" onclick="checkinstalasi_air_bersih_p_transfer2(this.value);" value="1">
-                                            Auto<br>
-                                        </div>
-                                        <div style="padding-top: 5px; padding-bottom: 10px;">
-                                            <input <?php if (old('instalasi_air_bersih_p_transfer2') == "0") {
-                                                        echo ("checked");
-                                                    } ?> id="instalasi_air_bersih_p_transfer2" name="instalasi_air_bersih_p_transfer2" type="checkbox" class="checkinstalasi_air_bersih_p_transfer2 <?= ($validation->hasError('instalasi_air_bersih_p_transfer2')) ? 'is-invalid' : ''; ?>" onclick="checkinstalasi_air_bersih_p_transfer2(this.value);" value="0">
-                                            Manual
-                                        </div>
-                                        <?php if ($validation->hasError('instalasi_air_bersih_p_transfer2')) : ?>
-                                            <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                <?= $validation->getError('instalasi_air_bersih_p_transfer2'); ?>
-                                            </div>
-                                        <?php endif; ?>
-                                    </td>
-                                    <script>
-                                        function checkinstalasi_air_bersih_p_transfer2(b) {
-                                            var x = document.getElementsByClassName('checkinstalasi_air_bersih_p_transfer2');
-                                            var i;
-
-                                            for (i = 0; i < x.length; i++) {
-                                                if (x[i].value != b) x[i].checked = false;
-                                            }
-                                        }
-                                    </script>
-                                </tr>
-                                <tr style="border: 0;">
-                                    <td style="border: 0;"></td>
-                                    <td style="border: 0;"></td>
-                                    <td style="border: 0;"></td>
-                                </tr>
-                                <tr>
-                                    <td class="col-3" rowspan="2">Fire Pump</td>
-                                    <td class="col-4" style="padding-left: 8px;">Jockey Pump</td>
-                                    <td>
-                                        <div style="padding-top: 10px; padding-bottom: 5px;">
-                                            <input <?php if (old('fire_pump_jockey_pump') == "1") {
-                                                        echo ("checked");
-                                                    } ?> id="fire_pump_jockey_pump" name="fire_pump_jockey_pump" type="checkbox" class="checkfire_pump_jockey_pump <?= ($validation->hasError('fire_pump_jockey_pump')) ? 'is-invalid' : ''; ?>" onclick="checkfire_pump_jockey_pump(this.value);" value="1">
-                                            Auto<br>
-                                        </div>
-                                        <div style="padding-top: 5px; padding-bottom: 10px;">
-                                            <input <?php if (old('fire_pump_jockey_pump') == "0") {
-                                                        echo ("checked");
-                                                    } ?> id="fire_pump_jockey_pump" name="fire_pump_jockey_pump" type="checkbox" class="checkfire_pump_jockey_pump <?= ($validation->hasError('fire_pump_jockey_pump')) ? 'is-invalid' : ''; ?>" onclick="checkfire_pump_jockey_pump(this.value);" value="0">
-                                            Manual
-                                        </div>
-                                        <?php if ($validation->hasError('fire_pump_jockey_pump')) : ?>
-                                            <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                <?= $validation->getError('fire_pump_jockey_pump'); ?>
-                                            </div>
-                                        <?php endif; ?>
-                                        <div class="form-group mb-3 row">
-                                            <label class="form-label col-3 col-form-label">Pressure</label>
-                                            <div class="col">
-                                                <input type="text" class="form-control <?= ($validation->hasError('fire_pump_jockey_pressure')) ? 'is-invalid' : ''; ?>" id="fire_pump_jockey_pressure" name="fire_pump_jockey_pressure" placeholder="Pressure" value="<?= old('fire_pump_jockey_pressure'); ?>">
-                                                <?php if ($validation->hasError('fire_pump_jockey_pressure')) : ?>
-                                                    <div class="invalid-feedback">
-                                                        <?= $validation->getError('fire_pump_jockey_pressure'); ?>
-                                                    </div>
-                                                <?php endif; ?>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <script>
-                                        function checkfire_pump_jockey_pump(b) {
-                                            var x = document.getElementsByClassName('checkfire_pump_jockey_pump');
-                                            var i;
-
-                                            for (i = 0; i < x.length; i++) {
-                                                if (x[i].value != b) x[i].checked = false;
-                                            }
-                                        }
-                                    </script>
-
-                                </tr>
-                                <tr>
-                                    <td class="col-4" style="padding-left: 8px;">Hydrant Pump</td>
-                                    <td>
-                                        <div style="padding-top: 10px; padding-bottom: 5px;">
-                                            <input <?php if (old('fire_pump_hydrant_pump') == "1") {
-                                                        echo ("checked");
-                                                    } ?> id="fire_pump_hydrant_pump" name="fire_pump_hydrant_pump" type="checkbox" class="checkfire_pump_hydrant_pump <?= ($validation->hasError('fire_pump_hydrant_pump')) ? 'is-invalid' : ''; ?>" onclick="checkfire_pump_hydrant_pump(this.value);" value="1">
-                                            Auto<br>
-                                        </div>
-                                        <div style="padding-top: 5px; padding-bottom: 10px;">
-                                            <input <?php if (old('fire_pump_hydrant_pump') == "0") {
-                                                        echo ("checked");
-                                                    } ?> id="fire_pump_hydrant_pump" name="fire_pump_hydrant_pump" type="checkbox" class="checkfire_pump_hydrant_pump <?= ($validation->hasError('fire_pump_hydrant_pump')) ? 'is-invalid' : ''; ?>" onclick="checkfire_pump_hydrant_pump(this.value);" value="0">
-                                            Manual
-                                        </div>
-                                        <?php if ($validation->hasError('fire_pump_hydrant_pump')) : ?>
-                                            <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                <?= $validation->getError('fire_pump_hydrant_pump'); ?>
-                                            </div>
-                                        <?php endif; ?>
-                                        <div class="form-group mb-3 row">
-                                            <label class="form-label col-3 col-form-label">Pressure</label>
-                                            <div class="col">
-                                                <input type="text" class="form-control <?= ($validation->hasError('fire_pump_hydrant_pressure')) ? 'is-invalid' : ''; ?>" id="fire_pump_hydrant_pressure" name="fire_pump_hydrant_pressure" placeholder="Pressure" value="<?= old('fire_pump_hydrant_pressure'); ?>">
-                                                <?php if ($validation->hasError('fire_pump_hydrant_pressure')) : ?>
-                                                    <div class="invalid-feedback">
-                                                        <?= $validation->getError('fire_pump_hydrant_pressure'); ?>
-                                                    </div>
-                                                <?php endif; ?>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <script>
-                                        function checkfire_pump_hydrant_pump(b) {
-                                            var x = document.getElementsByClassName('checkfire_pump_hydrant_pump');
-                                            var i;
-
-                                            for (i = 0; i < x.length; i++) {
-                                                if (x[i].value != b) x[i].checked = false;
-                                            }
-                                        }
-                                    </script>
-                                </tr>
-                                <tr style="border: 0;">
-                                    <td style="border: 0;"></td>
-                                    <td style="border: 0;"></td>
-                                    <td style="border: 0;"></td>
-                                </tr>
-                                <tr>
-                                    <td class="col-3" rowspan="2">GWT</td>
-                                    <td class="col-4" style="padding-left: 8px;">Level Air</td>
-                                    <td>
-                                        <div style="padding-top: 10px; padding-bottom: 5px;">
-                                            <input <?php if (old('gwt_level_air') == "1") {
-                                                        echo ("checked");
-                                                    } ?> id="gwt_level_air" name="gwt_level_air" type="checkbox" class="checkgwt_level_air <?= ($validation->hasError('gwt_level_air')) ? 'is-invalid' : ''; ?>" onclick="checkgwt_level_air(this.value);" value="1">
-                                            Full<br>
-                                        </div>
-                                        <div style="padding-top: 5px; padding-bottom: 10px;">
-                                            <input <?php if (old('gwt_level_air') == "0") {
-                                                        echo ("checked");
-                                                    } ?> id="gwt_level_air" name="gwt_level_air" type="checkbox" class="checkgwt_level_air <?= ($validation->hasError('gwt_level_air')) ? 'is-invalid' : ''; ?>" onclick="checkgwt_level_air(this.value);" value="0">
-                                            Kurang
-                                        </div>
-                                        <?php if ($validation->hasError('gwt_level_air')) : ?>
-                                            <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                <?= $validation->getError('gwt_level_air'); ?>
-                                            </div>
-                                        <?php endif; ?>
-                                    </td>
-                                    <script>
-                                        function checkgwt_level_air(b) {
-                                            var x = document.getElementsByClassName('checkgwt_level_air');
-                                            var i;
-
-                                            for (i = 0; i < x.length; i++) {
-                                                if (x[i].value != b) x[i].checked = false;
-                                            }
-                                        }
-                                    </script>
-                                </tr>
-                                <tr>
-                                    <td class="col-4" style="padding-left: 8px;">Elektrode</td>
-                                    <td>
-                                        <div style="padding-top: 10px; padding-bottom: 5px;">
-                                            <input <?php if (old('gwt_elektrode') == "1") {
-                                                        echo ("checked");
-                                                    } ?> id="gwt_elektrode" name="gwt_elektrode" type="checkbox" class="checkgwt_elektrode <?= ($validation->hasError('gwt_elektrode')) ? 'is-invalid' : ''; ?>" onclick="checkgwt_elektrode(this.value);" value="1">
+                                                    } ?> id="kunci_set" name="kunci_set" type="checkbox" class="checkkunci_setEdit <?= ($validation->hasError('kunci_set')) ? 'is-invalid' : ''; ?>" onclick="checkkunci_setEdit(this.value);" value="1">
                                             Baik<br>
                                         </div>
                                         <div style="padding-top: 5px; padding-bottom: 10px;">
-                                            <input <?php if (old('gwt_elektrode') == "0") {
+                                            <input <?php if (old('kunci_set') == "0") {
                                                         echo ("checked");
-                                                    } ?> id="gwt_elektrode" name="gwt_elektrode" type="checkbox" class="checkgwt_elektrode <?= ($validation->hasError('gwt_elektrode')) ? 'is-invalid' : ''; ?>" onclick="checkgwt_elektrode(this.value);" value="0">
+                                                    } ?> id="kunci_set" name="kunci_set" type="checkbox" class="checkkunci_setEdit <?= ($validation->hasError('kunci_set')) ? 'is-invalid' : ''; ?>" onclick="checkkunci_setEdit(this.value);" value="0">
                                             Rusak
                                         </div>
-                                        <?php if ($validation->hasError('gwt_elektrode')) : ?>
+                                        <?php if ($validation->hasError('kunci_set')) : ?>
                                             <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                <?= $validation->getError('gwt_elektrode'); ?>
+                                                <?= $validation->getError('kunci_set'); ?>
                                             </div>
                                         <?php endif; ?>
                                     </td>
                                     <script>
-                                        function checkgwt_elektrode(b) {
-                                            var x = document.getElementsByClassName('checkgwt_elektrode');
-                                            var i;
-
-                                            for (i = 0; i < x.length; i++) {
-                                                if (x[i].value != b) x[i].checked = false;
-                                            }
-                                        }
-                                    </script>
-                                </tr>
-                                <tr style="border: 0;">
-                                    <td style="border: 0;"></td>
-                                    <td style="border: 0;"></td>
-                                    <td style="border: 0;"></td>
-                                </tr>
-                                <tr>
-                                    <td class="col-3" rowspan="2">Roof Tank</td>
-                                    <td class="col-4" style="padding-left: 8px;">Level Air</td>
-                                    <td>
-                                        <div style="padding-top: 10px; padding-bottom: 5px;">
-                                            <input <?php if (old('roof_tank_level_air') == "1") {
-                                                        echo ("checked");
-                                                    } ?> id="roof_tank_level_air" name="roof_tank_level_air" type="checkbox" class="checkroof_tank_level_air <?= ($validation->hasError('roof_tank_level_air')) ? 'is-invalid' : ''; ?>" onclick="checkroof_tank_level_air(this.value);" value="1">
-                                            Full<br>
-                                        </div>
-                                        <div style="padding-top: 5px; padding-bottom: 10px;">
-                                            <input <?php if (old('roof_tank_level_air') == "0") {
-                                                        echo ("checked");
-                                                    } ?> id="roof_tank_level_air" name="roof_tank_level_air" type="checkbox" class="checkroof_tank_level_air <?= ($validation->hasError('roof_tank_level_air')) ? 'is-invalid' : ''; ?>" onclick="checkroof_tank_level_air(this.value);" value="0">
-                                            Kurang
-                                        </div>
-                                        <?php if ($validation->hasError('roof_tank_level_air')) : ?>
-                                            <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                <?= $validation->getError('roof_tank_level_air'); ?>
-                                            </div>
-                                        <?php endif; ?>
-                                    </td>
-                                    <script>
-                                        function checkroof_tank_level_air(b) {
-                                            var x = document.getElementsByClassName('checkroof_tank_level_air');
+                                        function checkkunci_setEdit(b) {
+                                            var x = document.getElementsByClassName('checkkunci_setEdit');
                                             var i;
 
                                             for (i = 0; i < x.length; i++) {
@@ -1017,67 +687,29 @@
                                     </script>
                                 </tr>
                                 <tr>
-                                    <td class="col-4" style="padding-left: 8px;">Elektrode</td>
+                                    <td class="col-4" style="padding-left: 8px;">Daun / Slot</td>
                                     <td>
                                         <div style="padding-top: 10px; padding-bottom: 5px;">
-                                            <input <?php if (old('roof_tank_elektrode') == "1") {
+                                            <input <?php if (old('daun_slot') == "1") {
                                                         echo ("checked");
-                                                    } ?> id="roof_tank_elektrode" name="roof_tank_elektrode" type="checkbox" class="checkroof_tank_elektrode <?= ($validation->hasError('roof_tank_elektrode')) ? 'is-invalid' : ''; ?>" onclick="checkroof_tank_elektrode(this.value);" value="1">
+                                                    } ?> id="daun_slot" name="daun_slot" type="checkbox" class="checkdaun_slotEdit <?= ($validation->hasError('daun_slot')) ? 'is-invalid' : ''; ?>" onclick="checkdaun_slotEdit(this.value);" value="1">
                                             Baik<br>
                                         </div>
                                         <div style="padding-top: 5px; padding-bottom: 10px;">
-                                            <input <?php if (old('roof_tank_elektrode') == "0") {
+                                            <input <?php if (old('daun_slot') == "0") {
                                                         echo ("checked");
-                                                    } ?> id="roof_tank_elektrode" name="roof_tank_elektrode" type="checkbox" class="checkroof_tank_elektrode <?= ($validation->hasError('roof_tank_elektrode')) ? 'is-invalid' : ''; ?>" onclick="checkroof_tank_elektrode(this.value);" value="0">
+                                                    } ?> id="daun_slot" name="daun_slot" type="checkbox" class="checkdaun_slotEdit <?= ($validation->hasError('daun_slot')) ? 'is-invalid' : ''; ?>" onclick="checkdaun_slotEdit(this.value);" value="0">
                                             Rusak
                                         </div>
-                                        <?php if ($validation->hasError('roof_tank_elektrode')) : ?>
+                                        <?php if ($validation->hasError('daun_slot')) : ?>
                                             <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                <?= $validation->getError('roof_tank_elektrode'); ?>
+                                                <?= $validation->getError('daun_slot'); ?>
                                             </div>
                                         <?php endif; ?>
                                     </td>
                                     <script>
-                                        function checkroof_tank_elektrode(b) {
-                                            var x = document.getElementsByClassName('checkroof_tank_elektrode');
-                                            var i;
-
-                                            for (i = 0; i < x.length; i++) {
-                                                if (x[i].value != b) x[i].checked = false;
-                                            }
-                                        }
-                                    </script>
-                                </tr>
-                                <tr style="border: 0;">
-                                    <td style="border: 0;"></td>
-                                    <td style="border: 0;"></td>
-                                    <td style="border: 0;"></td>
-                                </tr>
-                                <tr>
-                                    <td class="col-3" rowspan="2">Recycle Tank</td>
-                                    <td class="col-4" style="padding-left: 8px;">Level Air</td>
-                                    <td>
-                                        <div style="padding-top: 10px; padding-bottom: 5px;">
-                                            <input <?php if (old('recycle_tank_level_air') == "1") {
-                                                        echo ("checked");
-                                                    } ?> id="recycle_tank_level_air" name="recycle_tank_level_air" type="checkbox" class="checkrecycle_tank_level_air <?= ($validation->hasError('recycle_tank_level_air')) ? 'is-invalid' : ''; ?>" onclick="checkrecycle_tank_level_air(this.value);" value="1">
-                                            Full<br>
-                                        </div>
-                                        <div style="padding-top: 5px; padding-bottom: 10px;">
-                                            <input <?php if (old('recycle_tank_level_air') == "0") {
-                                                        echo ("checked");
-                                                    } ?> id="recycle_tank_level_air" name="recycle_tank_level_air" type="checkbox" class="checkrecycle_tank_level_air <?= ($validation->hasError('recycle_tank_level_air')) ? 'is-invalid' : ''; ?>" onclick="checkrecycle_tank_level_air(this.value);" value="0">
-                                            Kurang
-                                        </div>
-                                        <?php if ($validation->hasError('recycle_tank_level_air')) : ?>
-                                            <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                <?= $validation->getError('recycle_tank_level_air'); ?>
-                                            </div>
-                                        <?php endif; ?>
-                                    </td>
-                                    <script>
-                                        function checkrecycle_tank_level_air(b) {
-                                            var x = document.getElementsByClassName('checkrecycle_tank_level_air');
+                                        function checkdaun_slotEdit(b) {
+                                            var x = document.getElementsByClassName('checkdaun_slotEdit');
                                             var i;
 
                                             for (i = 0; i < x.length; i++) {
@@ -1087,29 +719,189 @@
                                     </script>
                                 </tr>
                                 <tr>
-                                    <td class="col-4" style="padding-left: 8px;">Elektrode</td>
+                                    <td class="col-4" style="padding-left: 8px;">Pulley</td>
                                     <td>
                                         <div style="padding-top: 10px; padding-bottom: 5px;">
-                                            <input <?php if (old('recycle_tank_elektrode') == "1") {
+                                            <input <?php if (old('pulley') == "1") {
                                                         echo ("checked");
-                                                    } ?> id="recycle_tank_elektrode" name="recycle_tank_elektrode" type="checkbox" class="checkrecycle_tank_elektrode <?= ($validation->hasError('recycle_tank_elektrode')) ? 'is-invalid' : ''; ?>" onclick="checkrecycle_tank_elektrode(this.value);" value="1">
+                                                    } ?> id="pulley" name="pulley" type="checkbox" class="checkpulleyEdit <?= ($validation->hasError('pulley')) ? 'is-invalid' : ''; ?>" onclick="checkpulleyEdit(this.value);" value="1">
                                             Baik<br>
                                         </div>
                                         <div style="padding-top: 5px; padding-bottom: 10px;">
-                                            <input <?php if (old('recycle_tank_elektrode') == "0") {
+                                            <input <?php if (old('pulley') == "0") {
                                                         echo ("checked");
-                                                    } ?> id="recycle_tank_elektrode" name="recycle_tank_elektrode" type="checkbox" class="checkrecycle_tank_elektrode <?= ($validation->hasError('recycle_tank_elektrode')) ? 'is-invalid' : ''; ?>" onclick="checkrecycle_tank_elektrode(this.value);" value="0">
+                                                    } ?> id="pulley" name="pulley" type="checkbox" class="checkpulleyEdit <?= ($validation->hasError('pulley')) ? 'is-invalid' : ''; ?>" onclick="checkpulleyEdit(this.value);" value="0">
                                             Rusak
                                         </div>
-                                        <?php if ($validation->hasError('recycle_tank_elektrode')) : ?>
+                                        <?php if ($validation->hasError('pulley')) : ?>
                                             <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                <?= $validation->getError('recycle_tank_elektrode'); ?>
+                                                <?= $validation->getError('pulley'); ?>
                                             </div>
                                         <?php endif; ?>
                                     </td>
                                     <script>
-                                        function checkrecycle_tank_elektrode(b) {
-                                            var x = document.getElementsByClassName('checkrecycle_tank_elektrode');
+                                        function checkpulleyEdit(b) {
+                                            var x = document.getElementsByClassName('checkpulleyEdit');
+                                            var i;
+
+                                            for (i = 0; i < x.length; i++) {
+                                                if (x[i].value != b) x[i].checked = false;
+                                            }
+                                        }
+                                    </script>
+                                </tr>
+                                <tr>
+                                    <td class="col-4" style="padding-left: 8px;">Pegas / Per</td>
+                                    <td>
+                                        <div style="padding-top: 10px; padding-bottom: 5px;">
+                                            <input <?php if (old('pegas') == "1") {
+                                                        echo ("checked");
+                                                    } ?> id="pegas" name="pegas" type="checkbox" class="checkpegasEdit <?= ($validation->hasError('pegas')) ? 'is-invalid' : ''; ?>" onclick="checkpegasEdit(this.value);" value="1">
+                                            Baik<br>
+                                        </div>
+                                        <div style="padding-top: 5px; padding-bottom: 10px;">
+                                            <input <?php if (old('pegas') == "0") {
+                                                        echo ("checked");
+                                                    } ?> id="pegas" name="pegas" type="checkbox" class="checkpegasEdit <?= ($validation->hasError('pegas')) ? 'is-invalid' : ''; ?>" onclick="checkpegasEdit(this.value);" value="0">
+                                            Rusak
+                                        </div>
+                                        <?php if ($validation->hasError('pegas')) : ?>
+                                            <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
+                                                <?= $validation->getError('pegas'); ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </td>
+                                    <script>
+                                        function checkpegasEdit(b) {
+                                            var x = document.getElementsByClassName('checkpegasEdit');
+                                            var i;
+
+                                            for (i = 0; i < x.length; i++) {
+                                                if (x[i].value != b) x[i].checked = false;
+                                            }
+                                        }
+                                    </script>
+                                </tr>
+                                <tr>
+                                    <td class="col-4" style="padding-left: 8px;">AS Batang</td>
+                                    <td>
+                                        <div style="padding-top: 10px; padding-bottom: 5px;">
+                                            <input <?php if (old('as_batang') == "1") {
+                                                        echo ("checked");
+                                                    } ?> id="as_batang" name="as_batang" type="checkbox" class="checkas_batangEdit <?= ($validation->hasError('as_batang')) ? 'is-invalid' : ''; ?>" onclick="checkas_batangEdit(this.value);" value="1">
+                                            Baik<br>
+                                        </div>
+                                        <div style="padding-top: 5px; padding-bottom: 10px;">
+                                            <input <?php if (old('as_batang') == "0") {
+                                                        echo ("checked");
+                                                    } ?> id="as_batang" name="as_batang" type="checkbox" class="checkas_batangEdit <?= ($validation->hasError('as_batang')) ? 'is-invalid' : ''; ?>" onclick="checkas_batangEdit(this.value);" value="0">
+                                            Rusak
+                                        </div>
+                                        <?php if ($validation->hasError('as_batang')) : ?>
+                                            <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
+                                                <?= $validation->getError('as_batang'); ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </td>
+                                    <script>
+                                        function checkas_batangEdit(b) {
+                                            var x = document.getElementsByClassName('checkas_batangEdit');
+                                            var i;
+
+                                            for (i = 0; i < x.length; i++) {
+                                                if (x[i].value != b) x[i].checked = false;
+                                            }
+                                        }
+                                    </script>
+                                </tr>
+                                <tr>
+                                    <td class="col-4" style="padding-left: 8px;">Side Bracket</td>
+                                    <td>
+                                        <div style="padding-top: 10px; padding-bottom: 5px;">
+                                            <input <?php if (old('side_bracket') == "1") {
+                                                        echo ("checked");
+                                                    } ?> id="side_bracket" name="side_bracket" type="checkbox" class="checkside_bracketEdit <?= ($validation->hasError('side_bracket')) ? 'is-invalid' : ''; ?>" onclick="checkside_bracketEdit(this.value);" value="1">
+                                            Baik<br>
+                                        </div>
+                                        <div style="padding-top: 5px; padding-bottom: 10px;">
+                                            <input <?php if (old('side_bracket') == "0") {
+                                                        echo ("checked");
+                                                    } ?> id="side_bracket" name="side_bracket" type="checkbox" class="checkside_bracketEdit <?= ($validation->hasError('side_bracket')) ? 'is-invalid' : ''; ?>" onclick="checkside_bracketEdit(this.value);" value="0">
+                                            Rusak
+                                        </div>
+                                        <?php if ($validation->hasError('side_bracket')) : ?>
+                                            <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
+                                                <?= $validation->getError('side_bracket'); ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </td>
+                                    <script>
+                                        function checkside_bracketEdit(b) {
+                                            var x = document.getElementsByClassName('checkside_bracketEdit');
+                                            var i;
+
+                                            for (i = 0; i < x.length; i++) {
+                                                if (x[i].value != b) x[i].checked = false;
+                                            }
+                                        }
+                                    </script>
+                                </tr>
+                                <tr>
+                                    <td class="col-4" style="padding-left: 8px;">Bottom Rail T</td>
+                                    <td>
+                                        <div style="padding-top: 10px; padding-bottom: 5px;">
+                                            <input <?php if (old('bottom_t_rail') == "1") {
+                                                        echo ("checked");
+                                                    } ?> id="bottom_t_rail" name="bottom_t_rail" type="checkbox" class="checkbottom_t_railEdit <?= ($validation->hasError('bottom_t_rail')) ? 'is-invalid' : ''; ?>" onclick="checkbottom_t_railEdit(this.value);" value="1">
+                                            Baik<br>
+                                        </div>
+                                        <div style="padding-top: 5px; padding-bottom: 10px;">
+                                            <input <?php if (old('bottom_t_rail') == "0") {
+                                                        echo ("checked");
+                                                    } ?> id="bottom_t_rail" name="bottom_t_rail" type="checkbox" class="checkbottom_t_railEdit <?= ($validation->hasError('bottom_t_rail')) ? 'is-invalid' : ''; ?>" onclick="checkbottom_t_railEdit(this.value);" value="0">
+                                            Rusak
+                                        </div>
+                                        <?php if ($validation->hasError('bottom_t_rail')) : ?>
+                                            <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
+                                                <?= $validation->getError('bottom_t_rail'); ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </td>
+                                    <script>
+                                        function checkbottom_t_railEdit(b) {
+                                            var x = document.getElementsByClassName('checkbottom_t_railEdit');
+                                            var i;
+
+                                            for (i = 0; i < x.length; i++) {
+                                                if (x[i].value != b) x[i].checked = false;
+                                            }
+                                        }
+                                    </script>
+                                </tr>
+                                <tr>
+                                    <td class="col-4" style="padding-left: 8px;">Pillar Rel</td>
+                                    <td>
+                                        <div style="padding-top: 10px; padding-bottom: 5px;">
+                                            <input <?php if (old('pilar_rel') == "1") {
+                                                        echo ("checked");
+                                                    } ?> id="pilar_rel" name="pilar_rel" type="checkbox" class="checkpilar_relEdit <?= ($validation->hasError('pilar_rel')) ? 'is-invalid' : ''; ?>" onclick="checkpilar_relEdit(this.value);" value="1">
+                                            Baik<br>
+                                        </div>
+                                        <div style="padding-top: 5px; padding-bottom: 10px;">
+                                            <input <?php if (old('pilar_rel') == "0") {
+                                                        echo ("checked");
+                                                    } ?> id="pilar_rel" name="pilar_rel" type="checkbox" class="checkpilar_relEdit <?= ($validation->hasError('pilar_rel')) ? 'is-invalid' : ''; ?>" onclick="checkpilar_relEdit(this.value);" value="0">
+                                            Rusak
+                                        </div>
+                                        <?php if ($validation->hasError('pilar_rel')) : ?>
+                                            <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
+                                                <?= $validation->getError('pilar_rel'); ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </td>
+                                    <script>
+                                        function checkpilar_relEdit(b) {
+                                            var x = document.getElementsByClassName('checkpilar_relEdit');
                                             var i;
 
                                             for (i = 0; i < x.length; i++) {
@@ -1126,14 +918,28 @@
                             </tbody>
                         </table>
                     </div>
+
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">Keterangan</label>
-                                <textarea name="keterangan" id="keterangan" class="form-control col <?= ($validation->hasError('keterangan')) ? 'is-invalid' : ''; ?>" rows="6"><?= old('keterangan'); ?></textarea>
-                                <?php if ($validation->hasError('keterangan')) : ?>
+                                <label class="form-label col-3 col-form-label">Jumlah Temuan</label>
+                                <div class="col">
+                                    <input type="text" class="form-control <?= ($validation->hasError('jumlah_temuan')) ? 'is-invalid' : ''; ?>" id="jumlah_temuan" name="jumlah_temuan" placeholder="Jumlah Temuan" value="<?= old('jumlah_temuan'); ?>">
+                                    <?php if ($validation->hasError('jumlah_temuan')) : ?>
+                                        <div class="invalid-feedback">
+                                            <?= $validation->getError('jumlah_temuan'); ?>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group mb-3 row">
+                                <label class="form-label col-3 col-form-label">Penjelasan</label>
+                                <textarea name="penjelasan" id="penjelasan" class="form-control col <?= ($validation->hasError('penjelasan')) ? 'is-invalid' : ''; ?>" rows="6"><?= old('penjelasan'); ?></textarea>
+                                <?php if ($validation->hasError('penjelasan')) : ?>
                                     <div class="invalid-feedback">
-                                        <?= $validation->getError('keterangan'); ?>
+                                        <?= $validation->getError('penjelasan'); ?>
                                     </div>
                                 <?php endif; ?>
                             </div>
@@ -1179,6 +985,9 @@
     var site_url = `<?= base_url() ?>`;
     $(document).ready(function() {
 
+        let urlUpdate = site_url + '/rollingdoor/updateRollingDoor/';
+        let urlDelete = site_url + '/rollingdoor/deleteRollingDoor/';
+        let urlAjaxData = site_url + '/rollingdoor/ajaxDataRollingDoor/';
         let validateChecklist = `<?= $defaultChecklist['checklist'] ?>`;
         let dataChecklist = `<?= isset($checkInspection['data']) ? json_encode($checkInspection['data']) : '' ?>`;
 
@@ -1202,7 +1011,7 @@
         oldData = <?= json_encode(session()->get('_ci_old_input')) ?>;
         if (oldData != null && oldData.post.idFormEdit != null) {
             $("#modal-editData").modal('show');
-            $("#formEditData").attr('action', site_url + "/plumbing/updatePlumbing/" + oldData.post.idFormEdit);
+            $("#formEditData").attr('action', urlUpdate + oldData.post.idFormEdit);
 
             $("#formInputData").find("input:text, textarea").not("#location,#date,#worker").val("");
             $("#formInputData").find("input:checkbox").prop('checked', false);
@@ -1215,7 +1024,7 @@
             var modalView = $("#modal-editData");
             modalView.find("input:text").val("");
             modalView.find("input:checkbox").prop('checked', false);
-            $("#formEditData").attr('action', site_url + "/plumbing/updatePlumbing/" + this.id);
+            $("#formEditData").attr('action', urlUpdate + this.id);
             modalView.find(".is-invalid").removeClass("is-invalid");
             modalView.find(".invalid-feedback,.hasil-validasi").hide();
 
@@ -1223,7 +1032,7 @@
             inputData.append("id", this.id);
 
             $.ajax({
-                url: "<?= base_url('plumbing/ajaxDataPlumbing') ?>",
+                url: urlAjaxData,
                 type: "POST",
                 data: inputData,
                 headers: {
@@ -1235,26 +1044,23 @@
                 success: function(data) {
                     if (data.data != null) {
                         modalView.find("#idFormEdit").val(data.data.id);
-                        modalView.find("#equipment_checklist").val(data.data.equipment_checklist);
-                        // modalView.find("#time[value='" + data.data.time + "']").prop('checked', true);
                         modalView.find("#timeValue").val(data.data.time);
+                        modalView.find("#equipment_checklist").val(data.data.equipment_checklist);
                         modalView.find("#date").val(data.data.date);
                         modalView.find("#worker").val(data.data.initial);
                         modalView.find("#location").val(data.data.storeName);
                         // modalView.find("#equipment_checklist option[value=" + data.data.equipment_checklist + "]").prop('selected', true);
-                        modalView.find("#instalasi_air_bersih_p_transfer1[value=" + data.data.instalasi_air_bersih_p_transfer1 + "]").prop('checked', true);
-                        modalView.find("#instalasi_air_bersih_p_transfer2[value=" + data.data.instalasi_air_bersih_p_transfer2 + "]").prop('checked', true);
-                        modalView.find("#fire_pump_jockey_pump[value=" + data.data.fire_pump_jockey_pump + "]").prop('checked', true);
-                        modalView.find("#fire_pump_jockey_pressure").val(data.data.fire_pump_jockey_pressure);
-                        modalView.find("#fire_pump_hydrant_pump[value=" + data.data.fire_pump_hydrant_pump + "]").prop('checked', true);
-                        modalView.find("#fire_pump_hydrant_pressure").val(data.data.fire_pump_hydrant_pressure);
-                        modalView.find("#gwt_level_air[value=" + data.data.gwt_level_air + "]").prop('checked', true);
-                        modalView.find("#gwt_elektrode[value=" + data.data.gwt_elektrode + "]").prop('checked', true);
-                        modalView.find("#roof_tank_level_air[value=" + data.data.roof_tank_level_air + "]").prop('checked', true);
-                        modalView.find("#roof_tank_elektrode[value=" + data.data.roof_tank_elektrode + "]").prop('checked', true);
-                        modalView.find("#recycle_tank_level_air[value=" + data.data.recycle_tank_level_air + "]").prop('checked', true);
-                        modalView.find("#recycle_tank_elektrode[value=" + data.data.recycle_tank_elektrode + "]").prop('checked', true);
-                        modalView.find("#keterangan").val(data.data.keterangan);
+                        modalView.find("#kunci_set[value=" + data.data.kunci_set + "]").prop('checked', true);
+                        modalView.find("#daun_slot[value=" + data.data.daun_slot + "]").prop('checked', true);
+                        modalView.find("#pulley[value=" + data.data.pulley + "]").prop('checked', true);
+                        modalView.find("#pegas[value=" + data.data.pegas + "]").prop('checked', true);
+                        modalView.find("#as_batang[value=" + data.data.as_batang + "]").prop('checked', true);
+                        modalView.find("#side_bracket[value=" + data.data.side_bracket + "]").prop('checked', true);
+                        modalView.find("#bottom_t_rail[value=" + data.data.bottom_t_rail + "]").prop('checked', true);
+                        modalView.find("#pilar_rel[value=" + data.data.pilar_rel + "]").prop('checked', true);
+                        modalView.find("#name").val(data.data.name);
+                        modalView.find("#jumlah_temuan").val(data.data.jumlah_temuan);
+                        modalView.find("#penjelasan").val(data.data.penjelasan);
                     } else {
                         Swal.fire(
                             'Error',
@@ -1288,7 +1094,7 @@
 
                     deleteData.append('id', this.id);
                     $.ajax({
-                        url: "<?= base_url('plumbing/deletePlumbing') ?>",
+                        url: urlDelete,
                         type: "POST",
                         data: deleteData,
                         headers: {

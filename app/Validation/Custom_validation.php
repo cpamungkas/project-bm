@@ -34,4 +34,43 @@ class Custom_validation {
         }
         return TRUE;
 	}
+
+    public function checkTimeByChecklist($checkTime, $checklist)
+	{
+        if ($checklist == 'MONTHLY' || $checkTime == null) {
+            return TRUE;
+        }
+
+        $time = [];
+        switch ($checklist) {
+            case 'DAILY':
+                $time = ['08:00:00','10:00:00','13:00:00','19:00:00'];
+                break;
+    
+            case 'WEEKLY':
+                $time = ['10:00:00', '19:00:00'];
+                break;
+            
+            default:
+                return FALSE;
+                break;
+        }
+
+        if (in_array($checkTime, $time)) {
+            return TRUE;
+        }
+
+        return FALSE;
+	}
+
+    public function checkEmptyTime($checkTime, $checklist)
+    {
+        if ($checklist == 'MONTHLY') {
+            return TRUE;
+        }
+        if ($checkTime == null) {
+            return FALSE;
+        }
+        return TRUE;
+    }
 }

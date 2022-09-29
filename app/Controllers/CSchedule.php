@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\MEquipment;
 use CodeIgniter\Controller;
 use App\Models\MUser;
 use App\Models\MStore;
@@ -18,6 +19,7 @@ class CSchedule extends BaseController
         $this->mStore = new MStore();
         $this->mSchedule = new MSchedule();
         $this->mShiftschedule = new MShiftschedule();
+        $this->mEquipment = new MEquipment();
         helper(['form', 'url', 'functionHelper']);
     }
 
@@ -42,6 +44,9 @@ class CSchedule extends BaseController
             $data['level'] = session()->get('level');
             $data['status_deleted'] = session()->get('status_deleted');
             $data['validation'] = \Config\Services::validation();
+
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
+
             return view('vSchedule', $data);
             // echo " Hello Schedule";
         }
@@ -89,6 +94,8 @@ class CSchedule extends BaseController
 
         $data['getDataWorkerByStore'] = $this->mSchedule->getDataWorkerByStore(session()->get('idstore'));
         $data['getDataShift'] = $this->mSchedule->getDataShift();
+
+        $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
 
         $data['validation'] = \Config\Services::validation();
 
@@ -171,6 +178,8 @@ class CSchedule extends BaseController
                 return view('vUserScheduletechjobout', $data);
             }
             $data['getDataTableTechJobOut'] = $this->mSchedule->getDataTableTechJob();
+
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
 
             return view('vScheduletechjobout', $data);
         }
@@ -337,6 +346,8 @@ class CSchedule extends BaseController
 
             $data['getDataWorkerByStore'] = $this->mSchedule->getDataWorkerByStore(session()->get('idstore'));
             $data['getDataShift'] = $this->mSchedule->getDataShift();
+
+            $data['getStoreEquipmentByStore'] = $this->mEquipment->getStoreEquipmentByStore(session()->get('idstore'));
 
             $data['validation'] = \Config\Services::validation();
             return view('vScheduletechjobin', $data);

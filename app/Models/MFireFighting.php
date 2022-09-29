@@ -4,10 +4,10 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class MStp extends Model
+class MFireFighting extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'tb_stp';
+    protected $table            = 'tb_fire_fighting';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
@@ -20,24 +20,30 @@ class MStp extends Model
         'date',
         'worker',
         'equipment_checklist',
-        'blower1',
-        'blower2',
-        'transfer_pump1',
-        'transfer_pump2',
-        'effluent_pump1',
-        'effluent_pump2',
-        'equalizing_pump1',
-        'equalizing_pump2',
-        'filter_pump1',
-        'filter_pump2',
-        'dozing_pump',
-        'fresh_air_fan',
-        'exhaust_fan',
-        'inspeksi_cleaning_grease_trap',
-        'inspeksi_chlorine',
-        'inspeksi_flow_meter',
-        'inspeksi_ph_water',
-        'keterangan',
+        'type',
+        'jumlah_zona',
+        'mcfa_normal',
+        'mcfa_alarm_silenced',
+        'mcfa_fire',
+        'mcfa_trouble',
+        'lt1_smoke_detector',
+        'lt1_heat_detector',
+        'lt1_flow_switch',
+        'lt2_smoke_detector',
+        'lt2_heat_detector',
+        'lt2_flow_switch',
+        'lt3_smoke_detector',
+        'lt3_heat_detector',
+        'lt3_flow_switch',
+        'lt4_smoke_detector',
+        'lt4_heat_detector',
+        'lt4_flow_switch',
+        'hydrant_pillar',
+        'siamese_connection',
+        'lampu_dan_bell',
+        'break_glass',
+        'jumlah_temuan',
+        'penjelasan',
     ];
 
     // Dates
@@ -64,42 +70,42 @@ class MStp extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function getDataTableStp($allData = FALSE)
+    public function getDataTableFireFighting($allData = false)
     {
-        $builder = $this->db->table('tb_stp');
+        $builder = $this->db->table('tb_fire_fighting');
 
         $builder->select([
-            'tb_stp.*',
+            'tb_fire_fighting.*',
             'tb_store.storeName',
             'tb_user.initial',
         ]);
 
         if ($allData == FALSE) {
-            $builder->where('tb_stp.location', session()->get('idstore'));
+            $builder->where('tb_fire_fighting.location', session()->get('idstore'));
         }
 
-        $builder->join("tb_store", "tb_store.idStore = tb_stp.location", "LEFT");
-        $builder->join("tb_user", "tb_user.id = tb_stp.worker", "LEFT");
+        $builder->join("tb_store", "tb_store.idStore = tb_fire_fighting.location", "LEFT");
+        $builder->join("tb_user", "tb_user.id = tb_fire_fighting.worker", "LEFT");
 
         $builder->orderBy("created_at","DESC");
 
         return $builder->get()->getResultArray();
     }
 
-    public function ajaxDataStp($id)
+    public function ajaxDataFireFighting($id)
     {
-        $builder = $this->db->table('tb_stp');
+        $builder = $this->db->table('tb_fire_fighting');
 
         $builder->select([
-            'tb_stp.*',
+            'tb_fire_fighting.*',
             'tb_store.storeName',
             'tb_user.initial',
         ]);
 
-        $builder->where('tb_stp.id', $id);
+        $builder->where('tb_fire_fighting.id', $id);
 
-        $builder->join("tb_store", "tb_store.idStore = tb_stp.location", "LEFT");
-        $builder->join("tb_user", "tb_user.id = tb_stp.worker", "LEFT");
+        $builder->join("tb_store", "tb_store.idStore = tb_fire_fighting.location", "LEFT");
+        $builder->join("tb_user", "tb_user.id = tb_fire_fighting.worker", "LEFT");
 
         return $builder->get()->getRow();
     }

@@ -31,11 +31,11 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Gas Station</h3>
+                        <h3 class="card-title">Meter Sumber & Air Olahan</h3>
                     </div>
 
                     <div class="card-body">
-                        <form id="formInputData" action="<?php echo base_url('gasstation/savegasstation'); ?>" method="post">
+                        <form id="formInputData" action="<?php echo base_url('metersumber/saveMeterSumber'); ?>" method="post">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group mb-3 row">
@@ -46,17 +46,17 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+                                    <!-- TODO ambil actualDefault yg isinya default checklist dari tb_equipment -->
+                                    <!-- TODO sesuain buat validasi time ny juga -->
+                                    <!-- TODO implement time ke semua -->
                                     <?php 
-                            if ($equipmentDefaultChecklist['checklist'] === $defaultChecklist['checklist']) {
-                                generateChecklistTime($defaultChecklist['checklist'], $checkInspection, ["08:00:00", "13:00:00", "19:00:00"]);
-                            } else {
-                                generateChecklistTime($defaultChecklist['checklist'], $checkInspection);
-                            }
-                            ?>
-                            
-                                </div>
-                                <div class="col-lg-6">
+                                    if ($equipmentDefaultChecklist['checklist'] === $defaultChecklist['checklist']) {
+                                        generateChecklistTime($defaultChecklist['checklist'], $checkInspection, ["08:00:00", "13:00:00", "19:00:00"]);
+                                    } else {
+                                        generateChecklistTime($defaultChecklist['checklist'], $checkInspection);
+                                    }
+                                    ?>
+                                    
                                     <div class="form-group mb-3 row">
                                         <label class="form-label col-3 col-form-label">Date</label>
                                         <div class="col">
@@ -65,7 +65,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
+                                <div class="col-lg-6">
                                     <div class="form-group mb-3 row">
                                         <label class="form-label col-3 col-form-label">Worker</label>
                                         <div class="col">
@@ -98,129 +100,140 @@
 
                             <div style="width: 100%; border-top: 1px solid lightgrey; height: 0; margin-top: 20px; margin-bottom: 20px;"></div>
 
+                            <div class="table-responsive">
+                                <table class="table table-bordered card-table table-vcenter text-nowrap datatable" style="width:100%">
+                                    <tbody>
+                                        <tr style="border: 0;">
+                                            <td style="border: 0;"></td>
+                                            <td style="border: 0;"></td>
+                                            <td style="border: 0;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-3" rowspan="2">Meter PDAM</td>
+                                            <td class="col-4" style="padding-left: 8px;">Floating Valve</td>
+                                            <td>
+                                                <div style="padding-top: 10px; padding-bottom: 5px;">
+                                                    <input <?php if (old('meter_pdam_floating_valve') == "1") {
+                                                                echo ("checked");
+                                                            } ?> id="meter_pdam_floating_valve" name="meter_pdam_floating_valve" type="checkbox" class="checkmeter_pdam_floating_valve <?= ($validation->hasError('meter_pdam_floating_valve')) ? 'is-invalid' : ''; ?>" onclick="checkmeter_pdam_floating_valve(this.value);" value="1">
+                                                    Baik<br>
+                                                </div>
+                                                <div style="padding-top: 5px; padding-bottom: 10px;">
+                                                    <input <?php if (old('meter_pdam_floating_valve') == "0") {
+                                                                echo ("checked");
+                                                            } ?> id="meter_pdam_floating_valve" name="meter_pdam_floating_valve" type="checkbox" class="checkmeter_pdam_floating_valve <?= ($validation->hasError('meter_pdam_floating_valve')) ? 'is-invalid' : ''; ?>" onclick="checkmeter_pdam_floating_valve(this.value);" value="0">
+                                                    Rusak
+                                                </div>
+                                                <?php if ($validation->hasError('meter_pdam_floating_valve')) : ?>
+                                                    <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
+                                                        <?= $validation->getError('meter_pdam_floating_valve'); ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </td>
+                                            <script>
+                                                function checkmeter_pdam_floating_valve(b) {
+                                                    var x = document.getElementsByClassName('checkmeter_pdam_floating_valve');
+                                                    var i;
+
+                                                    for (i = 0; i < x.length; i++) {
+                                                        if (x[i].value != b) x[i].checked = false;
+                                                    }
+                                                }
+                                            </script>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-4" style="padding-left: 8px;">M&sup3;</td>
+                                            <td>
+                                                <div class="row" style="padding-top: 20px;">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group mb-3 row">
+                                                            <div class="col">
+                                                                <div class="input-icon mb-2">
+                                                                    <input value="<?= old('meter_pdam_m3'); ?>" class="form-control <?= ($validation->hasError('meter_pdam_m3')) ? 'is-invalid' : ''; ?>" id="meter_pdam_m3" name="meter_pdam_m3">
+                                                                    <?php if ($validation->hasError('meter_pdam_m3')) : ?>
+                                                                        <div style="font-size: 85.71428571%; color: #d63939;">
+                                                                            <?= $validation->getError('meter_pdam_m3'); ?>
+                                                                        </div>
+                                                                    <?php endif; ?>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr style="border: 0;">
+                                            <td style="border: 0;"></td>
+                                            <td style="border: 0;"></td>
+                                            <td style="border: 0;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-3" rowspan="1">Meter Deep Well</td>
+                                            <td class="col-4" style="padding-left: 8px;">M&sup3;</td>
+                                            <td>
+                                                <div class="row" style="padding-top: 20px;">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group mb-3 row">
+                                                            <div class="col">
+                                                                <div class="input-icon mb-2">
+                                                                    <input value="<?= old('meter_deep_well_m3'); ?>" class="form-control <?= ($validation->hasError('meter_deep_well_m3')) ? 'is-invalid' : ''; ?>" id="meter_deep_well_m3" name="meter_deep_well_m3">
+                                                                    <?php if ($validation->hasError('meter_deep_well_m3')) : ?>
+                                                                        <div style="font-size: 85.71428571%; color: #d63939;">
+                                                                            <?= $validation->getError('meter_deep_well_m3'); ?>
+                                                                        </div>
+                                                                    <?php endif; ?>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr style="border: 0;">
+                                            <td style="border: 0;"></td>
+                                            <td style="border: 0;"></td>
+                                            <td style="border: 0;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-3" rowspan="1">Meter Air Effluent</td>
+                                            <td class="col-4" style="padding-left: 8px;">M&sup3;</td>
+                                            <td>
+                                                <div class="row" style="padding-top: 20px;">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group mb-3 row">
+                                                            <div class="col">
+                                                                <div class="input-icon mb-2">
+                                                                    <input value="<?= old('meter_air_effluent_m3'); ?>" class="form-control <?= ($validation->hasError('meter_air_effluent_m3')) ? 'is-invalid' : ''; ?>" id="meter_air_effluent_m3" name="meter_air_effluent_m3">
+                                                                    <?php if ($validation->hasError('meter_air_effluent_m3')) : ?>
+                                                                        <div style="font-size: 85.71428571%; color: #d63939;">
+                                                                            <?= $validation->getError('meter_air_effluent_m3'); ?>
+                                                                        </div>
+                                                                    <?php endif; ?>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr style="border: 0;">
+                                            <td style="border: 0;"></td>
+                                            <td style="border: 0;"></td>
+                                            <td style="border: 0;"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group mb-3 row">
-                                        <label class="form-label col-3 col-form-label">Pressure</label>
-                                        <div class="col">
-                                            <input type="text" class="form-control <?= ($validation->hasError('pressure')) ? 'is-invalid' : ''; ?>" id="pressure" name="pressure" placeholder="Pressure" value="<?= old('pressure'); ?>">
-                                            <?php if ($validation->hasError('pressure')) : ?>
-                                                <div class="invalid-feedback">
-                                                    <?= $validation->getError('pressure'); ?>
-                                                </div>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                    <div class="form-group mb-3 row">
-                                        <label class="form-label col-3 col-form-label">Selenoid Valve</label>
-                                        <div class="col">
-                                            <div class="form-check">
-                                                <input <?php if (old('selenoid_valve') == "1") {
-                                                            echo ("checked");
-                                                        } ?> id="selenoid_valve" name="selenoid_valve" type="checkbox" class="selenoidCheck form-check-input <?= ($validation->hasError('selenoid_valve')) ? 'is-invalid' : ''; ?>" onclick="selenoidCheck(this.value);" value="1">
-                                                <span class="form-check-label">Baik</span>
+                                        <label class="form-label col-3 col-form-label">Keterangan</label>
+                                        <textarea name="keterangan" id="keterangan" class="form-control col <?= ($validation->hasError('keterangan')) ? 'is-invalid' : ''; ?>" rows="6"><?= old('keterangan'); ?></textarea>
+                                        <?php if ($validation->hasError('keterangan')) : ?>
+                                            <div class="invalid-feedback">
+                                                <?= $validation->getError('keterangan'); ?>
                                             </div>
-                                            <div class="form-check">
-                                                <input <?php if (old('selenoid_valve') == "0") {
-                                                            echo ("checked");
-                                                        } ?> id="selenoid_valve" name="selenoid_valve" type="checkbox" class="selenoidCheck form-check-input <?= ($validation->hasError('selenoid_valve')) ? 'is-invalid' : ''; ?>" onclick="selenoidCheck(this.value);" value="0">
-                                                <span class="form-check-label">Rusak</span>
-                                            </div>
-                                            <?php if ($validation->hasError('selenoid_valve')) : ?>
-                                                <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                    <?= $validation->getError('selenoid_valve'); ?>
-                                                </div>
-                                            <?php endif; ?>
-                                        </div>
-                                        <script>
-                                            function selenoidCheck(b) {
-                                                var x = document.getElementsByClassName('selenoidCheck');
-                                                var i;
-
-                                                for (i = 0; i < x.length; i++) {
-                                                    if (x[i].value != b) x[i].checked = false;
-                                                }
-                                            }
-                                        </script>
-                                    </div>
-                                    <div class="form-group mb-3 row">
-                                        <label class="form-label col-3 col-form-label">Detector</label>
-                                        <div class="col">
-                                            <div class="form-check">
-                                                <input <?php if (old('detector') == "1") {
-                                                            echo ("checked");
-                                                        } ?> id="detector" name="detector" type="checkbox" class="detectorCheck form-check-input <?= ($validation->hasError('detector')) ? 'is-invalid' : ''; ?>" onclick="detectorCheck(this.value);" value="1">
-                                                <span class="form-check-label">Baik</span>
-                                            </div>
-                                            <div class="form-check">
-                                                <input <?php if (old('detector') == "0") {
-                                                            echo ("checked");
-                                                        } ?> id="detector" name="detector" type="checkbox" class="detectorCheck form-check-input <?= ($validation->hasError('detector')) ? 'is-invalid' : ''; ?>" onclick="detectorCheck(this.value);" value="0">
-                                                <span class="form-check-label">Rusak</span>
-                                            </div>
-                                            <?php if ($validation->hasError('detector')) : ?>
-                                                <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                    <?= $validation->getError('detector'); ?>
-                                                </div>
-                                            <?php endif; ?>
-                                        </div>
-                                        <script>
-                                            function detectorCheck(b) {
-                                                var x = document.getElementsByClassName('detectorCheck');
-                                                var i;
-
-                                                for (i = 0; i < x.length; i++) {
-                                                    if (x[i].value != b) x[i].checked = false;
-                                                }
-                                            }
-                                        </script>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-6">
-                                    <div class="form-group mb-3 row">
-                                        <label class="form-label col-3 col-form-label">Selang Gas</label>
-                                        <div class="col">
-                                            <div class="form-check">
-                                                <input <?php if (old('selang_gas') == "1") {
-                                                            echo ("checked");
-                                                        } ?> id="selang_gas" name="selang_gas" type="checkbox" class="gasCheck form-check-input <?= ($validation->hasError('selang_gas')) ? 'is-invalid' : ''; ?>" onclick="gasCheck(this.value);" value="1">
-                                                <span class="form-check-label">Baik</span>
-                                            </div>
-                                            <div class="form-check">
-                                                <input <?php if (old('selang_gas') == "0") {
-                                                            echo ("checked");
-                                                        } ?> id="selang_gas" name="selang_gas" type="checkbox" class="gasCheck form-check-input <?= ($validation->hasError('selang_gas')) ? 'is-invalid' : ''; ?>" onclick="gasCheck(this.value);" value="0">
-                                                <span class="form-check-label">Rusak</span>
-                                            </div>
-                                            <?php if ($validation->hasError('selang_gas')) : ?>
-                                                <!-- TODO cek kelas hasil-validasi di semua -->
-                                                <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                                    <?= $validation->getError('selang_gas'); ?>
-                                                </div>
-                                            <?php endif; ?>
-                                        </div>
-                                        <script>
-                                            function gasCheck(b) {
-                                                var x = document.getElementsByClassName('gasCheck');
-                                                var i;
-
-                                                for (i = 0; i < x.length; i++) {
-                                                    if (x[i].value != b) x[i].checked = false;
-                                                }
-                                            }
-                                        </script>
-                                    </div>
-                                    <div class="form-group mb-3 row">
-                                        <label class="form-label col-3 col-form-label">Meter Gas</label>
-                                        <div class="col">
-                                            <input type="text" class="form-control <?= ($validation->hasError('meter_gas')) ? 'is-invalid' : ''; ?>" id="meter_gas" name="meter_gas" placeholder="Meter Gas" value="<?= old('meter_gas'); ?>">
-                                            <?php if ($validation->hasError('meter_gas')) : ?>
-                                                <div class="invalid-feedback">
-                                                    <?= $validation->getError('meter_gas'); ?>
-                                                </div>
-                                            <?php endif; ?>
-                                        </div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
@@ -229,7 +242,7 @@
                                 <div class="row align-items-center">
                                     <div class="col"></div>
                                     <div class="col-auto">
-                                        <button type="submit" class="btn btn-outline-primary ms-auto" id="btnSubmitShift" name="btnSubmitShift">
+                                        <button type="submit" class="btn btn-outline-primary ms-auto">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                 <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -256,7 +269,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Gas Station Data</h3>
+                        <h3 class="card-title">Meter Sumber & Air Olahan</h3>
                     </div>
 
                     <div class="clearfix">
@@ -272,29 +285,37 @@
                                     <th>Jam Pengecekan</th>
                                     <th>Time Stamp</th>
                                     <th>PIC</th>
-                                    <th>Pressure</th>
-                                    <th>Selenoid Valve</th>
-                                    <th>Detector</th>
-                                    <th>Selang Gas</th>
-                                    <th>Meter Gas</th>
+                                    <th class="text-center">Meter PDAM
+                                        <br>Floating Valve
+                                    </th>
+                                    <th class="text-center">Meter PDAM
+                                        <br>M&sup3;
+                                    </th>
+                                    <th class="text-center">Meter Deep Well
+                                        <br>M&sup3;
+                                    </th>
+                                    <th class="text-center">Meter Air Effluent
+                                        <br>M&sup3;
+                                    </th>
+                                    <th>Keterangan</th>
                                     <th class="text-end">Action</th>
                                 </tr>
                             </thead>
 
                             <tbody>
                                 <?php $i = 1 ?>
-                                <?php foreach ($getDataTableGasStation as $ts) : ?>
+                                <?php foreach ($getDataTableMeterSumber as $ts) : ?>
                                     <tr>
                                         <td><?= $i ?></td>
                                         <td><?= $ts['storeName']; ?></td>
                                         <td><?= $ts['time']; ?></td>
                                         <td><?= dateView($ts['date']); ?></td>
                                         <td><?= $ts['initial']; ?></td>
-                                        <td><?= $ts['pressure']; ?></td>
-                                        <td><?= equipmentStatus($ts['selenoid_valve']); ?></td>
-                                        <td><?= equipmentStatus($ts['detector']); ?></td>
-                                        <td><?= equipmentStatus($ts['selang_gas']); ?></td>
-                                        <td><?= $ts['meter_gas']; ?></td>
+                                        <td><?= equipmentStatus($ts['meter_pdam_floating_valve']); ?></td>
+                                        <td><?= $ts['meter_pdam_m3']; ?></td>
+                                        <td><?= $ts['meter_deep_well_m3']; ?></td>
+                                        <td><?= $ts['meter_air_effluent_m3']; ?></td>
+                                        <td><?= $ts['keterangan']; ?></td>
                                         <td class="text-end">
                                             <div class="row g-2 align-items-center mb-n3">
                                                 <div class="col-6 col-sm-4 col-md-2 col-xl-auto mb-3">
@@ -372,19 +393,18 @@
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit Data Gas Station</h5>
+                <h5 class="modal-title">Edit Data Meter Sumber & Air Olahan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="formEditData" action="<?= base_url('gasstation/updategasstation') ?>" method="post">
-                <input value="<?= old('idFormEdit') ?>" type="text" hidden readonly id="idFormEdit" name="idFormEdit">
+                <form id="formEditData" action="<?= base_url('') ?>" method="post">
+                    <input value="<?= old('idFormEdit') ?>" type="text" hidden readonly id="idFormEdit" name="idFormEdit">
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group mb-3 row">
                                 <label class="form-label col-3 col-form-label">Location</label>
                                 <div class="col">
                                     <div class="input-icon mb-2">
-                                        <!-- TODO fix bug location, date, equip checklist ilang, value jgn pake session location / date. bikin readonly aja -->
                                         <input class="form-control" value="<?= old('location') ?>" id="location" name="location" disabled>
                                     </div>
                                 </div>
@@ -418,7 +438,6 @@
                                 </div>
                             </div>
 
-                            <!-- TODO ganti checklist edit ke input normal kek diatas -->
                             <div class="form-group row">
                                 <label class="form-label col-3 col-form-label pt-0">Checklist</label>
                                 <div class="col">
@@ -432,128 +451,140 @@
 
                     <div style="width: 100%; border-top: 1px solid lightgrey; height: 0; margin-top: 20px; margin-bottom: 20px;"></div>
 
+                    <div class="table-responsive">
+                        <table class="table table-bordered card-table table-vcenter text-nowrap datatable" style="width:100%">
+                            <tbody>
+                                <tr style="border: 0;">
+                                    <td style="border: 0;"></td>
+                                    <td style="border: 0;"></td>
+                                    <td style="border: 0;"></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-3" rowspan="2">Meter PDAM</td>
+                                    <td class="col-4" style="padding-left: 8px;">Floating Valve</td>
+                                    <td>
+                                        <div style="padding-top: 10px; padding-bottom: 5px;">
+                                            <input <?php if (old('meter_pdam_floating_valve') == "1") {
+                                                        echo ("checked");
+                                                    } ?> id="meter_pdam_floating_valve" name="meter_pdam_floating_valve" type="checkbox" class="checkmeter_pdam_floating_valveEdit <?= ($validation->hasError('meter_pdam_floating_valve')) ? 'is-invalid' : ''; ?>" onclick="checkmeter_pdam_floating_valveEdit(this.value);" value="1">
+                                            Baik<br>
+                                        </div>
+                                        <div style="padding-top: 5px; padding-bottom: 10px;">
+                                            <input <?php if (old('meter_pdam_floating_valve') == "0") {
+                                                        echo ("checked");
+                                                    } ?> id="meter_pdam_floating_valve" name="meter_pdam_floating_valve" type="checkbox" class="checkmeter_pdam_floating_valveEdit <?= ($validation->hasError('meter_pdam_floating_valve')) ? 'is-invalid' : ''; ?>" onclick="checkmeter_pdam_floating_valveEdit(this.value);" value="0">
+                                            Rusak
+                                        </div>
+                                        <?php if ($validation->hasError('meter_pdam_floating_valve')) : ?>
+                                            <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
+                                                <?= $validation->getError('meter_pdam_floating_valve'); ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </td>
+                                    <script>
+                                        function checkmeter_pdam_floating_valveEdit(b) {
+                                            var x = document.getElementsByClassName('checkmeter_pdam_floating_valveEdit');
+                                            var i;
+
+                                            for (i = 0; i < x.length; i++) {
+                                                if (x[i].value != b) x[i].checked = false;
+                                            }
+                                        }
+                                    </script>
+                                </tr>
+                                <tr>
+                                    <td class="col-4" style="padding-left: 8px;">M&sup3;</td>
+                                    <td>
+                                        <div class="row" style="padding-top: 20px;">
+                                            <div class="col-lg-6">
+                                                <div class="form-group mb-3 row">
+                                                    <div class="col">
+                                                        <div class="input-icon mb-2">
+                                                            <input value="<?= old('meter_pdam_m3'); ?>" class="form-control <?= ($validation->hasError('meter_pdam_m3')) ? 'is-invalid' : ''; ?>" id="meter_pdam_m3" name="meter_pdam_m3">
+                                                            <?php if ($validation->hasError('meter_pdam_m3')) : ?>
+                                                                <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
+                                                                    <?= $validation->getError('meter_pdam_m3'); ?>
+                                                                </div>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="border: 0;">
+                                    <td style="border: 0;"></td>
+                                    <td style="border: 0;"></td>
+                                    <td style="border: 0;"></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-3" rowspan="1">Meter Deep Well</td>
+                                    <td class="col-4" style="padding-left: 8px;">M&sup3;</td>
+                                    <td>
+                                        <div class="row" style="padding-top: 20px;">
+                                            <div class="col-lg-6">
+                                                <div class="form-group mb-3 row">
+                                                    <div class="col">
+                                                        <div class="input-icon mb-2">
+                                                            <input value="<?= old('meter_deep_well_m3'); ?>" class="form-control <?= ($validation->hasError('meter_deep_well_m3')) ? 'is-invalid' : ''; ?>" id="meter_deep_well_m3" name="meter_deep_well_m3">
+                                                            <?php if ($validation->hasError('meter_deep_well_m3')) : ?>
+                                                                <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
+                                                                    <?= $validation->getError('meter_deep_well_m3'); ?>
+                                                                </div>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="border: 0;">
+                                    <td style="border: 0;"></td>
+                                    <td style="border: 0;"></td>
+                                    <td style="border: 0;"></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-3" rowspan="1">Meter Air Effluent</td>
+                                    <td class="col-4" style="padding-left: 8px;">M&sup3;</td>
+                                    <td>
+                                        <div class="row" style="padding-top: 20px;">
+                                            <div class="col-lg-6">
+                                                <div class="form-group mb-3 row">
+                                                    <div class="col">
+                                                        <div class="input-icon mb-2">
+                                                            <input value="<?= old('meter_air_effluent_m3'); ?>" class="form-control <?= ($validation->hasError('meter_air_effluent_m3')) ? 'is-invalid' : ''; ?>" id="meter_air_effluent_m3" name="meter_air_effluent_m3">
+                                                            <?php if ($validation->hasError('meter_air_effluent_m3')) : ?>
+                                                                <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
+                                                                    <?= $validation->getError('meter_air_effluent_m3'); ?>
+                                                                </div>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="border: 0;">
+                                    <td style="border: 0;"></td>
+                                    <td style="border: 0;"></td>
+                                    <td style="border: 0;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">Pressure</label>
-                                <div class="col">
-                                    <input type="text" class="form-control <?= ($validation->hasError('pressure')) ? 'is-invalid' : ''; ?>" id="pressure" name="pressure" placeholder="Pressure" value="<?= old('pressure'); ?>">
-                                    <?php if ($validation->hasError('pressure')) : ?>
-                                        <div class="invalid-feedback">
-                                            <?= $validation->getError('pressure'); ?>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">Selenoid Valve</label>
-                                <div class="col">
-                                    <div class="form-check">
-                                        <input <?php if (old('selenoid_valve') == "1") {
-                                                    echo ("checked");
-                                                } ?> id="selenoid_valve" name="selenoid_valve" type="checkbox" class="selenoidCheckEdit form-check-input <?= ($validation->hasError('selenoid_valve')) ? 'is-invalid' : ''; ?>" onclick="selenoidCheckEdit(this.value);" value="1">
-                                        <span class="form-check-label">Baik</span>
+                                <label class="form-label col-3 col-form-label">Keterangan</label>
+                                <textarea name="keterangan" id="keterangan" class="form-control col <?= ($validation->hasError('keterangan')) ? 'is-invalid' : ''; ?>" rows="6"><?= old('keterangan'); ?></textarea>
+                                <?php if ($validation->hasError('keterangan')) : ?>
+                                    <div class="invalid-feedback">
+                                        <?= $validation->getError('keterangan'); ?>
                                     </div>
-                                    <div class="form-check">
-                                        <input <?php if (old('selenoid_valve') == "0") {
-                                                    echo ("checked");
-                                                } ?> id="selenoid_valve" name="selenoid_valve" type="checkbox" class="selenoidCheckEdit form-check-input <?= ($validation->hasError('selenoid_valve')) ? 'is-invalid' : ''; ?>" onclick="selenoidCheckEdit(this.value);" value="0">
-                                        <span class="form-check-label">Rusak</span>
-                                    </div>
-                                    <?php if ($validation->hasError('selenoid_valve')) : ?>
-                                        <div  class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                            <?= $validation->getError('selenoid_valve'); ?>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
-                                <script>
-                                    function selenoidCheckEdit(b) {
-                                        var x = document.getElementsByClassName('selenoidCheckEdit');
-                                        var i;
-
-                                        for (i = 0; i < x.length; i++) {
-                                            if (x[i].value != b) x[i].checked = false;
-                                        }
-                                    }
-                                </script>
-                            </div>
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">Detector</label>
-                                <div class="col">
-                                    <div class="form-check">
-                                        <input <?php if (old('detector') == "1") {
-                                                    echo ("checked");
-                                                } ?> id="detector" name="detector" type="checkbox" class="detectorCheckEdit form-check-input <?= ($validation->hasError('detector')) ? 'is-invalid' : ''; ?>" onclick="detectorCheckEdit(this.value);" value="1">
-                                        <span class="form-check-label">Baik</span>
-                                    </div>
-                                    <div class="form-check">
-                                        <input <?php if (old('detector') == "0") {
-                                                    echo ("checked");
-                                                } ?> id="detector" name="detector" type="checkbox" class="detectorCheckEdit form-check-input <?= ($validation->hasError('detector')) ? 'is-invalid' : ''; ?>" onclick="detectorCheckEdit(this.value);" value="0">
-                                        <span class="form-check-label">Rusak</span>
-                                    </div>
-                                    <?php if ($validation->hasError('detector')) : ?>
-                                        <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                            <?= $validation->getError('detector'); ?>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
-                                <script>
-                                    function detectorCheckEdit(b) {
-                                        var x = document.getElementsByClassName('detectorCheckEdit');
-                                        var i;
-
-                                        for (i = 0; i < x.length; i++) {
-                                            if (x[i].value != b) x[i].checked = false;
-                                        }
-                                    }
-                                </script>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">Selang Gas</label>
-                                <div class="col">
-                                    <div class="form-check">
-                                        <input <?php if (old('selang_gas') == "1") {
-                                                    echo ("checked");
-                                                } ?> id="selang_gas" name="selang_gas" type="checkbox" class="gasCheckEdit form-check-input <?= ($validation->hasError('selang_gas')) ? 'is-invalid' : ''; ?>" onclick="gasCheckEdit(this.value);" value="1">
-                                        <span class="form-check-label">Baik</span>
-                                    </div>
-                                    <div class="form-check">
-                                        <input <?php if (old('selang_gas') == "0") {
-                                                    echo ("checked");
-                                                } ?> id="selang_gas" name="selang_gas" type="checkbox" class="gasCheckEdit form-check-input <?= ($validation->hasError('selang_gas')) ? 'is-invalid' : ''; ?>" onclick="gasCheckEdit(this.value);" value="0">
-                                        <span class="form-check-label">Rusak</span>
-                                    </div>
-                                    <?php if ($validation->hasError('selang_gas')) : ?>
-                                        <div class="hasil-validasi" style="font-size: 85.71428571%; color: #d63939;">
-                                            <?= $validation->getError('selang_gas'); ?>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
-                                <script>
-                                    function gasCheckEdit(b) {
-                                        var x = document.getElementsByClassName('gasCheckEdit');
-                                        var i;
-
-                                        for (i = 0; i < x.length; i++) {
-                                            if (x[i].value != b) x[i].checked = false;
-                                        }
-                                    }
-                                </script>
-                            </div>
-                            <div class="form-group mb-3 row">
-                                <label class="form-label col-3 col-form-label">Meter Gas</label>
-                                <div class="col">
-                                    <input type="text" class="form-control <?= ($validation->hasError('meter_gas')) ? 'is-invalid' : ''; ?>" id="meter_gas" name="meter_gas" placeholder="Meter Gas" value="<?= old('meter_gas'); ?>">
-                                    <?php if ($validation->hasError('meter_gas')) : ?>
-                                        <div class="invalid-feedback">
-                                            <?= $validation->getError('meter_gas'); ?>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -597,6 +628,9 @@
     var site_url = `<?= base_url() ?>`;
     $(document).ready(function() {
 
+        let urlUpdate = site_url + '/metersumber/updateMeterSumber/';
+        let urlAjaxData = site_url + '/metersumber/ajaxDataMeterSumber/';
+        let urlDelete = site_url + '/metersumber/deleteMeterSumber/';
         let validateChecklist = `<?= $defaultChecklist['checklist'] ?>`;
         let dataChecklist = `<?= isset($checkInspection['data']) ? json_encode($checkInspection['data']) : '' ?>`;
 
@@ -620,7 +654,7 @@
         oldData = <?= json_encode(session()->get('_ci_old_input')) ?>;
         if (oldData != null && oldData.post.idFormEdit != null) {
             $("#modal-editData").modal('show');
-            $("#formEditData").attr('action', site_url + "/gasstation/updategasstation/" + oldData.post.idFormEdit);
+            $("#formEditData").attr('action', urlUpdate + oldData.post.idFormEdit);
 
             $("#formInputData").find("input:text, textarea").not("#location,#date,#worker").val("");
             $("#formInputData").find("input:checkbox").prop('checked', false);
@@ -628,13 +662,12 @@
             $("#formInputData").find(".invalid-feedback,.hasil-validasi").hide();
         }
 
-
         //? modal edit
         $(".edit-icon").click(function() {
             var modalView = $("#modal-editData");
             modalView.find("input:text").val("");
             modalView.find("input:checkbox").prop('checked', false);
-            $("#formEditData").attr('action', site_url + "/gasstation/updategasstation/" + this.id);
+            $("#formEditData").attr('action', urlUpdate + this.id);
             modalView.find(".is-invalid").removeClass("is-invalid");
             modalView.find(".invalid-feedback,.hasil-validasi").hide();
 
@@ -642,7 +675,7 @@
             inputData.append("id", this.id);
 
             $.ajax({
-                url: "<?= base_url('gasstation/ajaxDatagasstation') ?>",
+                url: urlAjaxData,
                 type: "POST",
                 data: inputData,
                 headers: {
@@ -654,19 +687,18 @@
                 success: function(data) {
                     if (data.data != null) {
                         modalView.find("#idFormEdit").val(data.data.id);
-                        // TODO implementasi
                         modalView.find("#equipment_checklist").val(data.data.equipment_checklist);
                         // modalView.find("#time[value='" + data.data.time + "']").prop('checked', true);
                         modalView.find("#timeValue").val(data.data.time);
                         modalView.find("#date").val(data.data.date);
                         modalView.find("#worker").val(data.data.initial);
                         modalView.find("#location").val(data.data.storeName);
-                        modalView.find("#pressure").val(data.data.pressure);
-                        modalView.find("#meter_gas").val(data.data.meter_gas);
-                        modalView.find("#selenoid_valve[value=" + data.data.selenoid_valve + "]").prop('checked', true);
-                        modalView.find("#detector[value=" + data.data.detector + "]").prop('checked', true);
-                        modalView.find("#selang_gas[value=" + data.data.selang_gas + "]").prop('checked', true);
                         // modalView.find("#equipment_checklist option[value=" + data.data.equipment_checklist + "]").prop('selected', true);
+                        modalView.find("#meter_pdam_floating_valve[value=" + data.data.meter_pdam_floating_valve + "]").prop('checked', true);
+                        modalView.find("#meter_pdam_m3").val(data.data.meter_pdam_m3);
+                        modalView.find("#meter_deep_well_m3").val(data.data.meter_deep_well_m3);
+                        modalView.find("#meter_air_effluent_m3").val(data.data.meter_air_effluent_m3);
+                        modalView.find("#keterangan").val(data.data.keterangan);
                     } else {
                         Swal.fire(
                             'Error',
@@ -700,7 +732,7 @@
 
                     deleteData.append('id', this.id);
                     $.ajax({
-                        url: "<?= base_url('gasstation/deletegasstation') ?>",
+                        url: urlDelete,
                         type: "POST",
                         data: deleteData,
                         headers: {

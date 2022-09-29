@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use DateTime;
 
 class MEquipment extends Model
 {
@@ -234,7 +235,10 @@ class MEquipment extends Model
     {
         $builder = $this->db->table('tb_store_equipment');
 
-        $builder->select('tb_store_equipment.checklist');
+        $builder->select([
+            'tb_store_equipment.checklist',
+            'tb_equipment.id as idEq'
+        ]);
         
         $builder->join("tb_equipment", "tb_equipment.id = tb_store_equipment.idEquipment", "LEFT");
         
@@ -252,7 +256,10 @@ class MEquipment extends Model
 
             $builder = $this->db->table('tb_equipment');
 
-            $builder->select('tb_equipment.default_checklist AS checklist');
+            $builder->select([
+                'tb_equipment.default_checklist AS checklist',
+                'tb_equipment.id as idEq'
+            ]);
 
             $builder->where([
                 'equipment' => $equipment,
@@ -288,12 +295,17 @@ class MEquipment extends Model
                         'data' => $data
                     ];
                 }
-                return ['status' => false, 'l' => $this->db->getLastQuery()];
+                return ['status' => false];
                 break;
 
             case 'WEEKLY':
-                // TODO optimalisasi dg tanggal ambil -7 day to +7 day
-                $builder->where("DATE_FORMAT(date, '%Y-%m')", convertDate($date, 'Y-m'));
+                $awal = new DateTime($date);
+                $akhir = new DateTime($date);
+                $awal->modify("-7 days");
+                $akhir->modify("+7 days");
+                
+                $builder->where("date >=", $awal->format('Y-m-d'));
+                $builder->where("date <=", $akhir->format('Y-m-d'));
                 $arrTanggal = $builder->get()->getResultArray();
 
                 $dateWeek = convertDate($date, 'W');
@@ -301,10 +313,7 @@ class MEquipment extends Model
                 $i = 0;
                 foreach ($arrTanggal as $key => $value) {
                     if ($dateWeek == convertDate($value['date'], 'W')) {
-                        $arrWeekNum[$i] = [ $value
-                            // 'id' => $value['id'],
-                            // 'weekNum' => convertDate($value['date'], 'W')
-                        ];
+                        $arrWeekNum[$i] = $value;
                         $i++;
                     }
                 }
@@ -322,9 +331,11 @@ class MEquipment extends Model
 
             case 'MONTHLY':
                 $builder->where("DATE_FORMAT(date, '%Y-%m')", convertDate($date, 'Y-m'));
-                $result = $builder->countAllResults();
+                $result = $builder->countAllResults(false);
+                $data = $builder->get()->getResultArray();
                 if ($result > 0) {
-                    ['status' => true];
+                   return ['status' => true,
+                    'data' => $data];
                 }
                 return ['status' => false];
                 break;
@@ -333,5 +344,48 @@ class MEquipment extends Model
                 return ['status' => false];
                 break;
         }
+    }
+
+    public function getStoreEquipmentByStore($idStore) {
+        $query = $this->db->query("
+            SELECT
+            s.id AS id, s.idStore AS idStore, s.status_deleted AS status_deleted, s.idEquipment AS idEquipment,
+            e.url AS url
+            FROM tb_store_equipment as s
+            JOIN tb_equipment AS e ON s.idEquipment = e.id
+            WHERE s.idStore = $idStore
+            AND s.status_deleted = '0'
+            ORDER BY s.idEquipment ASC
+        ");
+
+        return $query->getResultArray();
+    }
+
+    public function getStoreEquipmentByStoreEquipment($idStore, $idEquipment) {
+        $query = $this->db->query("
+            SELECT *
+            FROM tb_store_equipment
+            WHERE idStore = $idStore
+            AND idEquipment = $idEquipment
+            AND status_deleted = '0'
+        ");
+
+        return $query->getResultArray();
+    }
+
+    public function equipmentDefaultChecklist($equipment)
+    {
+        $builder = $this->db->table('tb_equipment');
+
+        $builder->select([
+            'tb_equipment.default_checklist AS checklist',
+            'tb_equipment.id as idEq'
+        ]);
+
+        $builder->where([
+            'equipment' => $equipment,
+            'status_deleted' => '0'
+        ]);
+        return $builder->get()->getRowArray();
     }
 }
