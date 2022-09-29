@@ -196,7 +196,7 @@ class MUser extends Model
 
     public function getDataRole()
     {
-        $query = $this->db->query("SELECT * FROM tb_user_role where status_deleted = 0 and role_id NOT IN (99,1,2)");
+        $query = $this->db->query("SELECT * FROM tb_user_role where status_deleted = 0 and role_id NOT IN (99,1,2, 13)");
         return $query->getResultArray();
     }
 
@@ -319,7 +319,8 @@ class MUser extends Model
 
     public function getLocationByUser($idLoc)
     {
-        return $this->db->query("SELECT StoreName as location FROM tb_store WHERE idStore = '$idLoc' AND status_deleted = 0")->getFirstRow();
+        // return $this->db->query("SELECT StoreName as location FROM tb_store WHERE idStore = '$idLoc' AND status_deleted = 0")->getFirstRow();
+        return $this->db->query("SELECT StoreName as StoreName FROM tb_store WHERE StoreCode = '$idLoc' AND status_deleted = 0")->getFirstRow();
     }
 
 
@@ -334,7 +335,7 @@ class MUser extends Model
     public function getSuperiorName($idSuperiorName)
     {
         // if ($idSuperiorRole !== null) {
-        $query = $this->db->query("SELECT nik, superior_role_id as 'idSuperiorRole', superior_name_id as 'NikSuperiorName', name as 'SuperiorName' FROM tb_user WHERE role_id = '$idSuperiorName' and status_deleted = 0 and role_id NOT IN (99,1,2)");
+        $query = $this->db->query("SELECT role_id, nik, NAME AS 'SuperiorName',  superior_role_id AS 'idSuperiorRole', superior_name_id AS 'NikSuperiorName' FROM tb_user WHERE role_id = '$idSuperiorName' and status_deleted = 0 and role_id NOT IN (99,1,2)");
         // }
         return $query->getResultArray();
     }

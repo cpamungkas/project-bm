@@ -878,10 +878,13 @@
                         <div class="col-lg-3">
                             <div class="mb-3">
                                 <label class="form-label">Superior Role</label>
-                                <select class="form-select superiorrole" id="editsuperiorrole" name="editsuperiorrole" value="<?= old('editsuperiorrole'); ?>" required>
+                                <select class="form-select superiorrole" id="editsuperiorrole" name="editsuperiorrole" value="<?= old('editsuperiorrole'); ?>">
                                     <option value="">Select Superior Role</option>
                                     <?php foreach ($getDataRole as $pic) : ?>
-                                        <option value="<?= $pic['role_id']; ?>"><?= $pic['role']; ?> </option>
+                                        <option value="<?= $pic['role_id']; ?>" <?php if (old('editsuperiorrole') == $pic['role_id']) {
+                                                                                    echo 'selected';
+                                                                                } ?>><?= $pic['role']; ?> </option>
+
                                     <?php endforeach; ?>
                                 </select>
                                 <?php if (session('erroreditsuperiorrole')) { ?>
@@ -894,7 +897,7 @@
                         <div class="col-lg-3">
                             <div class="mb-3">
                                 <label class="form-label">Superior Name</label>
-                                <select class="form-select superiorname" id="editsuperiorname" name="editsuperiorname" value='<?= old('editsuperiorname'); ?>' required>
+                                <select class="form-select superiorname" id="editsuperiorname" name="editsuperiorname" value='<?= old('editsuperiorname'); ?>'>
                                     <option value="">Select Superior Name</option>
                                     <?php foreach ($getDataSuperiorName as $name) : ?>
                                         <option value="<?= $name['nik']; ?>"><?= $name['SuperiorName']; ?> </option>
@@ -1020,8 +1023,7 @@
     $(document).ready(function() {
 
         //todo load superior role when employee role change
-        // $('#employeerole').change(function() {
-        $('.employeerole').change(function() {
+        $('#employeerole').change(function() {
             var idEmployeeRole = $(this).val();
             // alert($(this).val());
             let isiFormSuperiorRole = new FormData();
@@ -1068,12 +1070,10 @@
                 }
             });
         });
-
         $('#superiorrole').change(function() {
             var idSuperiorRole = $(this).val();
             var idEmployeeRole = $('#employeerole').val();
-            var old_superiorname = "<?= old('superiorname') ?>";
-            // alert(idSuperiorRole);
+
             let isiFormSuperiorName = new FormData();
             isiFormSuperiorName.append("idSuperiorName", $(this).val());
 
@@ -1081,9 +1081,6 @@
                 url: "<?= base_url('employee/checkSuperiorNameAjax'); ?>", //checkFilterSuperiorRoleByEmployeeRole
                 method: "POST",
                 data: isiFormSuperiorName,
-                // data: {
-                //     id: id
-                // },
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'
                 },
@@ -1098,23 +1095,98 @@
                     // if (idEmployeeRole != idSuperiorRole) {
                     if (data.length > 0) {
                         for (i = 0; i < data.length; i++) {
-                            if (data[i].nik == old_superiorname) {
-                                html += '<option selected value="' + data[i].nik + '">' + data[i].SuperiorName + '</option>';
+                            // if (data[i].nik == old_superiorname) {
+                            html += '<option selected value="' + data[i].nik + '">' + data[i].SuperiorName + '</option>';
 
-                            } else {
-                                html += '<option value="' + data[i].nik + '">' + data[i].SuperiorName + '</option>';
-                            }
+                            // } else {
+                            //     html += '<option value="' + data[i].nik + '">' + data[i].SuperiorName + '</option>';
+                            // }
 
                         }
                     } else {
                         html += '<option value="0">None</option>';
                     }
-
-                    // } else {
-                    //     html += '<option value="0">None</option>';
-                    // }
                     $('#superiorname').html(html);
                     $('#superiorname').attr('disabled', false);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error adding / update data');
+                }
+            });
+        });
+
+        //todo edit menu
+        const select = document.querySelector("#editemployeerole");
+        select.addEventListener("change", () => {
+            var idEmployeeRole = $('#editemployeerole').val();
+            let FormIdSuperiorRole = new FormData();
+            FormIdSuperiorRole.append("idSuperiorRole", idEmployeeRole);
+            $.ajax({
+                url: "<?= base_url('employee/checkFilterSuperiorRoleByEmployeeRole'); ?>",
+                method: "POST",
+                data: FormIdSuperiorRole,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                success: function(data) {
+                    var html = '';
+                    var i;
+
+                    if (idEmployeeRole != 3) {
+                        if (data.length > 0) {
+                            for (i = 0; i < data.length; i++) {
+                                html += '<option value="' + data[i].idSuperiorRole + '">' + data[i].SuperiorName + '</option>';
+                            }
+                        } else {
+                            html += '<option value="0">None</option>';
+                        }
+                    } else {
+                        html += '<option value="0">None</option>';
+                    }
+
+                    $('#editsuperiorrole').html(html);
+                    $('#editsuperiorrole').attr('disabled', false);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error adding / update data');
+                }
+            });
+        });
+
+        const selectsuperior = document.querySelector("#editsuperiorrole");
+        selectsuperior.addEventListener("change", () => {
+            var idSuperiorRole = $('#editsuperiorrole').val();
+            // alert(idSuperiorRole);
+            let FormIdSuperiorName = new FormData();
+            FormIdSuperiorName.append("idSuperiorName", idSuperiorRole);
+            $.ajax({
+                url: "<?= base_url('employee/checkSuperiorNameAjax'); ?>",
+                method: "POST",
+                data: FormIdSuperiorName,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                success: function(data) {
+                    var html = '';
+                    var i;
+
+                    if (data.length > 0) {
+                        for (i = 0; i < data.length; i++) {
+                            html += '<option value="' + data[i].nik + '">' + data[i].SuperiorName + '</option>';
+                        }
+                    } else {
+                        html += '<option value="0">None</option>';
+                    }
+
+                    $('#editsuperiorname').html(html);
+                    $('#editsuperiorname').attr('disabled', false);
+                    // $('#editsuperiorrole').trigger("change");
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     alert('Error adding / update data');
@@ -1181,9 +1253,9 @@
             $('#editinitial').val(modaleditinitial);
             $('#editemail').val(modaleditemail);
             $('#editusername').val(modaleditusername);
+            $('#editemployeerole').val(modaleditroleuser).trigger('change');
             $('#editsuperiorrole').val(modaleditrolesuperior).trigger('change');
             $('#editsuperiorname').val(modaleditsuperiorname).trigger('change');;
-            $('#editemployeerole').val(modaleditroleuser).trigger('change');
             $('#editlevel').val(modaleditlevel).trigger('change');
             $('#editlocation').val(modaleditlocation).trigger('change');
 
@@ -1216,6 +1288,9 @@
             const modaleditsuperiorname = $('#editsuperiorname').val();
             const modaleditlevel = $('#editlevel').val();
             const modaleditlocation = $('#editlocation').val();
+
+            $('#editsuperiorrole').attr('disabled', false);
+            $('#editsuperiorname').attr('disabled', false);
 
             url = "<?= base_url(); ?>/employee/updateEmployee/" + modaleditid;
             $('#editemployeemodalForm').attr('action', url);

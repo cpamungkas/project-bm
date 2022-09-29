@@ -259,8 +259,9 @@ class CLogin extends BaseController
                     session()->set('superior_role_id', $data['superior_role_id']);
                     session()->set('level', $data['level']);
                     session()->set('idstore', $data['location']);
+                    // dd($data['location']);
                     $dataLocation = $this->mUser->getLocationByUser($data['location']);
-                    session()->set('location', $dataLocation->location);
+                    session()->set('location', $dataLocation->StoreName);
                     session()->set('isLoggedIn', TRUE);
 
                     if (session()->get('level') == 99) {

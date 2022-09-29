@@ -262,8 +262,8 @@ class CWorker extends BaseController
             $editEmail = $this->request->getPost('editemail');
             $editUsername = $this->request->getPost('editusername');
             $editPassword = $this->request->getPost('editpassword');
-            $editSuperiorRole = $this->request->getPost('editsuperiorrole');
-            $editsuperiorname = $this->request->getPost('editsuperiorname');
+            $editSuperiorRole = $this->request->getPost('superiorrole');
+            $editsuperiorname = $this->request->getPost('superiorname');
             $editemployeerole = $this->request->getPost('editemployeerole');
             $editlevel = $this->request->getPost('editlevel');
             $editlocation = $this->request->getPost('editlocation');
@@ -306,7 +306,7 @@ class CWorker extends BaseController
                 'date_deleted' => time(),
                 'status_deleted' => 0
             ];
-
+            // dd($data);
             if ($employeeModel->update($idUrl, $data)) {
                 $session->setFlashdata("success", "Worker : " . $this->request->getPost('editname') . " (" . $this->request->getPost('editnik') . ") has been update.");
                 return redirect()->to('/employee');
